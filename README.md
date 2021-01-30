@@ -6,8 +6,8 @@
 - [First Steps](#first-steps)
     - [Some concepts](some-concepts)
     - [Variables](#variables)
-    - [Primitive types](#primitive-types)
     - [Java packages](#java-packages)
+    - [Primitive types](#primitive-types)
 
 ## First steps
 
