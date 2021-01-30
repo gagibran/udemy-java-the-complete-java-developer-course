@@ -3,15 +3,21 @@
 ## A repository aimed to store code generated from [the course](https://www.udemy.com/course/java-the-complete-java-developer-course/)
 
 ## Table of contents
-- [First Steps](#first-steps)
-    - [Some concepts](some-concepts)
+- [Some concepts](some-concepts)
     - [Variables](#variables)
     - [Java packages](#java-packages)
-    - [Primitive types](#primitive-types)
+- [Primitive types](#primitive-types)
+    - [Integer](#integer)
+    - [Byte](#byte)
+    - [Short](#short)
+    - [Long](#long)
+    - [Float](#float)
+    - [Double](#double)
+    - [Char](#char)
+    - [Boolean](#boolean)
+    - [Casting in Java](#casting-in-java)
 
-## First steps
-
-### Some concepts
+## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
 
@@ -126,9 +132,11 @@ The folder tree will look like:
 
 src\com\fridaynightsoftwares\Main.java
 
-### Primitive types
+## Primitive types
 
-**Integers**: As the name says, used to store integer values.
+### Integer
+
+As the name says, used to store integer values.
 
 It has a maximum and a minimum value. They can be found by calling the variables "MIN_VALUE" and "MAX_VALUE" inside the "Integer" wrapper class.
 
@@ -188,3 +196,230 @@ We can also separate the decimals with an underscore, like so:
 int largeInt = 2_233_111_111;
 ```
 To discern it the digits better.
+
+It occupies 32 bits in the memory. Thus, it has a width of 32.
+
+## Byte
+
+It's not used very often, since the minimum and maximum values are -128 and 127, respectively.
+
+Could be used if we want to store a number within that range to save memory, or increase performance.
+
+It occupies 8 bits in the memory. Thus, it has a width of 8.
+
+Can be used for documentation as well: if someone else is reading our could, they would know that the number passed into our byte variable is within that range.
+
+It also has the "MAX_VALUE" and "MIN_VALUE" variables in the "Byte" wrapper class:
+```
+public class Main {
+    public static void main(String[] args) {
+        byte minValue = Byte.MIN_VALUE;
+        byte maxValue  = Byte.MAX_VALUE;
+        System.out.println("Byte minimum value: " + minValue);
+        System.out.println("Byte maximum value: " + maxValue);
+    }
+}
+```
+This will print out:
+```
+Byte minimum value: -128
+Byte maximum value: 127
+```
+
+Like integers, we can also have it overflow or underflow.
+
+### Short
+
+Numbers in a range that are a little bigger than bytes.
+
+It occupies 16 bits. Thus, its width is 16.
+
+Short also has the "MAX_VALUE" and "MIN_VALUE" variables in the "Short" wrapper class:
+
+```
+public class Main {
+    public static void main(String[] args) {
+        short minValue = Short.MIN_VALUE;
+        short maxValue  = Short.MAX_VALUE;
+        System.out.println("Short minimum value: " + minValue);
+        System.out.println("Short maximum value: " + maxValue);
+    }
+}
+```
+Which prints:
+```
+Short minimum value: -32768
+Short maximum value: 32767
+```
+
+It also overflows and underflows.
+
+### Long
+
+It has a bigger range than integers.
+
+We can declare a long value for, say, a small number, by appending the letter "L" in the end of the number:
+```
+long myLongValue = 100L;
+```
+
+The "L" can also be lowercase, but since it's easy to mix it up with 1, it's best practice to use uppercase "L".
+
+It occupies 64 bits. Thus, it's width is 64.
+
+By default, Java considers a number to be an integer unless we put the L in front of it to treat it as a long.
+
+We won't get errors if we declare a long variable without an "L" like so:
+```
+long myLongValue = 100;
+```
+Because an integer fits inside a long, since an integers' width is 32 bits. But Java will still treat the variable as an integer.
+
+So, if we store an integer's maximum value plus one inside a long variable without the L in front, we get an error. This is forbidden:
+```
+long myLongNumber = 2_147_483_648; // We'll get an error.
+long myLongNumber = 2_147_483_648L; // This runs fine.
+```
+
+The same thing is valid for underflow and of the other data types.
+
+As always, the minimum and maximum numbers can be derived from its wrapper class:
+```
+public class Main {
+    public static void main(String[] args) {
+        long minValue = Long.MIN_VALUE;
+        long maxValue  = Long.MAX_VALUE;
+        System.out.println("Long minimum value: " + minValue);
+        System.out.println("Long maximum value: " + maxValue);
+    }
+}
+```
+Which prints:
+```
+Long minimum value: -9223372036854775808
+Long maximum value: 9223372036854775807
+```
+
+### Float
+
+We use them when we need to express a fraction.
+
+We express a floating point number with a decimal point.
+
+Float is a **single** precision number.
+
+Example:
+```
+float 4.23F;
+float 4.23f; // This works too.
+// float 4.2; // This doesn't work.
+```
+We MUST specify that a number is a float but putting a "F" in front of the number, just like long data types.
+
+Otherwise, we get an error stating that the variable was expecting a float, but got a double instead. This happens because **doubles are the default data type for rational numbers!**
+
+It occupies 32 bits.
+
+They range from 1.4E-45 to 3.4028235E38.
+
+**FLoats are not recommended using anymore!**
+
+### Double
+
+These are **double** precision numbers, like:
+```
+double doubleNum = 2_323.3;
+double doubleNumTwo = 23.3_231;
+```
+
+They're more precise than floats.
+
+They occupy 64 bits.
+
+They range from 4.9E-324 to 1.7976931348623157E308.
+
+We can specify that a number is a double but putting a "D" in front of the number, just like long data types:
+```
+double doubleNum = 5D;
+double doubleNum = 5d; // This also works.
+double doubleNum = 5.0; // This also works.
+```
+
+When we do an operation with a primitive type for a whole number (integers, bytes, shorts and longs), we only get the whole number part of the division.
+
+Floats and doubles allows us to get the fraction part of the number:
+```
+public class Main {
+    public static void main(String[] args) {
+        int intVarDiv = 5 / 2;
+        float floatVarDiv = 5f / 2f;
+        double doubleVarDiv = 5d / 2d;
+        System.out.println("Integer division: 5/2 = " + intVarDiv);
+        System.out.println("Float division: 5f/2f = " + floatVarDiv);
+        System.out.println("Double division: 5d/2d = " + doubleVarDiv);
+    }
+}
+```
+This will print out:
+```
+Integer division: 5/2 = 2
+Float division: 5f/2f = 2.5
+Double division: 5d/2d = 2.5
+```
+
+Since doubles are more precise than integers, we get more decimals in an division:
+```
+public class Main {
+    public static void main(String[] args) {
+        float floatVarDiv = 5f / 3f;
+        double doubleVarDiv = 5d / 3d;
+        System.out.println("Float division: 5f/2f = " + floatVarDiv);
+        System.out.println("Double division: 5d/2d = " + doubleVarDiv);
+    }
+}
+```
+Gives us:
+```
+Float division: 5f/2f = 1.6666666
+Double division: 5d/2d = 1.6666666666666667
+```
+
+**This is also recommended over floats because moderns computers processes them faster than floats, at the chip level.**
+
+Lastly, doubles are great for general floating-point operations, but are not recommended for very precise operations, such as currency calculations, due to a limitation on how floating numbers are stored in the memory (not a Java limitation).
+
+For these kinds of operations, we use a class called "BigDecimals", which will be explained later on.
+
+### Char
+
+
+
+### Boolean
+
+
+
+### Casting in Java
+
+Data types can be casted into other types if were mixing them with operations. The following
+```
+byte minDivided = byteMinValue / 2;
+```
+Gives us an error that it was requiring a byte to be assigned to "minDivided", but it got an integer instead.
+
+Even though we know that -128 divided by 2 is equal to -64 and it would fit into a byte type, our computer treats the result of this division as an integer, because the number 2 is being defaulted to an integer.
+
+We can solve this issue by casting the whole expression to a byte. The syntax is:
+```
+byte minDivided = (byte)(byteMinValue / 2);
+```
+
+The same can be applied to short and long.
+
+Integers are the whole numbers that we use the most. That's why they're the default data type in Java.
+
+We can also cast a double to be a float:
+```
+float floatVar = (float)5.25;
+```
+Although casting to a float like that is not recommended. People tend to just put the "F" in front of the number.
+
