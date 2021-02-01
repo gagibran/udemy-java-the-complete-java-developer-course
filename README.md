@@ -6,6 +6,7 @@
 - [Some concepts](some-concepts)
     - [Variables](#variables)
     - [Java packages](#java-packages)
+    - [Naming conventions](#naming-conventions)
 - [Primitive types](#primitive-types)
     - [Integer](#integer)
     - [Byte](#byte)
@@ -19,6 +20,12 @@
 - [String](#string)
 - [Operators, operands, and expressions](#operators,-operands,-and-expressions)
     - [Abbreviating operators](#abbreviating-operators)
+    - [Logical AND operator](#logical-and-operator)
+    - [Logical OR operator](#logical-or-operator)
+- [If-else statement](#if-statement)
+    - [If-then](#if-then)
+    - [Ternary operator](#ternary-operator)
+    - [If-else](#if-else)
 
 ## Some concepts
 
@@ -134,6 +141,8 @@ package com.fridaynightsoftwares;
 The folder tree will look like:
 
 src\com\fridaynightsoftwares\Main.java
+
+### Naming conventions
 
 ## Primitive types
 
@@ -535,6 +544,10 @@ Isn't overwritten by "Trying to change the string.". Instead, Java deletes this 
 
 They're special symbols that perform specific operations in one, two, or three operands, forming an expression.
 
+[This is the official documentation for all operators from Oracle.](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/opsummary.html)
+
+[This is the official documentation of the priority, of precedence, of the operators.](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html) We learn most of those in school.
+
 As an example, we have plus, minus, multiplication, and division operators.
 
 The equal operator (=) is used to assign variables to values.
@@ -562,4 +575,169 @@ number -=2; // Abbreviates int number = number + 2.
 number *= 2; // Abbreviates int number = number * 2.
 number /= 2; // Abbreviates int number = number / 2.
 number %= 2; // Abbreviates int number = number % 2.
+```
+
+### Logical AND operator
+
+It's another primitive type.
+
+The variable is assigned to true when two or more conditions are met **at the same time** and to false otherwise.
+
+Its symbol is the double [ampersand](https://en.wikipedia.org/wiki/Ampersand#:~:text=The%20ampersand%2C%20also%20known%20as,%E2%80%94Latin%20for%20%22and%22.) (&&).
+
+A single ampersand (&), which is a [bitwise operation](https://en.wikipedia.org/wiki/Bitwise_operation), can also be used, but it's best practice to use two.
+
+Example:
+```
+public class Main {
+    public static void main(String[] args) {
+        boolean areBothTrue = 40 <= 100 & 32 > 10; // This is true.
+        boolean areTheseTrue = 100 >= 100 & 40 <= 34; // The second condition is false.
+        System.out.println(areBothTrue); // Prints out true.
+        System.out.println(areTheseTrue); // Prints out false
+    }
+}
+```
+
+### Logical OR operator
+
+It's another primitive type.
+
+The variable is assigned to true or false when at **least one condition is met** and to false otherwise.
+
+Its symbol is the double pipe (||).
+
+Single pipe (|), which is a [bitwise operation](https://en.wikipedia.org/wiki/Bitwise_operation), can also be used, but it's best practice to use two.
+
+Example:
+```
+public class Main {
+    public static void main(String[] args) {
+        boolean areBothTrue = 40 == 100 | 32 < 10; // Both are false.
+        boolean areTheseTrue = 100 >= 100 || 40 >= 34; // The second condition is false, but the first is true.
+        System.out.println(areBothTrue); // Prints out false.
+        System.out.println(areTheseTrue); // Prints out true.
+    }
+}
+```
+
+## If statement
+
+### If-then
+
+Most basic flow control tool in Java - or in any programming language.
+
+Allows us to execute code based on the outcome of a **conditional** expression that returns true or false.
+
+
+Example:
+```
+public class Main {
+    public static void main(String[] args) {
+        boolean isAlien = false;
+        if (isAlien == false) {
+            System.out.println("It is not an alien!");
+        }
+
+        if (!isAlien) { // Also works.
+            System.out.println("It is not an alien!");
+        }
+    }
+}
+```
+
+We utilize the **equality operators** to check if a conditional is true or false.
+
+We use (==) to check if two operands are equal and (!=) to check if the operands are different.
+
+We can abbreviate these operands with only the NOT operator (!) to check if an operand is equal to false (i.e. !isAlien) and just the name of the variable to check if it's equal to true (isAlien):
+```
+public class Main {
+    public static void main(String[] args) {
+        boolean isAlien = false;
+        if (!isAlien) {
+            System.out.println("It is not an alien!");
+        }
+
+        if (isAlien) { // Also works.
+            System.out.println("It is an alien!");
+        }
+    }
+}
+```
+
+The logical operators [AND](#local-and-operator) and [OR](#logical-or-operator) can be used to form more complex expressions:
+
+```
+public class Main {
+    public static void main(String[] args) {
+        boolean isAlien = false;
+        if (!isAlien && 100 > 40) { // A and B are true.
+            System.out.println("It is not an alien!");
+        }
+
+        if (isAlien || 100 > 40) { // At least B is true.
+            System.out.println("It is not an alien!");
+        }
+
+        // Mixing both:
+        if ((isAlien || 100 > 40) && (!isAlien || 100 <= 40)) { // B and C are true.
+            System.out.println("It is not an alien!"); // Condition is met.
+        }
+    }
+}
+```
+
+**Note** that we can write an if statement without the curly brackets and/or without any indentation, **but only the first line will be executed depending on the if check**, the other one will be executed no matter the outcome:
+```
+public class Main {
+    public static void main(String[] args) {
+        if (isAlien)
+            System.out.println("It is an alien!");
+        
+        if (isAlien)
+System.out.println("It is an alien!"); // This works too!
+        
+
+        if (!isAlien)
+System.out.println("It is not an alien!"); // This works, but it's not good practice.
+    System.out.println("I'm scared!"); // This will get executed, no matter the outcome of the if-statement.
+    }
+}
+```
+
+This obviously is not a good practice and should be done never.
+
+### If-else
+
+
+
+### Ternary operator
+
+It's called "ternary" because it takes in three operands.
+
+It takes in the condition that we're testing, the value to assign if it meets the condition, and finally,the value to assign if it doesn't.
+
+It's a one-liner to assign a value to a variable if a condition is met, or assign another value to a variable if the condition isn't met.
+
+So, this:
+```
+boolean isCar = false;
+if (isCar) {
+    boolean wasCar = true;
+} else {
+    boolean wasCar = false;
+}
+```
+Can be simplified to this:
+```
+boolean isCar = false;
+boolean wasCar = isCar ? true : false; // wasCar will be false.
+```
+Where "isCar", short for "wasCar == true", is the condition we're checking, "true" is the value that the variable "wasCar" will be assign if the condition is met, and "false" is the value that the variable will be assign in case the condition is not met.
+
+Another example:
+```
+boolean isCar = false;
+boolean !wasCar = isCar ? false : true; // wasCar will be true.
 ```
