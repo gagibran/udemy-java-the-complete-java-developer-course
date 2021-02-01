@@ -16,6 +16,9 @@
     - [Char](#char)
     - [Boolean](#boolean)
     - [Casting in Java](#casting-in-java)
+- [String](#string)
+- [Operators, operands, and expressions](#operators,-operands,-and-expressions)
+    - [Abbreviating operators](#abbreviating-operators)
 
 ## Some concepts
 
@@ -392,11 +395,60 @@ For these kinds of operations, we use a class called "BigDecimals", which will b
 
 ### Char
 
+Chars are different than strings, because they only accept one character instead of a whole string of characters.
 
+Example:
+```
+char newChar = 'D'; // This works;
+char newCharTwo = 'De' // This returns an error.
+```
+
+Chars were useful when Java was first release, because saving memory was crucial to any program.
+
+Nowadays, computers have so much more memory that this data type is not very useful anymore.
+
+It occupies 16 bits of memory (a width of 16).
+
+The reason that it doesn't occupy just a single byte (8 bits) is because we can store unicode characters.
+
+Unicode is an international encoding standard for use with different languages and scripts, by each letter, digit, or symbol is assigned a unique numeric value that applies across different platforms and programs.
+
+Unicode has 65,535 different types of characters that are represented with 2 bytes.
+
+We can see the complete table in [the Unicode-table website](https://unicode-table.com/en/).
+
+We can get a character's unicode by looking at the table on the website, where the number on the column is added to the number on the row.
+
+An example, the unicode for character "D" is U+0044.
+
+We can put this unicode in a Java's char type:
+```
+public class Main {
+    public static void main(String[] args) {
+        char charD = '\u0044';
+        char copyRight = '\u00A9' // '\u00a9' also works.
+        System.out.println(charD) // Prints out 'D'.
+        System.out.println(copyRight) // Prints out the copyright symbol.
+    }
+}
+```
+We have to escape the character 'u' with a backslash, because it actually represents that this is actually unicode.
+
+Letters composing a unicode can be uppercase or lowercase.
 
 ### Boolean
 
+True or false, yes or no, 1 or 0.
 
+Pretty useful in any programming language.
+
+Example:
+```
+boolean isCustomerOverTwentyOne = false;
+boolean isCustomerEighteen = true;
+```
+
+It's best practice to start the name of a boolean variable with "is".
 
 ### Casting in Java
 
@@ -423,3 +475,91 @@ float floatVar = (float)5.25;
 ```
 Although casting to a float like that is not recommended. People tend to just put the "F" in front of the number.
 
+## String
+
+It's not a primitive type. It's a class that Java programmers treat differently.
+
+A string can contain a sequence of characters, only limited by the memory, or by its maximum value of an int, that is **2.14 Billion**.
+
+Example:
+```
+public class Main {
+    public static void main(String[] args) {
+        String stringVar = "This is a string.";
+        System.out.println("My string is: " + stringVar);
+    }
+}
+```
+
+Like we were doing on Sys.tem.out.println(), we can concatenate strings by using the plus operator:
+```
+String stringVar = "This is a string.";
+String stringVarTwo = stringVar + "copyright: \u00a9";
+```
+
+We can cast a data type into a string:
+```
+public class Main {
+    public static void main(String[] args) {
+        String lastString = "50";
+        int intNum = 45;
+        String strPlusNum = intNum + lastString;
+        System.out.println("This is a string: " + strPlusNum);
+    }
+}
+```
+This prints out:
+```
+This is a string: 4550
+```
+
+The same works for the other data types.
+
+**Strings are immutable**: we can't change a string after it's been created.
+
+Instead, when we want to modify a string, a new one is created.
+
+This means that the variable "testString" here:
+```
+public class Main {
+    public static void main(String[] args) {
+        String testString = "Test.";
+        testString = "Trying to change the string.";
+        System.out.println(testString);
+    }
+}
+```
+Isn't overwritten by "Trying to change the string.". Instead, Java deletes this one and creates a new string, with the same name, for us.
+
+## Operators, operands, and expressions
+
+They're special symbols that perform specific operations in one, two, or three operands, forming an expression.
+
+As an example, we have plus, minus, multiplication, and division operators.
+
+The equal operator (=) is used to assign variables to values.
+
+The remainder, or modulo, operation returns the remainder of a division:
+```
+int aNum = 3;
+int anotherNum = 77;
+int remaind = anotherNum % aNum; // Returns 2.
+```
+
+### Abbreviating operators
+
+We can abbreviate the operators that update a variable. For example:
+```
+var number = 2
+number ++; // Abbreviates int number  = number + 1.
+number -- // Abbreviates int number  = number - 1.
+```
+
+We can also abbreviate updates different than by one:
+```
+number += 2; // Abbreviates int number = number + 2.
+number -=2; // Abbreviates int number = number + 2.
+number *= 2; // Abbreviates int number = number * 2.
+number /= 2; // Abbreviates int number = number / 2.
+number %= 2; // Abbreviates int number = number % 2.
+```
