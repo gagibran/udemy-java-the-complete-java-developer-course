@@ -3,10 +3,11 @@
 ## A repository aimed to store code generated from [the course](https://www.udemy.com/course/java-the-complete-java-developer-course/)
 
 ## Table of contents
-- [Some concepts](some-concepts)
+- [Some concepts](#some-concepts)
     - [Variables](#variables)
     - [Java packages](#java-packages)
-    - [Naming conventions](#naming-conventions)
+    - [Indentation and whitespace](#indentation-and-whitespace)
+    - [Scope](#scope)
 - [Primitive types](#primitive-types)
     - [Integer](#integer)
     - [Byte](#byte)
@@ -24,9 +25,12 @@
     - [Logical OR operator](#logical-or-operator)
 - [If-else statement](#if-statement)
     - [If-then](#if-then)
-    - [Ternary operator](#ternary-operator)
     - [If-else](#if-else)
-
+    - [Ternary operator](#ternary-operator)
+- [Methods](#methods)
+    - [Creating a method](#creating-a-method)
+    - [Executing a method](#executing-a-method)
+    - [Parameters](#parameters)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -52,7 +56,7 @@ public class Hello {
 }
 ```
 
-When we run this class, IntelliJ runs this Java command on the background to compile the code:
+When we run this class, an IDE, in my case IntelliJ, runs this Java command on the background to compile the code:
 ```
 /usr/lib/jvm/java-11-amazon-corretto/bin/java -javaagent:/snap/intellij-idea-community/273/lib/idea_rt.jar=33897:/snap/intellij-idea-community/273/bin -Dfile.encoding=UTF-8 -classpath /home/gagibran/Repositories/Courses
 ```
@@ -67,6 +71,8 @@ Java's print out statement is **System.out.println()**.
 All java lines **MUST** end with a semi-colon.
 
 **Static, void, and String[] args will be discussed in detail later on.**
+
+Additionally, [here's a cool guide](https://google.github.io/styleguide/javaguide.html) from Google on how to style a Java code.
 
 ### Variables
 
@@ -127,6 +133,21 @@ public class Hello {
 ```
 Which prints out: The value is 943
 
+We can create variables without assigning any value to them, in a declaration statement:
+```
+int newVar;
+```
+We can assign a value to it later on, in a expression statement:
+```
+newVar = 50;
+```
+
+We can also assign a value to more than one variable in a declaration statement:
+```
+int myVar;
+int mySecondVar = myVar = 60;
+```
+
 ### Java packages
 
 A package is a way to organize our Java projects.
@@ -142,7 +163,89 @@ The folder tree will look like:
 
 src\com\fridaynightsoftwares\Main.java
 
-### Naming conventions
+### Indentation and whitespace
+
+When Java converts a code into a readable JVM file, it strips out all whitespace and indentation from a program.
+
+But adding whitespace is the best practice here, since it doesn't affect the speed of the program and it makes the code more human readable.
+
+Whitespace actually only increases your file size, but it can be easily neglected as an actual concern.
+
+This works, but it's bad practice:
+```
+public class Main {
+public static void main(String[] args) {
+int
+    testInt
+    =
+23;
+}
+}
+```
+
+We can take advantage of whitespace to make the code more readable when a statement is too big:
+```
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("looooooooooooooooooooooooooooooooooooooooooooong string string string string string " +
+                        "string string string string string string string string string string " +
+                        "string string string string string string string string string ");
+    }
+}
+```
+
+In conclusion, Java doesn't care about indentation, but it's good practice to do it.
+
+### Scope
+
+When a variable is created inside a code block, it can only be accessed inside that block. Example:
+```
+public class Main {
+
+    public static void main(String[] args) {
+        int myVar = 12;
+
+        if (myVar == 12) {
+            int anotherVar = 13;
+        }
+        int aThirdVar = anotherVar; // Doesn't work.
+        System.out.println(anotherVar); // Doesn't work.
+    }
+}
+```
+This code wouldn't run, because Java cannot resolve the variable "anotherVar".
+
+This happens because when a code block finishes, any variables inside of it are marked for garbage collection ands, therefore, cannot be used anymore
+
+Variables created outside of a code block, which is still executing, can be used by any code blocks that are inside this parent one:
+```
+public class Main {
+    public static void main(String[] args) {
+        int myVar = 12;
+
+        if (myVar == 12) {
+            int anotherVar = myVar; // This works because the block "main" is still executing.
+        }
+    }
+}
+```
+
+Since variables are marked for garbage disposal, we can recreate them inside the next block:
+```
+public class Main {
+    public static void main(String[] args) {
+        int myVar = 12;
+        if (myVar == 12) {
+            int anotherVar = 42;
+        }
+        if (myVar >= 12) {
+            int anotherVar = 44;
+        } else {
+            int anotherVar = 13;
+        }
+    }
+}
+```
 
 ## Primitive types
 
@@ -548,6 +651,8 @@ They're special symbols that perform specific operations in one, two, or three o
 
 [This is the official documentation of the priority, of precedence, of the operators.](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html) We learn most of those in school.
 
+[This is a document stating the associativity of each operator.](http://www.cs.bilkent.edu.tr/~guvenir/courses/CS101/op_precedence.html)
+
 As an example, we have plus, minus, multiplication, and division operators.
 
 The equal operator (=) is used to assign variables to values.
@@ -561,20 +666,41 @@ int remaind = anotherNum % aNum; // Returns 2.
 
 ### Abbreviating operators
 
-We can abbreviate the operators that update a variable. For example:
-```
-var number = 2
-number ++; // Abbreviates int number  = number + 1.
-number -- // Abbreviates int number  = number - 1.
-```
-
-We can also abbreviate updates different than by one:
+We can abbreviate updates different than by one:
 ```
 number += 2; // Abbreviates int number = number + 2.
 number -=2; // Abbreviates int number = number + 2.
 number *= 2; // Abbreviates int number = number * 2.
 number /= 2; // Abbreviates int number = number / 2.
 number %= 2; // Abbreviates int number = number % 2.
+```
+
+### Increment and decrement
+
+We can abbreviate the operators that update a unit of a value utilizing the **decrement** (--) or the **increment** (++) operators.
+
+They can be used as as:
+1. Prefix: When the value is updated **BEFORE** the update is processed;
+2. Postfix: When the value is updated **AFTER** the update is processed;
+
+An example with prefix:
+```
+public class Main {
+    public static void main(String[] args) {
+        int anInt = 4;
+        System.out.println(++anInt); // Increment with prefix: prints out 5.
+    }
+}
+```
+
+An example with postfix:
+```
+public class Main {
+    public static void main(String[] args) {
+        int anInt = 4;
+        System.out.println(anInt--); // Decrement with postfix: prints out 4, because the variable is updated BEFORE the processing.
+    }
+}
 ```
 
 ### Logical AND operator
@@ -710,7 +836,66 @@ This obviously is not a good practice and should be done never.
 
 ### If-else
 
+With the if-else statement, it's possible to execute multiple code to specific conditions to our code:
+```
+public class Main {
+    public static void main(String[] args) {
+        // If-else:
+        double numA = 32.32;
+        double numB = 32.32;
+        boolean boolA = false;
+        if (numA > numB) {
+            System.out.println("numA is greater than numB.");
+        } else if (numA == numB) {
+            System.out.println("The numbers are equal or boolA is false.");
+        } else {
+            System.out.println("Something else.");
+        }
+    }
+}
+```
+In this example, the "else if" condition will be met.
 
+We can actually put as many "else if" blocks as we want.
+
+**NOTE**: We should always revise the logic behind these statements. In this next example, despite the conditions on both "if" and "else if" blocks are met, **it will execute the first occurrence of a true value!**
+```
+public class Main {
+    public static void main(String[] args) {
+        // If-else:
+        double numA = 32.32;
+        double numB = -32.12;
+        boolean boolA = false;
+        if (numA > numB) {
+            System.out.println("numA is greater than numB."); // This will be the one that's executed, despite the below condition is also met.
+        } else if (numA == numB || !boolA) {
+            System.out.println("The numbers are equal or boolA is false.");
+        } else {
+            System.out.println("Something else.");
+        }
+    }
+}
+```
+We could fix this by changing the "else if" to a separated "if" block:
+```
+public class Main {
+    public static void main(String[] args) {
+        // If-else:
+        double numA = 32.32;
+        double numB = -32.12;
+        boolean boolA = false;
+        if (numA > numB) {
+            System.out.println("numA is greater than numB."); // This will be the one that's executed, despite the below condition is also met.
+        }
+        if (numA == numB || !boolA) {
+            System.out.println("The numbers are equal or boolA is false.");
+        } else {
+            System.out.println("Something else.");
+        }
+    }
+}
+```
+Then, both blocks are executed individually.
 
 ### Ternary operator
 
@@ -740,4 +925,142 @@ Another example:
 ```
 boolean isCar = false;
 boolean !wasCar = isCar ? false : true; // wasCar will be true.
+```
+
+## Methods
+
+Functions **defined inside classes**.
+
+They reduce code duplication.
+
+They can be defined in any order inside our code and be called in any order.
+
+### Creating a method
+
+The syntax is:
+```
+<modifier> <returnType> <methodName> (<parameters>) {
+}
+```
+
+Just like the "main" method, in which we have "public static" modifiers, a return type "void", "main" as the method name, and "String[] args" as the parameter.
+
+Example:
+```
+public class MyMethod {
+    public static void calculateScore() {
+        boolean isGameOver = true;
+        int score = 800;
+        int levelCompleted = 5;
+        int bonus = 100;
+        if (isGameOver) {
+            int finalScore = score + (levelCompleted * bonus);
+            finalScore += 1000;
+            System.out.println("Your final score was " + finalScore);
+        }
+    }
+}
+```
+
+### Executing a method
+
+Like previously stated, a method can be called anywhere, even before it's defined, as long as the calling is withing the same [scope](#scope) as the method declaration.
+
+Example:
+```
+package com.fridaynightsoftwares;
+
+public class MyMethod {
+    public static void main(String[] args) {
+        boolean isGameOver = true;
+        int score = 800;
+        int levelCompleted = 5;
+        int bonus = 100;
+
+        calculateScore(); // Calling the method.
+
+        score = 10000;
+        levelCompleted = 8;
+        bonus = 200;
+        if (isGameOver) {
+            int finalScore = score + (levelCompleted * bonus);
+            System.out.println("Your final score was " + finalScore);
+        }
+    }
+
+    public static void calculateScore() {
+        boolean isGameOver = true;
+        int score = 800;
+        int levelCompleted = 5;
+        int bonus = 100;
+        if (isGameOver) {
+            int finalScore = score + (levelCompleted * bonus);
+            finalScore += 1000;
+            System.out.println("Your final score was " + finalScore);
+        }
+    }
+}
+```
+
+### Parameters
+
+Methods can have zero or more parameters.
+
+A single parameter have a **data type and a variable name**.
+
+Multiple parameters are separated by come.
+
+Example:
+```
+public class MyMethod {
+    public static void main(String[] args) {
+
+        // Declaring the variables and assigning a value to them:
+        boolean isGameOver = true;
+        int score = 800;
+        int levelCompleted = 5;
+        int bonus = 100;
+
+        // Executing the method with these values:
+        calculateScore(isGameOver, score, levelCompleted, bonus);
+
+        // Changing some values for the variables:
+        score = 10000;
+        levelCompleted = 8;
+        bonus = 200;
+
+        // Executing the method with the changed values:
+        calculateScore(isGameOver, score, levelCompleted, bonus);
+    }
+
+    // We can indent the parameters like so:
+    public static void calculateScore(boolean isGameOver, int score, 
+                                      int levelCompleted, int bonus) {
+        if (isGameOver) {
+            int finalScore = score + (levelCompleted * bonus);
+            finalScore += 1000;
+            System.out.println("Your final score was " + finalScore);
+        }
+    }
+}
+```
+Since parameters are define inside the scope of a method, variables outside of their scope can have the same name as their parameters, like the variables "isGameOver", "score", "levelCompleted", and "bonus".
+
+We can also pass the values directly into the parameters, without the need of declaring variables with values:
+```
+public class MyMethod {
+    public static void main(String[] args) {
+
+        calculateScore(true, 100, 200, 100);
+    }
+
+    public static void calculateScore(boolean isGameOver, int score, 
+                                      int levelCompleted, int bonus) {
+        if (isGameOver) {
+            int finalScore = score + (levelCompleted * bonus);
+            finalScore += 1000;
+            System.out.println("Your final score was " + finalScore);
+        }
+    }
+}
 ```

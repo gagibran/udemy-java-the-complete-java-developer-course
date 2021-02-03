@@ -21,12 +21,7 @@ public class Main {
         int remaind = anotherNum % aNum; // Returns 2.
         System.out.println(remaind);
 
-        result++;
-        System.out.println(result);
-
-        result--;
-        System.out.println(result);
-
+        // Abbreviations:
         result += 2;
         System.out.println(result);
 
@@ -41,6 +36,12 @@ public class Main {
 
         result %= 23421;
         System.out.println(result);
+
+        //Increment and decrement:
+        int anInt = 4;
+        int anotherInt = 4;
+        System.out.println(++anInt); // Increment with prefix: prints out 5.
+        System.out.println(anotherInt--); // Decrement with postfix: prints out 4, because the variable is updated BEFORE the processing.
 
         // Logical operators:
         boolean areBothTrue = 40 <= 100 & 32 > 10; // This is true.

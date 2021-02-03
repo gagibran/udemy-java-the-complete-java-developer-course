@@ -33,12 +33,23 @@ public class Main {
             System.out.println("It is not an alien!"); // Condition is met.
         }
 
-
         // Ternary operator:
         boolean isCar = false;
         boolean wasCar = isCar ? true : false; // wasCar will be false.
         boolean wasTruck = !isCar ? true : false; // wasTruck will be true.
         System.out.println(wasCar);
         System.out.println(wasTruck);
+
+        // If-else:
+        double numA = 32.32;
+        double numB = -32.12;
+        boolean boolA = false;
+        if (numA > numB) {
+            System.out.println("numA is greater than numB."); // This will be the one that's executed, despite the below condition is also met.
+        } else if (numA == numB || !boolA) {
+            System.out.println("The numbers are equal or boolA is false.");
+        } else {
+            System.out.println("Something else.");
+        }
     }
 }

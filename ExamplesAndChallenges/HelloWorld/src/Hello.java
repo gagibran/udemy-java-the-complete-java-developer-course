@@ -6,5 +6,8 @@ public class Hello {
         int myTotal = myFirstNumber + mySecondNumber - myThirdNumber + 3;
         int myLastOne = 1000 - myTotal;
         System.out.println(myLastOne);
+
+        int myVar;
+        int mySecondVar = myVar = 60;
     }
 }
