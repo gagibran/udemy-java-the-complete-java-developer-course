@@ -1,6 +1,6 @@
 # Tim Buchalka's Java Programming Masterclass for Software Developers
 
-## A repository aimed to store code generated from [the course](https://www.udemy.com/course/java-the-complete-java-developer-course/)
+## A repository aimed to store code generated from [the course](https://www.udemy.com/course/java-the-complete-java-developer-course/).
 
 ## Table of contents
 - [Some concepts](#some-concepts)
