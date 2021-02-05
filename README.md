@@ -1065,7 +1065,6 @@ public class MyMethod {
     }
 }
 ```
-<<<<<<< HEAD
 
 ### Returning data from a method
 
@@ -1137,5 +1136,3 @@ public class MyMethod {
         return -1; // Exits the method if it gets here.
     }
 }
-=======
->>>>>>> a5aa005e33164142f5a9e350919bb8da26a830f7
