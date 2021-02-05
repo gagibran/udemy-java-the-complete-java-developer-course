@@ -22,6 +22,10 @@ public class MyMethod {
 
         // Executing the method is custom values as parameters:
         calculateScore(true, 100, 200, 100);
+
+        // Executing the method with a return type int:
+        int playerScore = calculateScoreWithReturnType(false, 100, 200, 300);
+        System.out.println("Your final score was " + playerScore);
     }
 
     public static void calculateScore(boolean isGameOver, int score,
@@ -31,5 +35,16 @@ public class MyMethod {
             finalScore += 1000;
             System.out.println("Your final score was " + finalScore);
         }
+    }
+    public static int calculateScoreWithReturnType(boolean isGameOver, int score,
+                                                   int levelCompleted, int bonus) {
+        int finalScore;
+        if (isGameOver) {
+            finalScore = score + levelCompleted * bonus;
+            finalScore += 1000;
+        } else {
+            finalScore = -1;
+        }
+        return finalScore;
     }
 }

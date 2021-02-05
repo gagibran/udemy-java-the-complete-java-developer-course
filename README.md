@@ -31,6 +31,7 @@
     - [Creating a method](#creating-a-method)
     - [Executing a method](#executing-a-method)
     - [Parameters](#parameters)
+    - [Returning data from a method](#returning-data-from-a-method)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -1064,3 +1065,74 @@ public class MyMethod {
     }
 }
 ```
+
+### Returning data from a method
+
+We can return a value that's been processed inside a non-void method.
+
+This is good for code reusability.
+
+Here, the \<returnType\> in the a method declaration will be the data type that it returns after processing.
+
+Methods **can only return a single value**.
+
+The last statement executed in a method **MUST** be a return.
+
+No matter where a return statement is, the method will end when it hits it.
+
+It's not good practice to have **to many** return statements inside a method, because it's hard to keep track of the control flow. **BUT**, it's fine to have multiple return types for the sake of readability.
+
+If we try to put any statement after a return, Java won't compile. It will give us an error of "Unreachable statement". This happens because, like previously explained, Java exists a method when it encounters a return statement.
+
+Example:
+```
+public class MyMethod {
+    public static void main(String[] args) {
+
+        // Saving the output of the method into a variable:
+        int playerScore = calculateScore(false, 100, 200, 300);
+
+        // Printing out the value:
+        System.out.println("Your final score was " + playerScore);
+    }
+
+    // The function returning a data type of int:
+    public static int calculateScore(boolean isGameOver, int score,
+                                      int levelCompleted, int bonus) {
+        int finalScore;
+        if (isGameOver) {
+            finalScore = score + levelCompleted * bonus;
+            finalScore += 1000;
+        } else {
+            finalScore = -1;
+        }
+        return finalScore;
+    }
+}
+```
+The -1 value here indicates that the game isn't over yet, it's still running. By convention, we tend to use -1 to indicate errors, but it could be any number, as long as it made sense.
+
+This code could be made more readable if we had **two** return types:
+```
+public class MyMethod {
+    public static void main(String[] args) {
+
+        // Saving the output of the method into a variable:
+        int playerScore = calculateScore(false, 100, 200, 300);
+
+        // Printing out the value:
+        System.out.println("Your final score was " + playerScore);
+    }
+
+    // The function returning a data type of int:
+    public static int calculateScore(boolean isGameOver, int score,
+                                      int levelCompleted, int bonus) {
+        int finalScore;
+        if (isGameOver) {
+            finalScore = score + levelCompleted * bonus;
+            finalScore += 1000;
+            return finalScore // Exits the method if it gets here.
+        }
+        return -1; // Exits the method if it gets here.
+    }
+}
