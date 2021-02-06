@@ -8,6 +8,7 @@
     - [Java packages](#java-packages)
     - [Indentation and whitespace](#indentation-and-whitespace)
     - [Scope](#scope)
+    - [Class files](#class-files)
 - [Primitive types](#primitive-types)
     - [Integer](#integer)
     - [Byte](#byte)
@@ -247,6 +248,14 @@ public class Main {
     }
 }
 ```
+
+### Class files
+
+They are a binary file, the compiled version of a Java script.
+
+They have the ".class" extension and normally, depending on the IDE, can be found under the project's directory, in "out/production/<className\>", where className is the name of the main class of our project.
+
+If we have a package as a company, it stores under the company's package directory structure: "out/production/<className\>/com/fridaynightsoftwares"
 
 ## Primitive types
 
