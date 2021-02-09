@@ -33,6 +33,7 @@
     - [Executing a method](#executing-a-method)
     - [Parameters](#parameters)
     - [Returning data from a method](#returning-data-from-a-method)
+    - [Method overloading](#method-overloading)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -255,7 +256,7 @@ They are a binary file, the compiled version of a Java script.
 
 They have the ".class" extension and normally, depending on the IDE, can be found under the project's directory, in "out/production/<className\>", where className is the name of the main class of our project.
 
-If we have a package as a company, it stores under the company's package directory structure: "out/production/<className\>/com/fridaynightsoftwares"
+If we have a package as a company, it stores under the company's package directory structure: "out/production/<className\>/com/fridaynightsoftwares".
 
 ## Primitive types
 
@@ -1145,3 +1146,49 @@ public class MyMethod {
         return -1; // Exits the method if it gets here.
     }
 }
+```
+
+### Method overloading
+
+This is a feature that allows the same method to process different types of data.
+
+This increases the readability of the code. [This Stack Overflow discussion](https://stackoverflow.com/questions/38537340/why-should-i-ever-overload-methods) is a good example on when we would use overloading.
+
+In practice, we declare the same method with different arguments.
+
+When declaring an overload method, the modifiers can differ **but the return type MUST be the same as the other methods!**
+
+Example:
+```
+public class Overloading {
+
+    // This ones work:
+    public static int overloadedMethod(int a, int b) {
+        return a + b;
+    }
+    private int overloadedMethod(double a, float b) {
+
+        return (int) (a / b + b * a);
+    }
+    public int overloadedMethod(double a, double b) {
+        System.out.println("a + b test");
+        return (int) (a + b);
+    }
+        public static int overloadedMethod(float a, double b, int c) {
+        if (a > b) {
+            return c;
+        }
+        return (int) (a + b);
+    }
+
+    // Return type is different. This doesn't work:
+    private double test(String a, double b, char c) {
+        return (int) (a + b);
+    }
+
+    // This one doesn't work either, because the method is already defined with these arguments:
+    public int overloadedMethod(double a, double b) {
+        return a * b % a
+    }
+}
+```
