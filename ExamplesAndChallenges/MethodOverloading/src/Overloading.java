@@ -31,4 +31,15 @@ public class Overloading {
 //    public int overloadedMethod(double a, double b) {
 //        return a * b % a
 //    }
+
+    // A more practical example:
+    public static double processingOfNumbers(int a, int b) {
+        return a + b;
+    }
+    public static double processingOfNumbers(double a, double b, double c) {
+        return a + b + c;
+    }
+    public static double processingOfNumbers(double a, double b, int c, int d) {
+        return a * b * c * d;
+    }
 }

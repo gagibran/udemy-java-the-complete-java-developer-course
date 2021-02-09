@@ -5,6 +5,7 @@
 ## Table of contents
 - [Some concepts](#some-concepts)
     - [Variables](#variables)
+    - [Constants](#constants)
     - [Java packages](#java-packages)
     - [Indentation and whitespace](#indentation-and-whitespace)
     - [Scope](#scope)
@@ -149,6 +150,56 @@ We can also assign a value to more than one variable in a declaration statement:
 ```
 int myVar;
 int mySecondVar = myVar = 60;
+```
+
+### Constants
+
+They are values declared outside of any methods.
+
+They can be used by any methods inside their class and are unchangeable.
+
+They're usually in uppercase.
+
+To declare one, we need to use the **final** keyword.
+
+Example:
+```
+public class SecondsAndMinutesChallenge {
+
+    // Constants:
+    private static final String INVALID_VALUE_MESSAGE = "Invalid value";
+
+    // Methods:
+    public static String getDurationString(int minutes, int seconds) {
+        if (minutes < 0 || seconds < 0 || seconds > 59) {
+            return INVALID_VALUE_MESSAGE;
+        }
+        int hours = minutes / 60;
+        int remainingMinutes = minutes % 60;
+        String hoursString = hours + "h ";
+        String minutesString = remainingMinutes + "m ";
+        String secondsString = seconds + "s";
+        if (hours < 10) {
+            hoursString = "0" + hoursString;
+        }
+        if (remainingMinutes < 10) {
+            minutesString = "0" + minutesString;
+        }
+        if (seconds < 10) {
+            secondsString = "0" + secondsString;
+        }
+        return hoursString + minutesString + secondsString;
+    }
+    public static String getDurationString(int seconds) {
+        // INVALID_VALUE_MESSAGE = "Hello"; // This doesn't work.
+        if (seconds < 0) {
+            return INVALID_VALUE_MESSAGE;
+        }
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+        return getDurationString(minutes, remainingSeconds);
+    }
+}
 ```
 
 ### Java packages
@@ -1192,3 +1243,19 @@ public class Overloading {
     }
 }
 ```
+
+A more practical example: we have to make a method that has to calculate the sum of two integers, the sum of three doubles, and the multiplication of two doubles and two integers:
+```
+public class Overloading {
+    public static double processingOfNumbers(int a, int b) {
+        return a + b;
+    }
+    public static double processingOfNumbers(double a, double b, double c) {
+        return a + b + c;
+    }
+    public static double processingOfNumbers(double a, double b, int c, int d) {
+        return a * b * c * d;
+    }
+}
+```
+We do that instead of having to create three methods with different names that do almost the same thing.
