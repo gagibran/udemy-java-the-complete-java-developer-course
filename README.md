@@ -35,6 +35,8 @@
     - [Parameters](#parameters)
     - [Returning data from a method](#returning-data-from-a-method)
     - [Method overloading](#method-overloading)
+- [Control flow statements](#control-flow-statements)
+    - [Switch statement](#switch-statement)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -636,7 +638,7 @@ Even though we know that -128 divided by 2 is equal to -64 and it would fit into
 
 We can solve this issue by casting the whole expression to a byte. The syntax is:
 ```
-byte minDivided = (byte)(byteMinValue / 2);
+byte minDivided = (byte) (byteMinValue / 2);
 ```
 
 The same can be applied to short and long.
@@ -645,7 +647,7 @@ Integers are the whole numbers that we use the most. That's why they're the defa
 
 We can also cast a double to be a float:
 ```
-float floatVar = (float)5.25;
+float floatVar = (float) 5.25;
 ```
 Although casting to a float like that is not recommended. People tend to just put the "F" in front of the number.
 
@@ -1259,3 +1261,161 @@ public class Overloading {
 }
 ```
 We do that instead of having to create three methods with different names that do almost the same thing.
+
+## Control flow statements
+
+They allow us to change the flow of the bit of code that will be executed.
+
+There are four essentials:
+1. [Switch statement](#switch-statement);
+2. [For statement](#for-statement);
+3. [While statement](#while-statement);
+4. [Do-while statement](#do-while-statement).
+
+### Switch statement
+
+When we have multiple conditions to be met, it can get messy very easily if we use if-else statements.
+
+We can use switch statements instead. It's more readable and easier to understand what's going on the code.
+
+Example, this if-statement:
+```
+public class Main {
+    public static void main(String[] args) {
+        int value = 1;
+
+        // Using if-else statement:
+        if (value == 1) {
+            System.out.println("Value was 1");
+        } else if (value == 2) {
+            System.out.println("Value was 2");
+        } else {
+            System.out.println("Value was neither 1 or 2");
+        }
+    }
+}
+```
+Can be translated to this switch statement:
+```
+public class Main {
+    public static void main(String[] args) {
+        int switchValue = 1;
+        switch (switchValue) {
+            case 1:
+                System.out.println("Value was 1");
+                break;
+            case 2:
+                System.out.println("Value was 2");
+                break;
+            default:
+                System.out.println("Value was neither 1 or 2");
+                break;
+        }
+    }
+}
+```
+
+**The syntax** of a switch statement is somewhat similar to an if-else statement.
+
+We utilize the keyword **switch** followed by the variable to be tested inside the parenthesis.
+
+Inside the curly brackets, we utilize the keyword **case** followed by the condition to be tested. In the example, **case 1** is testing if the variable **switchValue** is equal to 1.
+
+Normally, the flow would continue to the next case, even if the condition isn't met (i.e. it wouldn't print "Value was 1"). Thus, we utilize the keyword **break** to break out from the statement and not go to the next case.
+
+Thus, without a **break** when a condition is met, it executes the rest of the cases in cascade, even though their conditions are not true.
+
+Finally, we utilize the keyword **default** to act like an **else** statement: if no condition of the other cases met, it falls inside **default**.
+
+**Note that there are no curly brackets wrapping the cases, nor the default.**
+
+We can also group up cases that need to execute the same code:
+```
+public class Main {
+    public static void main(String[] args) {
+        int switchValue = 1;
+        switch (switchValue) {
+            case 1:
+                System.out.println("Value was 1");
+                break;
+            case 2:
+                System.out.println("Value was 2");
+                break;
+            case 3: case 4: case 5:
+                System.out.println("Value was 3, 4, or 5");
+                break;
+            default:
+                System.out.println("Value was not 1, 2, 3, nor 5");
+                break;
+        }
+    }
+}
+```
+or
+```
+public class Main {
+    public static void main(String[] args) {
+        int switchValue = 1;
+        switch (switchValue) {
+            case 1:
+                System.out.println("Value was 1");
+                break;
+            case 2:
+                System.out.println("Value was 2");
+                break;
+            case 3:
+            case 4:
+            case 5:
+                System.out.println("Value was 3, 4, or 5");
+                break;
+            default:
+                System.out.println("Value was not 1, 2, 3, nor 5");
+                break;
+        }
+    }
+}
+```
+
+Technically, we don't need to include a **break** in the last case (or default), because it's the end of the statement, but it's good practice to include to maintain readability of our code through consistency.
+
+We can use any of the primitive types in a switch statement. From JDK 7 we can also test for strings:
+```
+public class Main {
+    public static void main(String[] args) {
+        String month = "January";
+        switch (month) {
+            case "January":
+                System.out.println("Jan");
+                break;
+            case "June":
+                System.out.println("Jun");
+                break;
+            default:
+                System.out.println("Not Jan or Jun");
+                break;
+        }
+    }
+}
+```
+
+**We just have to be careful with uppercase and lowercase for chars and strings, since Java is case sensitive.**
+
+For strings, we can deal with this problem by applying the **toLowerCase()** method from the **String** wrapper class to make all characters of a string lowercase:
+```
+public class Main {
+    public static void main(String[] args) {
+        String month = "January";
+        switch (month.toLowerCase()) {
+            case "january":
+                System.out.println("Jan");
+                break;
+            case "june":
+                System.out.println("Jun");
+                break;
+            default:
+                System.out.println("Not Jan or Jun");
+                break;
+        }
+    }
+}
+```
