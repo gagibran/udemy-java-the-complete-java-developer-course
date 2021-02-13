@@ -37,6 +37,7 @@
     - [Method overloading](#method-overloading)
 - [Control flow statements](#control-flow-statements)
     - [Switch statement](#switch-statement)
+    - [For statement](#for-statement)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
