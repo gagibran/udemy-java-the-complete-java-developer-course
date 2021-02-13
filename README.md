@@ -1274,7 +1274,7 @@ There are four essentials:
 
 ### Switch statement
 
-When we have multiple conditions to be met, it can get messy very easily if we use if-else statements.
+When we have multiple **single** conditions **that test for a constant** to be met, it can get messy very easily if we use if-else statements.
 
 We can use switch statements instead. It's more readable and easier to understand what's going on the code.
 
@@ -1314,6 +1314,7 @@ public class Main {
     }
 }
 ```
+**Note here that we're testing for a constant. Booleans are not allowed in a switch-case!**
 
 **The syntax** of a switch statement is somewhat similar to an if-else statement.
 
@@ -1378,7 +1379,7 @@ public class Main {
 
 Technically, we don't need to include a **break** in the last case (or default), because it's the end of the statement, but it's good practice to include to maintain readability of our code through consistency.
 
-We can use any of the primitive types in a switch statement. From JDK 7 we can also test for strings:
+**With the exception of booleans**, we can use any of the primitive types in a switch statement. From JDK 7 we can also test for strings:
 ```
 public class Main {
     public static void main(String[] args) {
@@ -1418,4 +1419,71 @@ public class Main {
         }
     }
 }
+```
+
+## For statement
+
+It allows us to execute code a certain amount of times.
+
+Very commonly needed in programming.
+
+An example:
+```
+public class Main {
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            System.out.println(calculateInterest(1000.0, i));
+        }
+    }
+    public static double calculateInterest(double amount, double interestRate) {
+        return amount * (interestRate / 100);
+    }
+}
+```
+Which prints:
+```
+0.0
+10.0
+20.0
+30.0
+40.0
+50.0
+60.0
+70.0
+80.0
+90.0
+```
+
+The syntax is:
+```
+for (initialization; condition; increment) {
+    // Do stuff.
+}
+```
+Where **initialization** is a declared variable to be incremented. This variables will be deleted after de loop is finished, so it will be unaccessible after that. This means that another variable, with the same name and different (or same) data type, can be created **outside** this loop. In the above example, we have **init it = 0;**.
+
+The loop finished when the **condition** is met. So, it should start with a false value and exit the loop when it's true. In the above example, we have **i < 10;**, meaning that the loop will iterate the last time when **i** equals 9.
+
+Finally, increment is how much we want to increment the initialization variable. In the example above, we're incrementing it by 1 each iteration.
+
+The increment could also be a decrement, like **i--**.
+
+We can use the keyword **break** here to break out of a for loop whenever we want, without having to meet the condition. Example:
+```
+public class Main {
+    public static void main(String[] args) {
+        for (int i = 0; i < 100; i++) {
+            System.out.println(i);
+            if (i == 3) {
+                break;
+            }
+        }
+    }
+}
+```
+Despite requiring the condition of **i < 100** to break out of this for loop, when **i** hits 3, it breaks out of it. This prints out:
+```
+1
+2
+3
 ```
