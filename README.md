@@ -38,6 +38,9 @@
 - [Control flow statements](#control-flow-statements)
     - [Switch statement](#switch-statement)
     - [For statement](#for-statement)
+    - [While statement](#while-statement)
+    - [Do-while statement](#do-while-statement)
+    - [Continue keyword](#continue-keyword)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -1488,3 +1491,192 @@ Despite requiring the condition of **i < 100** to break out of this for loop, wh
 2
 3
 ```
+
+### While statement
+
+When we don't know how many times we really want to iterate through a condition.
+
+Example:
+```
+public class Main {
+    public static void main(String[] args) {
+        int count = 0;
+        while (count != 5) {
+            System.out.println(count);
+            count++;
+        }
+    }
+}
+```
+Prints out:
+```
+0
+1
+2
+3
+4
+```
+This example is equivalent to:
+```
+public class Main {
+    public static void main(String[] args) {
+        for (int i = 0; i != 5; i++) {
+            System.out.println(i);
+        }
+    }
+}
+```
+
+We can also run a while loop **forever**, but we have to be careful to not get stuck in a **infinite loop**. For that, we need to break out the loop when it meets a certain condition:
+```
+public class Main {
+    public static void main(String[] args) {
+        int count = 0;
+        while (true) {
+            System.out.println(count);
+            count ++;
+            if (count == 5) {
+                break;
+            }
+        }
+    }
+}
+```
+The condition **true** is always **true**, so it runs forever until **count** is equal to **5**.
+
+This also prints out:
+```
+0
+1
+2
+3
+4
+```
+
+### Do-while statement
+
+This kind of loop will **always execute the code inside of it at least once**.
+
+Example:
+```
+do {
+public class Main {
+    public static void main(String[] args) {
+        int count = 0;
+        do {
+            System.out.println(count);
+            count++;
+        } while (count != 5);
+    }
+}
+```
+Outputs:
+```
+0
+1
+2
+3
+4
+```
+
+What's happening here is that the code inside of **do** will be executed and **after** the execution, the **count** variable will be tested inside of **while**.
+
+It's pretty much doing what the statement says: ***do** a print out of the count variable and increment it afterwards **while** the variable is different than 5.*
+
+We still have to be careful of falling into a **infinite loop**. For example:
+```
+do {
+public class Main {
+    public static void main(String[] args) {
+        int count = 5;
+        do {
+            System.out.println(count);
+            count++;
+        } while (count != 5);
+    }
+}
+```
+The code inside **do** will be executed **before** the condition is tested in **while**, even though **count** is equal to **5**.
+
+So firstly, **count** will be incremented and then tested. It will check that **count** is now **6**, thus being different than **5**, and the loop will run **forever**.
+
+In this case, we could either change the condition to **count <= 5**, or put a **break** inside of the loop:
+```
+public class Main {
+    public static void main(String[] args) {
+        int count = 5;
+        do {
+            System.out.println(count);
+            count++;
+            if (count >= 30) {
+                break;
+            }
+        } while (count != 5); // Be aware of the semicolon!
+    }
+}
+```
+This prints out:
+```
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+```
+Although this doesn't make any sense, because we could've just used a plain old [while statement](#while-statement) there.
+
+### Continue keyword
+
+This keyword can be used inside the loops to make it go to the next iteration **without executing the code below it**.
+
+An example:
+```
+public class Main {
+    public static void main(String[] args) {
+        for (int i = 0; i < 20; i++) {
+            if (i % 2 == 0) {
+                continue;
+            }
+            System.out.println(i);
+        }
+    }
+}
+```
+This prints out:
+```
+1
+3
+5
+7
+9
+11
+13
+15
+17
+19
+```
+Because whenever **i** is **even**, it hits the **continue** keyword and go to the next iteration **without** printing **i**.
+
+It breaks from the current iteration and goes to the next one.
+
+This also works in a [while statement](#while-statement) and in a [do-while statement](#do-while-statement)

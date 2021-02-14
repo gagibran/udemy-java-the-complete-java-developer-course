@@ -53,18 +53,18 @@ public class Main {
             return false; // The first prime is 2.
         }
         /*
-          EXPLANATION FOR i <= number/2:
-          No number is divisible for numbers that are greater than its half (except for the number itself).
-          Example:
-          For 1000, no number greater than 500 (and smaller than 1000) divides 1000.
-          501, 502, 503, ..., 999 won't divide 1000 and result in an integer.
+        EXPLANATION FOR i <= number/2:
+        No number is divisible for numbers that are greater than its half (except for the number itself).
+        Example:
+        For 1000, no number greater than 500 (and smaller than 1000) divides 1000.
+        501, 502, 503, ..., 999 won't divide 1000 and result in an integer.
 
-          With that being said, the algorithm doesn't have to check for numbers greater than number / 2,
-          because we know that they won't divide it. We're optimizing the algorithm.
+        With that being said, the algorithm doesn't have to check for numbers greater than number / 2,
+        because we know that they won't divide it. We're optimizing the algorithm.
 
-          There are other ways to optimize this algorithm, like using the square root of the number instead of number /2,
-          but that's outside the scope of this lesson.
-          */
+        There are other ways to optimize this algorithm, like using the square root of the number instead of number /2,
+        but that's outside the scope of this lesson.
+        */
         for (int i = 2; i <= number/2; i++) {
             if (number % i == 0) {
                 return false; // Returns false if the number is divisible by a number in the range 2 until number/2.
