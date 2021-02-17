@@ -21,6 +21,7 @@
     - [Boolean](#boolean)
     - [Casting in Java](#casting-in-java)
 - [String](#string)
+    - [Parsing values from a string](#parsing-values-from-a-string)
 - [Operators, operands, and expressions](#operators,-operands,-and-expressions)
     - [Abbreviating operators](#abbreviating-operators)
     - [Logical AND operator](#logical-and-operator)
@@ -710,6 +711,50 @@ public class Main {
 }
 ```
 Isn't overwritten by "Trying to change the string.". Instead, Java deletes this one and creates a new string, with the same name, for us.
+
+### Parsing values from a string
+
+In many cases we have to convert a string into some other data type, such as an int.
+
+One of the cases is when we read input from an user using the scanner class.
+
+We can use a **parsing method** to convert it into a primitive data type.
+
+Example of parsing it into an integer using its parsing method:
+```
+public class Main {
+    public static void main(String[] args) {
+        String numberAsString = "2018"; // Interpreted as text.
+        int number  = Integer.parseInt(numberAsString); // Parsing it as a string.
+    }
+}
+```
+Here we have the **Integer** wrapper class and its **static** parsing method, **parseInt()**.
+
+This method will try to convert the string into an integer. The parsing will be successful if the string is, indeed, a number.
+
+Thus, in this example:
+```
+public class Main {
+    public static void main(String[] args) {
+        String numberAsString = "2018a"; // Interpreted as text.
+        int number  = Integer.parseInt(numberAsString); // Doesn't work.
+    }
+}
+```
+We would get an error, because **2018a** is not a number.
+
+This parsing naturally works with other data types, as long as the parsing is valid.
+
+An example for double:
+```
+public class Main {
+    public static void main(String[] args) {
+        String numberAsString = "2018.123"; // Interpreted as text.
+        double number  = Double.parseDouble(numberAsString); // Parsed as double.
+    }
+}
+```
 
 ## Operators, operands, and expressions
 
