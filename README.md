@@ -22,6 +22,7 @@
     - [Casting in Java](#casting-in-java)
 - [String](#string)
     - [Parsing values from a string](#parsing-values-from-a-string)
+    - [Reading user input](#reading-user-input)
 - [Operators, operands, and expressions](#operators,-operands,-and-expressions)
     - [Abbreviating operators](#abbreviating-operators)
     - [Logical AND operator](#logical-and-operator)
@@ -77,7 +78,9 @@ Process finished with exit code 0
 ```
 If nothing goes wrong.
 
-Java's print out statement is **System.out.println()**.
+Java's print out statement is **System.out.println()**, which prints data and jumps a line.
+
+We also have **System.out.print()**, which prints data without jumping a line.
 
 All java lines **MUST** end with a semi-colon.
 
@@ -755,6 +758,165 @@ public class Main {
     }
 }
 ```
+
+### Reading user input
+
+We can get user input by creating a variable of type **Scanner**, which, like [strings](#string), is a custom class, not a primitive type.
+
+The **Scanner** class is define inside a package called **java.util.Scanner**, thus it has to be imported by our code for this to work.
+
+We can use this module by stating its import in the beginning of our code.
+
+The **new** keyword is further detailed in [classes](#classes), but we use it to create an **instance** of the class.
+
+The **Scanner** class takes the argument **System.in**, which allows us to read input from users of our application.
+
+An example:
+```
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your name: ");
+        String name = scanner.nextLine();
+        scanner.close();
+        System.out.println(name);
+    }
+}
+```
+Here we also have the string **name** equal to the method **nextLine()** from the **Scanner** class (lowercase **scanner** is just an instance of the **Scanner** class).
+
+This means that the input will be stored in the **name** variable.
+
+Afterwards, we close the class for memory cleaning by using the **close()** method from the **Scanner** class.
+
+When we run this code snippet, we'll be prompted to input our name in the console:
+
+![Enter your name](readme-images/enter_your_name.png)
+
+This prints out:
+```
+Enter your name: 
+Gabriel
+Gabriel
+```
+
+We can automatically get an input as an integer by using the method **nextInt()** from the **Scanner** class:
+```
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your year of birth: ");
+        int yearOfBirth = scanner.nextInt();
+        scanner.close();
+        System.out.println(2021 - yearOfBirth);
+    }
+}
+```
+For an input of **1994**, this prints out:
+```
+Enter your year of birth:
+1994
+27
+```
+
+The **Scanner** class has methods to read all primitive data types, like
+**nextByte()**, **nextShort()** etc.
+
+**A very important note**: since these data type methods don't actually jump a line, like **nextLine()** do, if we stack one of them with a **nextLine()**, it will skip this input.
+
+This happens because internally, the scanner is checking for a line separator, so when we hit the **enter** key, it serves as input to feed **nextLine()**.
+
+The solution is to place another **nextLine()** method, but without assigning it to any variable, just to be fed this enter key that we press when we input a number.
+
+Example:
+```
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your year of birth: ");
+        int yearOfBirth = scanner.nextInt();
+        System.out.println("Enter your name: ");
+        String name = scanner.nextLine();
+        System.out.println(name);
+        System.out.println(2021 - yearOfBirth);
+        scanner.close();
+    }
+}
+```
+For the input **1994**, this will output:
+```
+Enter your year of birth: 
+1994
+Enter your name: 
+
+27
+```
+Note how it skips the **enter your name** input.
+
+The fix:
+```
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your year of birth: ");
+        int yearOfBirth = scanner.nextInt();
+        scanner.nextLine(); // Handling the "next line" character. No variables assigned.
+        System.out.println("Enter your name: ");
+        String name = scanner.nextLine();
+        System.out.println(name);
+        System.out.println(2021 - yearOfBirth);
+        scanner.close();
+    }
+}
+```
+Which prints out:
+```
+Enter your year of birth: 
+1994
+Enter your name: 
+Gabriel
+Gabriel
+27
+```
+
+**A second problem that we have to take care** is when an user inputs a different data type that is being requested by the program.
+
+We can handle this by using the **hasNextInt()** method from the **Scanner** class. This method returns wether the next input entered is of type **int**.
+
+We can use this inside an if-else or switch statement:
+```
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your year of birth: ");
+        boolean isInt = scanner.hasNextInt();
+        int yearOfBirth = scanner.nextInt();
+        scanner.nextLine(); // Handling the "next line" character. No variables assigned.
+        System.out.println("Enter your name: ");
+        String name = scanner.nextLine();
+        scanner.close();
+        System.out.println(name);
+        if (isInt && yearOfBirth >= 0 && yearOfBirth <= 2021) {
+            System.out.println(2021 - yearOfBirth);
+        } else {
+            System.out.println("Invalid year.");
+        }
+    }
+}
+```
+If the variable **yearOfBirth** is not in the range of 0 (included) and 2021 (included) and if it's not an integer, it outputs **Invalid year.**
+
+This method is available for the other primitive types, like **hasNextByte()**, **hasNextShort()** etc.
 
 ## Operators, operands, and expressions
 
