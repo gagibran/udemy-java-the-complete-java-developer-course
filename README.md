@@ -43,6 +43,13 @@
     - [While statement](#while-statement)
     - [Do-while statement](#do-while-statement)
     - [Continue keyword](#continue-keyword)
+- [Object oriented programming](#object-oriented-programming)
+    - [Classes](#classes)
+    - [Fields](#fields)
+    - [Methods in classes](#methods-in-classes)
+    - [The this keyword](#the-this-keyword)
+    - [Objects](#objects)
+    - [Constructors](#constructors)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -1632,7 +1639,7 @@ public class Main {
 }
 ```
 
-## For statement
+### For statement
 
 It allows us to execute code a certain amount of times.
 
@@ -1887,3 +1894,285 @@ Because whenever **i** is **even**, it hits the **continue** keyword and go to t
 It breaks from the current iteration and goes to the next one.
 
 This also works in a [while statement](#while-statement) and in a [do-while statement](#do-while-statement)
+
+## Object oriented programming
+
+Objects have two major characteristics:
+1. State: the fields (variables in a class) that are part of an object (just like a noun);
+2. Behavior: the methods inside of an object (just like a verb, or an action).
+
+### Classes
+
+A class is a blueprint for creating an object. A container that has all of the states and behaviors related to that object.
+
+What benefits do classes bring us? For one, we can define custom data types, giving us more possibilities than a regular primitive type would.
+
+The **public** keyword is an **access modifier**. In this particular case, this modifier grants that other classes will have full access to our created one. More on that later.
+
+Generally, a large majority of classes are **public**.
+
+Example:
+```
+public class Car {
+
+}
+```
+
+### Fields
+
+These are the variables that are created inside a class. They can be accessed anywhere from inside its parent class.
+
+When we create a field, we also need to give it an access modifier.
+
+As a general rule, the modifiers given to **fields** are **private**, meaning that **encapsulated fields can only be accessed by elements inside of their parent class**.
+
+In other words, the fields from a class won't be available to other classes.
+
+Example:
+```
+package com.fridaynightsoftwares; // The package that this class belongs to.
+
+public class Car {
+
+    // Field not initialized:
+    private int doors;
+    private int wheels;
+    private String model;
+    private String engine;
+    private String color;
+}
+```
+
+Since the field haven't been initialized here, they'll have a default value depending on the data type.
+
+The integers have a default value of **0**.
+
+Strings will have a default value of **null**, which is actually the **internal default state for a class**, since a string is a special type of [class](#classes)
+
+### Methods in classes
+
+Just like we've been seeing so far, a method is a function defined in a class.
+
+We normally state them with the **public** access modifier so that they can be accessed outside of our class.
+
+A convention for naming methods that change the fields of a class is to start them with the word **set**. These methods are known as **setters**.
+
+For example:
+```
+package com.fridaynightsoftwares;
+
+public class Car {
+
+    // Field not initialized:
+    private int doors;
+    private int wheels;
+    private String model;
+    private String engine;
+    private String color;
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+}
+```
+
+The [this keyword](#this-keyword) is explained in the next section
+
+For retrieving a private field from a class, we normally start the name of a method with **get**. These methods are known as **getters**:
+```
+package com.fridaynightsoftwares;
+
+public class Car {
+
+    // Field not initialized:
+    private int doors;
+    private int wheels;
+    private String model;
+    private String engine;
+    private String color;
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+    public String getModel() {
+        return this.model;
+    }
+}
+```
+
+The advantages of using getters and setters is that we can do some validation as well. For example, we could validate if the string passed into the setter method is valid:
+```
+package com.fridaynightsoftwares;
+
+public class Car {
+
+    // Field not initialized:
+    private int doors;
+    private int wheels;
+    private String model;
+    private String engine;
+    private String color;
+
+    // Methods:
+    public void setModel(String model) {
+        String validModel = model.toLowerCase();
+        if (validModel.equals("carrera") || validModel.equals("civic")) {
+            this.model = model;
+        } else {
+            this.model = "Unknown";
+        }
+    }
+    public String getModel() {
+        return this.model;
+    }
+}
+```
+In this case, the **model** argument is being set to lowercase, then, being compared with the value of **"carrera"** or **"civic"**. The value of the [field](#field) **model** is being set according to this validation.
+
+Here, we're using the method **equals()** from the string class because this method **compares the value (or content) of the string variable validModel with the value "carrera" or "civic"**. The comparison operator (==) **checks if both variables are pointing to the same memory location**.
+
+More on that can be found in this [GeeksForGeeks article](https://www.geeksforgeeks.org/difference-equals-method-java/#:~:text=We%20can%20use%20%3D%3D%20operators,of%20values%20in%20the%20objects.)
+
+In our example, if we defined the method as:
+```
+package com.fridaynightsoftwares;
+
+public class Car {
+
+    // Field not initialized:
+    private int doors;
+    private int wheels;
+    private String model;
+    private String engine;
+    private String color;
+    public void setModel(String model) {
+        String validModel = model.toLowerCase();
+        if (validModel == "carrera" || validModel == "civic") {
+            this.model = model;
+        } else {
+            this.model = "Unknown";
+        }
+    }
+    public String getModel() {
+        return this.model;
+    }
+}
+```
+
+and passed in "Carrera" or "Civic" as arguments, we would still get "Unknown" as an output, because the string **validModel** would be in a different memory location as the newly created "carrera" string.
+
+### The this keyword
+
+In the [last section](#methods-in-classes) we defined the setter and the getter for the model using a **this** keyword.
+
+It is a keyword used to indicate that the variable that we're dealing with is the parent class' [field](#fields).
+
+In the case of **setModel()**, we have to **model** variables, but one is a [field](#fields) and the other one is an **argument** passed to the class.
+
+Thus, we're stating that **the [field](#fields) model should be equal to the string model passed in as an argument to that method.**
+
+The same can be said to the getter function **getModel()**. We want to return the [field](#fields) **model**.
+
+### Objects
+
+An object is an **instance** os a [class](#classes). We create an object of a class when we assign it to a variable in the **main** method.
+
+Example for the **Car** class:
+```
+package com.fridaynightsoftwares; // Package containing the class Car.
+
+public class Main {
+
+    public static void main(String[] args) {
+        Car porsche = new Car();
+        Car honda = new Car();
+    }
+}
+```
+Here we're creating a variable called **porsche**, of type **Car**, and we're assigning a **new** instance of **Car**.
+
+The same can be said for the **honda** variable.
+
+To access the elements inside a class from an object, we use the **dot (.)** operator. For example, the [scanner](#reading-user-input) instances from the **Scanner** class that we created can access the methods **nextLine()**, **hasNextInt()** and so on. We can also access a class' fields using the **dot**.
+
+In our case, that won't be possible, because the fields we created are **private** and can only be accessed in within their parent class **Car**.
+
+If we were to make one the field **public** (which is bad practice) for the sake of arguments, we could access and modify it in our **main** method:
+```
+package com.fridaynightsoftwares;
+
+public class Car {
+
+    // Field not initialized:
+    private int doors;
+    private int wheels;
+    public String model; // Bad practice.
+    private String engine;
+    private String color;
+}
+```
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Car porsche  = new Car();
+        Car honda = new Car();
+        porsche.model = "Carrera";
+    }
+}
+```
+But, since this violates the rules of **encapsulation**, it is bad practice.
+
+Instead, we use the setter and getter functions that we previously defined. Since they are **public** methods, they can be accessed outside of their parent class by this object:
+
+```
+package com.fridaynightsoftwares;
+
+public class Car {
+
+    // Field not initialized:
+    private int doors;
+    private int wheels;
+    private String model;
+    private String engine;
+    private String color;
+
+    // Methods:
+    public void setModel(String model) {
+        String validModel = model.toLowerCase();
+        if (validModel.equals("carrera") || validModel.equals("civic")) {
+            this.model = model;
+        } else {
+            this.model = "Unknown";
+        }
+    }
+    public String getModel() {
+        return this.model;
+    }
+}
+```
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Car porsche  = new Car();
+        Car honda = new Car();
+        porsche.setModel("Carrera");
+        honda.setModel("Fit");
+        System.out.println(porsche.getModel());
+        System.out.println(honda.getModel());
+    }
+}
+```
+The output will be:
+```
+Carrera
+Unknown
+```
+
+### Constructors
+
