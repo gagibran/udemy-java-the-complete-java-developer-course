@@ -50,6 +50,7 @@
     - [The this keyword](#the-this-keyword)
     - [Objects](#objects)
     - [Constructors](#constructors)
+    - [Passing a custom data type as an argument](#passing-a-custom-data-type-as-an-argument)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -2061,6 +2062,8 @@ public class Car {
 
 and passed in "Carrera" or "Civic" as arguments, we would still get "Unknown" as an output, because the string **validModel** would be in a different memory location as the newly created "carrera" string.
 
+**Note**: Local variables that are inside a public method do not need to have a modifier, they are **public**.
+
 ### The this keyword
 
 In the [last section](#methods-in-classes) we defined the setter and the getter for the model using a **this** keyword.
@@ -2176,3 +2179,544 @@ Unknown
 
 ### Constructors
 
+A constructor is invoked whenever the **new** keyword is used to create an object.
+
+It's the class' initialization method: we can create custom objects with custom starting fields, that can be used within the class' methods.
+
+For example, for the given class:
+```
+package com.fridaynightsoftwares;
+
+public class BankAccount {
+
+    // Fields:
+    private long accountNumber;
+    private long customerPhoneNumber;
+    private double balance;
+    private String customerName;
+    private String customerEmail;
+
+    // Setters:
+    public void setAccountNumber(long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+    public void setCustomerPhoneNumber(long customerPhoneNumber) {
+        this.customerPhoneNumber = customerPhoneNumber;
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    // Getters:
+    public long getAccountNumber() {
+        return this.accountNumber;
+    }
+    public long getCustomerPhoneNumber() {
+        return this.customerPhoneNumber;
+    }
+    public double getBalance() {
+        return this.balance;
+    }
+    public String getCustomerName() {
+        return this.customerName;
+    }
+    public String getCustomerEmail() {
+        return this.customerEmail;
+    }
+
+    // General methods:
+    public void depositFunds(double funds) {
+        this.balance += funds;
+        System.out.println("Added " + funds + " USD. Total available: " + balance + " USD.");
+    }
+    public void withdrawFunds(double funds) {
+        if (this.balance - funds >= 0) {
+            this.balance -= funds;
+            System.out.println("Removed " + funds + " USD. Total available: " + balance + " USD.");
+        } else {
+            System.out.println("Insufficient funds: " + balance + " USD.");
+        }
+    }
+}
+```
+We can set the initial values by calling the setter methods in the **main** method:
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // Initializing without a constructor:
+        BankAccount account  = new BankAccount();
+        account.setAccountNumber(234234);
+        account.setCustomerEmail("john.doe@example.com");
+        account.setCustomerPhoneNumber(32443456);
+        account.setCustomerName("John Doe");
+        account.setBalance(1000.23);
+
+        // Reading values set without the constructor:
+        System.out.println(account.getAccountNumber());
+        System.out.println(account.getBalance());
+        System.out.println(account.getCustomerEmail());
+        System.out.println(account.getCustomerName());
+        System.out.println(account.getCustomerPhoneNumber());
+        System.out.println("\n\n\n");
+    }
+}
+```
+This prints out:
+```
+234234
+1000.23
+john.doe@example.com
+John Doe
+32443456
+```
+
+Or, instead, we can create a **constructor** method in the **BankAccount** class:
+```
+package com.fridaynightsoftwares;
+
+public class BankAccount {
+
+    // Fields:
+    private long accountNumber;
+    private long customerPhoneNumber;
+    private double balance;
+    private String customerName;
+    private String customerEmail;
+
+    // Constructor:
+    public BankAccount(long accountNumber, long customerPhoneNumber,
+                       double balance, String customerEmail,
+                       String customerName) {
+        this.accountNumber = accountNumber;
+        this.customerPhoneNumber = customerPhoneNumber;
+        this.balance = balance;
+        this.customerEmail = customerEmail;
+        this.customerName = customerName;
+
+    // Setters:
+    public void setAccountNumber(long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+    public void setCustomerPhoneNumber(long customerPhoneNumber) {
+        this.customerPhoneNumber = customerPhoneNumber;
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    // Getters:
+    public long getAccountNumber() {
+        return this.accountNumber;
+    }
+    public long getCustomerPhoneNumber() {
+        return this.customerPhoneNumber;
+    }
+    public double getBalance() {
+        return this.balance;
+    }
+    public String getCustomerName() {
+        return this.customerName;
+    }
+    public String getCustomerEmail() {
+        return this.customerEmail;
+    }
+
+    // General methods:
+    public void depositFunds(double funds) {
+        this.balance += funds;
+        System.out.println("Added " + funds + " USD. Total available: " + balance + " USD.");
+    }
+    public void withdrawFunds(double funds) {
+        if (this.balance - funds >= 0) {
+            this.balance -= funds;
+            System.out.println("Removed " + funds + " USD. Total available: " + balance + " USD.");
+        } else {
+            System.out.println("Insufficient funds: " + balance + " USD.");
+        }
+    }
+}
+```
+Then, we can create an [object](#object) in the **main** method by passing arguments to the class call:
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // Initializing with a constructor:
+        BankAccount newAccount = new BankAccount(123123, 234234234,
+                                            1000.3, "john.doe@example.com", "John Doe");
+
+        // Reading values set with the constructor:
+        System.out.println(newAccount.getAccountNumber());
+        System.out.println(newAccount.getBalance());
+        System.out.println(newAccount.getCustomerEmail());
+        System.out.println(newAccount.getCustomerName());
+        System.out.println(newAccount.getCustomerPhoneNumber());
+    }
+}
+```
+This prints out:
+```
+123123
+1000.3
+john.doe@example.com
+John Doe
+234234234
+```
+
+**Note** that when creating a constructor, we only specify the **access modifier** to it, but don't specify the **return type**. This happens because **a constructor never returns a data type**. It's purpose is to initialize fields.
+
+Just like any other method, constructors can also be overloaded:
+```
+package com.fridaynightsoftwares;
+
+public class BankAccount {
+
+    // Fields:
+    private long accountNumber;
+    private long customerPhoneNumber;
+    private double balance;
+    private String customerName;
+    private String customerEmail;
+
+    // Constructors (they can also be overloaded):
+    public BankAccount(long accountNumber, long customerPhoneNumber,
+                       double balance, String customerEmail,
+                       String customerName) {
+        this.accountNumber = accountNumber;
+        this.customerPhoneNumber = customerPhoneNumber;
+        this.balance = balance;
+        this.customerEmail = customerEmail;
+        this.customerName = customerName;
+    }
+    public BankAccount() {
+        System.out.println("Empty constructor.");
+    }
+
+    // Setters:
+    public void setAccountNumber(long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+    public void setCustomerPhoneNumber(long customerPhoneNumber) {
+        this.customerPhoneNumber = customerPhoneNumber;
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    // Getters:
+    public long getAccountNumber() {
+        return this.accountNumber;
+    }
+    public long getCustomerPhoneNumber() {
+        return this.customerPhoneNumber;
+    }
+    public double getBalance() {
+        return this.balance;
+    }
+    public String getCustomerName() {
+        return this.customerName;
+    }
+    public String getCustomerEmail() {
+        return this.customerEmail;
+    }
+
+    // General methods:
+    public void depositFunds(double funds) {
+        this.balance += funds;
+        System.out.println("Added " + funds + " USD. Total available: " + balance + " USD.");
+    }
+    public void withdrawFunds(double funds) {
+        if (this.balance - funds >= 0) {
+            this.balance -= funds;
+            System.out.println("Removed " + funds + " USD. Total available: " + balance + " USD.");
+        } else {
+            System.out.println("Insufficient funds: " + balance + " USD.");
+        }
+    }
+}
+```
+Invoking both constructors, with and without arguments, in the **main** method:
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // Initializing without a constructor:
+        BankAccount account  = new BankAccount();
+        account.setAccountNumber(234234);
+        account.setCustomerEmail("john.doe@example.com");
+        account.setCustomerPhoneNumber(32443456);
+        account.setCustomerName("John Doe");
+        account.setBalance(1000.23);
+
+        // Initializing with a constructor:
+        BankAccount newAccount = new BankAccount(123123, 234234234,
+                                            1000.3, "john.doe@example.com", "John Doe");
+
+        // Reading values set without the constructor:
+        System.out.println(account.getAccountNumber());
+        System.out.println(account.getBalance());
+        System.out.println(account.getCustomerEmail());
+        System.out.println(account.getCustomerName());
+        System.out.println(account.getCustomerPhoneNumber());
+        System.out.println("\n\n\n");
+
+        // Reading values set with the constructor:
+        System.out.println(newAccount.getAccountNumber());
+        System.out.println(newAccount.getBalance());
+        System.out.println(newAccount.getCustomerEmail());
+        System.out.println(newAccount.getCustomerName());
+        System.out.println(newAccount.getCustomerPhoneNumber());
+    }
+}
+```
+This prints out:
+```
+Empty constructor.
+234234
+1000.23
+john.doe@example.com
+John Doe
+32443456
+
+
+
+
+123123
+1000.3
+john.doe@example.com
+John Doe
+234234234
+```
+Because our overloaded constructor without arguments prints out **Empty constructor**.
+
+We can also call a constructor inside a constructor. For example, imagine that we want to have some default values when we create an object with empty parameters. Instead of creating a new overloaded constructor that takes no arguments just to initialize variables, we could just use the one that takes in parameters and initializes them inside our constructor without arguments:
+```
+package com.fridaynightsoftwares;
+
+public class BankAccount {
+
+    // Fields:
+    private long accountNumber;
+    private long customerPhoneNumber;
+    private double balance;
+    private String customerName;
+    private String customerEmail;
+
+    // Constructors:
+    public BankAccount(long accountNumber, long customerPhoneNumber,
+                       double balance, String customerEmail,
+                       String customerName) {
+        this.accountNumber = accountNumber;
+        this.customerPhoneNumber = customerPhoneNumber;
+        this.balance = balance;
+        this.customerEmail = customerEmail;
+        this.customerName = customerName;
+    }
+    public BankAccount() {
+        this(0000000, 555555555,
+                0, "name@example.com", "Default Name");
+
+    // Setters:
+    public void setAccountNumber(long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+    public void setCustomerPhoneNumber(long customerPhoneNumber) {
+        this.customerPhoneNumber = customerPhoneNumber;
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    // Getters:
+    public long getAccountNumber() {
+        return this.accountNumber;
+    }
+    public long getCustomerPhoneNumber() {
+        return this.customerPhoneNumber;
+    }
+    public double getBalance() {
+        return this.balance;
+    }
+    public String getCustomerName() {
+        return this.customerName;
+    }
+    public String getCustomerEmail() {
+        return this.customerEmail;
+    }
+
+    // General methods:
+    public void depositFunds(double funds) {
+        this.balance += funds;
+        System.out.println("Added " + funds + " USD. Total available: " + balance + " USD.");
+    }
+    public void withdrawFunds(double funds) {
+        if (this.balance - funds >= 0) {
+            this.balance -= funds;
+            System.out.println("Removed " + funds + " USD. Total available: " + balance + " USD.");
+        } else {
+            System.out.println("Insufficient funds: " + balance + " USD.");
+        }
+    }
+}
+```
+The main method:
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // Initializing with the constructor that takes in arguments:
+        BankAccount newAccount = new BankAccount(123123, 234234234,
+                                            1000.3, "john.doe@example.com", "John Doe");
+
+        // Initializing with the constructor that makes the default values:
+        BankAccount anotherAccount = new BankAccount();
+
+        // Reading values set with the constructor that takes in arguments:
+        System.out.println(newAccount.getAccountNumber());
+        System.out.println(newAccount.getBalance());
+        System.out.println(newAccount.getCustomerEmail());
+        System.out.println(newAccount.getCustomerName());
+        System.out.println(newAccount.getCustomerPhoneNumber());
+        System.out.println("\n");
+
+        // Reading values set with the constructor that makes the default values:
+        System.out.println(anotherAccount.getAccountNumber());
+        System.out.println(anotherAccount.getBalance());
+        System.out.println(anotherAccount.getCustomerEmail());
+        System.out.println(anotherAccount.getCustomerName());
+        System.out.println(anotherAccount.getCustomerPhoneNumber());
+    }
+}
+```
+Prints out:
+```
+123123
+1000.3
+john.doe@example.com
+John Doe
+234234234
+
+
+0
+0.0
+name@example.com
+Default Name
+555555555
+```
+As seen in the example above, we call a constructor inside another one by using the **this** keyword with arguments from the overloaded constructor that takes in arguments.
+
+**In this use case of the "this" keyword, it MUST be the first statement inside a constructor. This means that we can only call one constructor inside another one**.
+
+**Important note**: It's not advisable to call methods inside constructors, because when the **new** keyword is used and a constructor is invoked, some aspects of initialization may not have been finished and the methods from the class may not have been processed by JVM already.
+
+### Passing a custom data type as an argument
+
+Just as we do when we create a [string](#string), we can pass in an argument with a custom data type. For example:
+```
+package com.fridaynightsoftwares;
+
+public class Point {
+
+    // Fields:
+    private int x; // Initialized with 0.
+    private int y; // Initialized with 0.
+
+    // Constructors:
+    public Point() {
+    }
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    // Getters:
+    public int getX() {
+        return this.x;
+    }
+    public int getY() {
+        return this.y;
+    }
+
+    // Setters:
+    public void setX(int x) {
+        this.x = x;
+    }
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    // General methods:
+    public double distance() {
+        return Math.sqrt(this.y * this.y + this.x * this.x);
+    }
+    public double distance(int x, int y) {
+        int ySubtraction = this.y - y;
+        int xSubtraction = this.x - x;
+        return Math.sqrt(ySubtraction * ySubtraction + xSubtraction * xSubtraction);
+    }
+    public double distance(Point another) { // Takes in a "Point" object.
+        int anotherX = another.getX();
+        int anotherY = another.getY();
+        int ySubtraction = this.y - anotherY;
+        int xSubtraction = this.x - anotherX;
+        return Math.sqrt(ySubtraction * ySubtraction + xSubtraction * xSubtraction);
+    }
+}
+```
+Here, the last overloaded method **distance()** takes in a data of type **Point**, which happens to be an object created from the method's own parent class.
+
+This is fine to do and it works. Since we know that this class has the getters **getX()** and **getY()**, we can assume the data of type **Point** passed as argument for this method will also have these public methods available. They can be used to retrieve the data needed.
+
+The **main** to confirm the statements above is:
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Point first = new Point(6, 5);
+        Point second = new Point(3, 1);
+        System.out.println(first.distance(second)); // Overloaded method: takes in a "Point" object.
+    }
+}
+```
+We created two objects of type **Point** named **first** and **second**. Them, we passed **second** into the overloaded method **distance()** (from the **Point** class) that takes data of type **Point** as an argument.
+
+Inside this method, we retrieve the data:
+1. **getX()** returns **3**;
+2. **getY()** returns **1**.
+
+Then, we make the calculations with the data retrieved.
