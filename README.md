@@ -51,6 +51,8 @@
     - [Objects](#objects)
     - [Constructors](#constructors)
     - [Passing a custom data type as an argument](#passing-a-custom-data-type-as-an-argument)
+    - [Inheritance](#inheritance)
+    - [Overriding methods](#overriding-methods)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -2720,3 +2722,188 @@ Inside this method, we retrieve the data:
 2. **getY()** returns **1**.
 
 Then, we make the calculations with the data retrieved.
+
+### Inheritance
+
+We can inherit states and behaviors from other classes, like fields and methods.
+
+Taking a real world example: animals. Mamals inherit characteristics from the animal class. Humans inherit characteristics from the mamal class.
+
+We use the **extends** keyword to inherit from a class.
+
+When we inherit a class, we also have to call the parent class' constructor in our child class' constructor.
+
+We use the keyword **super**. When we called an overloaded constructor inside another one in the same class, we used the keyword [this](#the-this-keyword). Now, we use the **super** to idnicate that the constructor called belongs to the parent class.
+
+As an example, we create a base class called **Animal**:
+```
+package com.fridaynightsoftwares;
+
+// Base class for animals:
+public class Animal {
+
+    // Fields:
+    private String name;
+    private int brain;
+    private int body;
+    private int size;
+    private int weight;
+
+    // Constructor:
+    public Animal(String name, int brain, int body, int size, int weight) {
+        this.name = name;
+        this.brain = brain;
+        this.body = body;
+        this.size = size;
+        this.weight = weight;
+    }
+
+    // Getters:
+    public String getName() {
+        return this.name;
+    }
+    public int getBrain() {
+        return this.brain;
+    }
+    public int getBody() {
+        return this.body;
+    }
+    public int getSize() {
+        return this.size;
+    }
+    public int getWeight() {
+        return this.weight;
+    }
+
+    // General functions:
+    public void eat() {
+        System.out.println("Begin ingestion...");
+    }
+    public void move(int speed) {
+        System.out.println("This animal is moving at " + speed + " km/h.");
+    }
+}
+
+```
+We see that this class has some fields and a function which are specific to the animal kingdom, but general to animals (eating, moving and phisical traits).
+
+Then, we create a **Dog** class, that inherits from **Animal** by using the **extends** keyword:
+```
+package com.fridaynightsoftwares;
+
+public class Dog extends Animal {
+
+    // Fields:
+    private String fur;
+    private int eyes;
+    private int legs;
+    private int tail;
+    private int teeth;
+
+    // Constructor with constructor from super class:
+    public Dog(String name, int size, int weight, String fur, int eyes, int legs, int tail, int teeth) {
+        super(name, 1, 1, size, weight); // All dogs have one brain and one body.
+        this.fur = fur;
+        this.eyes = eyes;
+        this.legs = legs;
+        this.tail = tail;
+        this.teeth = teeth;
+    }
+
+    // General methods:
+    public void walk() {
+        System.out.println(super.getName() + " went for a walk!");
+        super.move(10);
+    }
+}
+
+```
+Dogs have special traits that are different to some animals and specific to them, like a tail, eyes, teeth and so on.
+
+We finally call the **main** method:
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Animal animal = new Animal("Animal", 1, 1, 5, 5);
+        Dog luna = new Dog("Luna", 8, 20, "Short", 2, 4, 1, 32);
+        luna.eat(); // Calling a method from the Animals class.
+        luna.walk();
+    }
+}
+
+```
+Which prints out:
+```
+Begin ingestion...
+Luna went for a walk!
+This animal is moving at 10 km/h.
+```
+We are able to call the method **eat()** from the **Animal** class, because it's been inherited from this class by the **Dog** one.
+
+**Important things to note**: We **HAVE** to include in the child class' constructor a call to one upper class constructor by using **super**.
+
+Think of **super** the same as calling:
+```
+Animal(name, 1, 1, size, weight);
+```
+
+The same thing applies to **Dog**'s **walk()** method. The **Animal** class' **move()** method is being called inside of **walk()** by using the **super** keyword.
+
+Then, we can initialize the child class' fields normally.
+
+### Overriding methods
+
+We can create a method that exists in the parent class, but make it unique for the child class.
+
+We use the **@Override** keyword. Example for the **Dog** class from the [previous topic](#inheritance):
+```
+package com.fridaynightsoftwares;
+
+public class Dog extends Animal {
+
+    // Fields:
+    private String fur;
+    private int eyes;
+    private int legs;
+    private int tail;
+    private int teeth;
+
+    // Constructor with constructor from super class:
+    public Dog(String name, int size, int weight, String fur, int eyes, int legs, int tail, int teeth) {
+        super(name, 1, 1, size, weight); // All dogs have one brain and one body.
+        this.fur = fur;
+        this.eyes = eyes;
+        this.legs = legs;
+        this.tail = tail;
+        this.teeth = teeth;
+    }
+
+    // General methods:
+    public void walk() {
+        System.out.println(super.getName() + " went for a walk!");
+        super.move(10);
+    }
+
+    // Overridden methods:
+    @Override
+    public void eat() {
+        super.eat();
+        System.out.println("Chomp, chomp");
+    }
+}
+```
+When we call the same **main** method from the [previous section](#inheritance), it prints out:
+```
+Begin ingestion...
+Chomp, chomp
+Luna went for a walk!
+This animal is moving at 10 km/h.
+```
+Here, since the **Animal** class has the **eat()** method, which prints `begin ingestion...`, we can override it in the child class (**Dog**) and add unique finctionalities to it.
+
+In this example, we're adding another print statement with the text `Chomp, chomp!`.
+
+Notice that we have a **super.eat()** statement. This calls the original method from the super class with its functionalities. It is actually not required to have this line of code there. We can actually completely override the method if we want.
