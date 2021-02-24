@@ -29,7 +29,6 @@ public class Fish  extends Animal {
     }
 
     // Overridden methods:
-
     @Override
     public void eat() {
         super.eat();

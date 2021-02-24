@@ -53,6 +53,10 @@
     - [Passing a custom data type as an argument](#passing-a-custom-data-type-as-an-argument)
     - [Inheritance](#inheritance)
     - [Overriding methods](#overriding-methods)
+    - [Notes about referencing, objects, instances, and classes](#notes-about-referencing,-objects,-instances,-and-classes)
+    - [Notes about the this keyword and the super keyword](#notes-about-the-this-keyword-and-the-super-keyword)
+    - [Static and instance methods](#static-and-instance-methods)
+    - [Static and instance variables](#static-and-instance-variables)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -1426,6 +1430,8 @@ public class MyMethod {
 
 This is a feature that allows the same method to process different types of data.
 
+Java developers often refer to it as **compile time polymorphism**, even though it has nothing to do with polymorphism in classes.
+
 This increases the readability of the code. [This Stack Overflow discussion](https://stackoverflow.com/questions/38537340/why-should-i-ever-overload-methods) is a good example on when we would use overloading.
 
 In practice, we declare the same method with different arguments.
@@ -1482,6 +1488,10 @@ public class Overloading {
 }
 ```
 We do that instead of having to create three methods with different names that do almost the same thing.
+
+We can overload **static** and **instance** methods.
+
+We can also overload methods that come from a [parent class](#inheritance) (derived methods) when we're dealing with [inheritance](#inheritances).
 
 ## Control flow statements
 
@@ -2727,13 +2737,15 @@ Then, we make the calculations with the data retrieved.
 
 We can inherit states and behaviors from other classes, like fields and methods.
 
-Taking a real world example: animals. Mamals inherit characteristics from the animal class. Humans inherit characteristics from the mamal class.
+These are called **derived methods** and **derived fields** when we're in the child class.  
+
+Taking a real world example: animals. Mammals inherit characteristics from the animal class. Humans inherit characteristics from the mammal class.
 
 We use the **extends** keyword to inherit from a class.
 
 When we inherit a class, we also have to call the parent class' constructor in our child class' constructor.
 
-We use the keyword **super**. When we called an overloaded constructor inside another one in the same class, we used the keyword [this](#the-this-keyword). Now, we use the **super** to idnicate that the constructor called belongs to the parent class.
+We use the keyword **super**. When we called an overloaded constructor inside another one in the same class, we used the keyword [this](#the-this-keyword). Now, we use the **super** to indicate that the constructor called belongs to the parent class.
 
 As an example, we create a base class called **Animal**:
 ```
@@ -2785,7 +2797,7 @@ public class Animal {
 }
 
 ```
-We see that this class has some fields and a function which are specific to the animal kingdom, but general to animals (eating, moving and phisical traits).
+We see that this class has some fields and a function which are specific to the animal kingdom, but general to animals (eating, moving and physical traits).
 
 Then, we create a **Dog** class, that inherits from **Animal** by using the **extends** keyword:
 ```
@@ -2858,7 +2870,9 @@ Then, we can initialize the child class' fields normally.
 
 We can create a method that exists in the parent class, but make it unique for the child class.
 
-We use the **@Override** keyword. Example for the **Dog** class from the [previous topic](#inheritance):
+It is also called **runtime polymorphism** or **dynamic method dispatch** by Java developers, because the method that is going to be called is decided at runtime by JVM.
+
+We use the **@Override** annotation. Example for the **Dog** class from the [previous topic](#inheritance):
 ```
 package com.fridaynightsoftwares;
 
@@ -2902,8 +2916,187 @@ Chomp, chomp
 Luna went for a walk!
 This animal is moving at 10 km/h.
 ```
-Here, since the **Animal** class has the **eat()** method, which prints `begin ingestion...`, we can override it in the child class (**Dog**) and add unique finctionalities to it.
+Here, since the **Animal** class has the **eat()** method, which prints `begin ingestion...`, we can override it in the child class (**Dog**) and add unique functionalities to it.
 
 In this example, we're adding another print statement with the text `Chomp, chomp!`.
 
 Notice that we have a **super.eat()** statement. This calls the original method from the super class with its functionalities. It is actually not required to have this line of code there. We can actually completely override the method if we want.
+
+The **@Overriding** annotation is actually not necessary, because if a class has a method that has the same name as a method in the parent class, we can call it by using the **super** keyword. If we don't use that keyword, the compiler will default the method call to the one in the child (or current) class.
+
+But, using the **@Override** annotation is a best practice for the language, because it improves the readability of the code by:
+1. Informing that there is a method with the same name in the super class;
+2. If we really intend to override a method and misspell it, the compiler will warn us that there are no methods with that name in the super class.
+
+For more information, see [this BeginnersBook discussion](#https://beginnersbook.com/2014/07/override-annotation-in-java/) and [the official documentation on overriding](https://docs.oracle.com/javase/tutorial/java/IandI/override.html).
+
+Their return class **can be a subclass of the return type in the parent class**. An example for this can be found in the [burger factory example](https://github.com/gagibran/udemy-java-the-complete-java-developer-course/tree/dev/examples-and-challenges/CovariantReturntype/src/com/fridaynightsoftwares).
+
+Private methods **cannot be overridden**.
+
+Methods that are final **cannot be overridden**.
+
+A child class can use **super.methodName()** to call the super class version of the overridden method.
+
+**We cannot override static methods, only instance methods!**
+
+### Notes about referencing, objects, instances, and classes
+
+Recapitulating:
+
+- A [class](#classes) is a blueprint for a collection of components related to each other;
+- An [object](#objects) is created when we use the **new** keyword and "assign" a class to a variable;
+- Instantiating is actually the correct term to use, instead of assigning, when we create an object using the **new** keyword. We **instantiate** a class to a variable. We create an **instance** of a class. Thus, [objects](#objects) are also known as **instances**;
+- References are created when we create an [object](#object) by "assigning" (referencing) it to a already instantiated [object](#object). They will point to the same memory location and, thus, any changes made to one [object](#object), will affect the reference.
+
+Example:
+```
+// A class:
+public class House {
+    private String color;
+    public House(string color) {
+        this.color = color;
+    }
+    public String getColor() {
+        return this.color;
+    }
+    public void setColor(String color) {
+        this.color = color;
+    }
+}
+```
+The main method:
+```
+public class Main {
+    public void main(String[] args) {
+        House blueHouse = new House("Blue"); // The House class being instantiated into the blueHouse object.
+        House anotherHouse = blueHouse; // This creates a reference to the object blueHouse in the memory.
+
+        System.out.println(blueHouse.getColor()); // Blue.
+        System.out.println(anotherHouse.getColor()); // Blue.
+
+        anotherHouse.setColor("Red") // Changing the color of the object at the memory position which is pointed by the two objects, blueHouse and anotherHouse.
+        System.out.println(blueHouse.getColor()); // Red.
+        System.out.println(anotherHouse.getColor()); // Red.
+
+        House greenHouse = new House("Green"); // Creating another instance of the House class.
+        anotherHouse = greenHouse; // Changing the pointer for anotherHouse to the memory location of greenHouse.
+        System.out.println(blueHouse.getColor()); // Red.
+        System.out.println(greenHouse.getColor()); // Green.
+        System.out.println(anotherHouse.getColor()); // Green.
+    }
+}
+```
+
+### Notes about the this keyword and the super keyword
+
+As we already discussed, the **this** keyword can be used to call methods and fields of the current class, and the **super** keyword can be used to call methods and fields of a parent class. commonly used in [method overriding](#overriding-methods).
+
+But, it's important to note that **we cannot use this keyword in any static block or method in a class**. This will lead to compile-time errors. More on **static** classes later on.
+
+Although we been using the **this** keyword in getters, it is actually optional to use there, because getters don't accept any parameters or arguments, so they don't by using a field name in their **return** statement, it can only signify that we're returning a field, even though another method has a variable with the same name as a field. That happens because [method variables are only accessible by members of that same method](#scope).
+
+But it's useful to put a **this** keyword in a getter, so that we don't get confused.
+
+We can use the **this()** method call to call a constructor in another overloaded constructor. It has to be the first statement in that constructor. It helps to reduce duplicated code.
+
+We can use the **super()** method call to call a constructor from the super class into a child's constructor. It also must be first statement in a constructor.
+
+**Note**: A constructor can call the **this()** method or the **super()** method, but **never both at the same time**.
+
+### Static and instance methods
+
+Static methods are declared using a **static** modifier.
+
+Static methods cannot access instance methods and instance variables directly.
+
+Their usually used for operations that **don't require any data coming from an instance of a class (from [the this keyword](#the-this-keyword))**.
+
+Thus, we cannot use [the this keyword](#the-this-keyword) in a static method.
+
+Whenever we see methods that **don't use instance variables**, they should be declared as static.
+
+As an example, the **main** method is a static method that's called by the JVM when it starts an application.
+
+Another example, for the class **Calculator**:
+```
+public class Calculator {
+    static void printSum(int a, int b) {
+        System.out.println("sum = " + (a + b));
+    }
+}
+```
+And the **Main** class:
+```
+public class Main {
+    public static void main(String[] args) {
+        Calculator.printSum(5, 2);
+        sayHello("Gabriel") // Short for Main.sayHello("Gabriel").
+    }
+    public static void sayHello(String name) {
+        System.out.println("Hi, " + name, ".")
+    }
+}
+```
+Which prints out:
+```
+sum = 7
+Hi, Gabriel.
+```
+We can see that both methods, **printSum()** and **sayHello** are static, thus, cannot be instantiated into objects. For this reason, when we call them, we call them from their parent classes directly.
+
+On the other hand, **instance methods** are methods that can only be accessed when we create an [object](#objects) using the **new** keyword.
+
+
+Instance methods can access other instance methods, instance variables, static methods and static variables directly.
+
+Here's a diagram from Tim that helps us decide when to create an instance or a static method:
+
+![Static Instance Diagram](readme-images/static-instance-diagram.png)
+
+### Static and instance variables
+
+Similarly as methods, **static variables** are declared using the keyword **static**.
+
+**Static variables** are also known as **static member variables**.
+
+Every instance of a class shares the same static variables.
+
+If changes are made to a static variables, **all instances of the class will be affected**.
+
+They aren't used very often, but can be useful sometimes.
+
+An example:
+```
+class Dog {
+    private static name;
+    public Dog(String name) {
+        Dog.name = name; // We don't use the this keyword.
+    }
+    public void printName() {
+        System.out.println("name = " + name);
+    }
+}
+```
+The Main class:
+```
+public class Main {
+    public static void main(Strings[] args) {
+        Dog rex = new Dog("Rex");
+        Dog luna = new Dog("Luna");
+        Dog pluto = new Dog("Pluto");
+        Dog fluffy = new Dog("Fluffy");
+        rex.printName(); // Prints Fluffy.
+        luna.printName(); // Prints Fluffy.
+        pluto.printName(); // Prints Fluffy.
+        fluffy.printName(); // Prints Fluffy.
+    }
+}
+```
+Since **name** is a static variable and when we create an instance of **Dog** we change it, every instance created of **Dog** will also change. Thus, in this particular example, **it wouldn't be a good idea to use a static variable for name**.
+
+On the other hand, instance variables is copied to every instance created.
+
+They can have different values, just like we've been using so far.
+
+They represent the state of an instance (or object).
