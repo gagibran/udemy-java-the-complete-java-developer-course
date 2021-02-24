@@ -2930,7 +2930,7 @@ But, using the **@Override** annotation is a best practice for the language, bec
 
 For more information, see [this BeginnersBook discussion](#https://beginnersbook.com/2014/07/override-annotation-in-java/) and [the official documentation on overriding](https://docs.oracle.com/javase/tutorial/java/IandI/override.html).
 
-Their return class **can be a subclass of the return type in the parent class**. An example for this can be found in the [burger factory example](https://github.com/gagibran/udemy-java-the-complete-java-developer-course/tree/dev/examples-and-challenges/CovariantReturntype/src/com/fridaynightsoftwares).
+Their return class **can be a subclass of the return type in the parent class**. An example for this can be found in the [burger factory example](https://github.com/gagibran/udemy-java-the-complete-java-developer-course/tree/dev/examples-and-challenges/CovariantReturnType/src/com/fridaynightsoftwares).
 
 Private methods **cannot be overridden**.
 
