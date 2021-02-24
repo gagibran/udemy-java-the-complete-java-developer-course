@@ -20,7 +20,7 @@
     - [Char](#char)
     - [Boolean](#boolean)
     - [Casting in Java](#casting-in-java)
-- [String](#string)
+- [Strings](#strings)
     - [Parsing values from a string](#parsing-values-from-a-string)
     - [Reading user input](#reading-user-input)
 - [Operators, operands, and expressions](#operators,-operands,-and-expressions)
@@ -673,7 +673,7 @@ float floatVar = (float) 5.25;
 ```
 Although casting to a float like that is not recommended. People tend to just put the "F" in front of the number.
 
-## String
+## Strings
 
 It's not a primitive type. It's a class that Java programmers treat differently.
 
@@ -775,7 +775,7 @@ public class Main {
 
 ### Reading user input
 
-We can get user input by creating a variable of type **Scanner**, which, like [strings](#string), is a custom class, not a primitive type.
+We can get user input by creating a variable of type **Scanner**, which, like [strings](#strings), is a custom class, not a primitive type.
 
 The **Scanner** class is define inside a package called **java.util.Scanner**, thus it has to be imported by our code for this to work.
 
@@ -2656,7 +2656,7 @@ As seen in the example above, we call a constructor inside another one by using 
 
 ### Passing a custom data type as an argument
 
-Just as we do when we create a [string](#string), we can pass in an argument with a custom data type. For example:
+Just as we do when we create a [string](#strings), we can pass in an argument with a custom data type. For example:
 ```
 package com.fridaynightsoftwares;
 
