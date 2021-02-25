@@ -2866,6 +2866,8 @@ The same thing applies to **Dog**'s **walk()** method. The **Animal** class' **m
 
 Then, we can initialize the child class' fields normally.
 
+As a final note, it's important to know that all Java classes inherit the support **java.lang.Object** class, even when we don't use the **extends** keyword.
+
 ### Overriding methods
 
 We can create a method that exists in the parent class, but make it unique for the child class.
