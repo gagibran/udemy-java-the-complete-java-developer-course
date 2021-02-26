@@ -57,6 +57,7 @@
     - [Notes about the this keyword and the super keyword](#notes-about-the-this-keyword-and-the-super-keyword)
     - [Static and instance methods](#static-and-instance-methods)
     - [Static and instance variables](#static-and-instance-variables)
+    - [Composition](#composition)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -3102,3 +3103,260 @@ On the other hand, instance variables is copied to every instance created.
 They can have different values, just like we've been using so far.
 
 They represent the state of an instance (or object).
+
+### Composition
+
+We've learned [inheritance](#inheritance) deals with relationship between classes. **Composition**, on the other hand, deals with a "has a relationship" with the parent class.
+
+For example, a **Vehicle** class and a **Car** class have a relationship of inheritance, because a car is a vehicle.
+
+For a class **Computer**, the motherboard, its case, and the monitor are not computers, but they all derive from computer. They are **compositions** of a computer. Or, in other words, the computer **has** this components.
+
+For the PC example, we have the **Resolution** class:
+```
+package com.fridaynightsoftwares;
+
+public class Resolution {
+
+    // Fields:
+    private int width;
+    private int height;
+
+    // Constructor:
+    public Resolution(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    // Getters:
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
+}
+```
+Which is a composition of the **Monitor** class:
+```
+package com.fridaynightsoftwares;
+
+public class Monitor {
+
+    // Fields:
+    private String model;
+    private String manufacturer;
+    private int size;
+    private Resolution nativeResolution; // Composition: the monitor HAS a resolution.
+
+    // Constructor:
+    public Monitor(String model, String manufacturer, int size, Resolution nativeResolution) {
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.size = size;
+        this.nativeResolution = nativeResolution;
+    }
+
+    // Getters:
+    public String getModel() {
+        return model;
+    }
+    public String getManufacturer() {
+        return manufacturer;
+    }
+    public int getSize() {
+        return size;
+    }
+    public Resolution getNativeResolution() {
+        return nativeResolution;
+    }
+
+    // Public method:
+    public void drawPixelAt(int x, int y, String color) {
+        System.out.println("Drawing pixel at " + x + ", " + y);
+    }
+}
+```
+We also have the **Dimensions** class:
+```
+package com.fridaynightsoftwares;
+
+public class Dimensions {
+
+    // Fields:
+    private int width;
+    private int height;
+    private int depth;
+
+    // Constructor:
+    public Dimensions(int width, int height, int depth) {
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+    }
+
+    // Getters:
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
+    public int getDepth() {
+        return depth;
+    }
+}
+```
+Which is a composition of the (computer) **Case** class:
+```
+package com.fridaynightsoftwares;
+
+public class Case {
+
+    // Fields:
+    private String model;
+    private String manufacturer;
+    private String powerSupply;
+    private Dimensions dimensions;
+
+    // Constructor:
+    public Case(String model, String manufacturer, String powerSupply, Dimensions dimensions) {
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.powerSupply = powerSupply;
+        this.dimensions = dimensions;
+    }
+
+    // Getters:
+    public String getModel() {
+        return model;
+    }
+    public String getManufacturer() {
+        return manufacturer;
+    }
+    public String getPowerSupply() {
+        return powerSupply;
+    }
+    public Dimensions getDimensions() {
+        return dimensions;
+    }
+
+    // Public methods:
+    public void pressPowerButton() {
+        System.out.println("Power button pressed.");
+    }
+}
+```
+We have the **Motherboard** class as well:
+```
+package com.fridaynightsoftwares;
+
+public class Motherboard {
+
+    // Fields:
+    private String model;
+    private String manufacturer;
+    private int ramSlots;
+    private int cardSlots;
+    private String bios;
+
+    // Constructor:
+    public Motherboard(String model, String manufacturer, int ramSlots, int cardSlots, String bios) {
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.ramSlots = ramSlots;
+        this.cardSlots = cardSlots;
+        this.bios = bios;
+    }
+
+    // Getters:
+    public String getModel() {
+        return model;
+    }
+    public String getManufacturer() {
+        return manufacturer;
+    }
+    public int getRamSlots() {
+        return ramSlots;
+    }
+    public int getCardSlots() {
+        return cardSlots;
+    }
+    public String getBios() {
+        return bios;
+    }
+
+    // Public method:
+    public void loadProgram(String programName) {
+        System.out.println("Program " + programName + " is now running...");
+    }
+}
+```
+The **Monitor**, **Case**, and **Motherboard** classes compose the **Computer** class:
+```
+package com.fridaynightsoftwares;
+
+public class Computer {
+
+    // Fields:
+    private Case oneCase;
+    private Monitor monitor;
+    private Motherboard motherboard;
+
+    // Constructor:
+    public Computer(Case oneCase, Monitor monitor, Motherboard motherboard) {
+        this.oneCase = oneCase;
+        this.monitor = monitor;
+        this.motherboard = motherboard;
+    }
+
+    // Getters:
+    public Case getOneCase() {
+        return oneCase;
+    }
+    public Monitor getMonitor() {
+        return monitor;
+    }
+    public Motherboard getMotherboard() {
+        return motherboard;
+    }
+}
+```
+And the advantage here over [inheritance](#inheritance) is that we can actually with [inheritance](#inheritance), we can only extend one class. Here, we were able to call three different classes.
+
+The in the **main** method:
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        // Case composition:
+        Case aCase = new Case("220B", "Dell", "240",
+                                new Dimensions(20, 20, 5)); // We don't have to assign a class to a variable.
+
+        // Monitor composition:
+        Monitor monitor = new Monitor("27 inch Beast", "Acer", 27,
+                                    new Resolution(240, 1440));
+
+        // Motherboard:
+        Motherboard motherboard = new Motherboard("BJ-200", "Asus",
+                                                4, 6, "v2.44");
+
+        // Creating a PC:
+        Computer computer = new Computer(aCase, monitor, motherboard);
+
+        // Accessing the methods of the compositions:
+        computer.getMonitor().drawPixelAt(1500, 200, "Red");
+        computer.getMotherboard().loadProgram("Ubuntu 20.04");
+        computer.getOneCase().pressPowerButton();
+    }
+}
+```
+Notice that we're creating all of the components of our PC, and then, passing them as arguments to the PC itself.
+
+We access the methods from the components by calling the getters from the main PC. For example:
+- getMonitor() returns a Monitor data type, which has the drawPixelAt() method;
+- getMotherboard() returns a Motherboard data type, which has the loadProgram() method;
+- getOneCase() returns a Case data type, which has the pressPowerButton() method.
