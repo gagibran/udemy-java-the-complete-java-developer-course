@@ -58,6 +58,8 @@
     - [Static and instance methods](#static-and-instance-methods)
     - [Static and instance variables](#static-and-instance-variables)
     - [Composition](#composition)
+    - [Using composition or inheritance](#using-composition-or-inheritance)
+    - [Encapsulation](#encapsulation)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -3360,3 +3362,96 @@ We access the methods from the components by calling the getters from the main P
 - getMonitor() returns a Monitor data type, which has the drawPixelAt() method;
 - getMotherboard() returns a Motherboard data type, which has the loadProgram() method;
 - getOneCase() returns a Case data type, which has the pressPowerButton() method.
+
+We can further protect the methods of the composition by making private methods in the **Computer** class:
+```
+package com.fridaynightsoftwares;
+
+public class Computer {
+
+    // Fields:
+    private Case oneCase;
+    private Monitor monitor;
+    private Motherboard motherboard;
+
+    // Constructor:
+    public Computer(Case oneCase, Monitor monitor, Motherboard motherboard) {
+        this.oneCase = oneCase;
+        this.monitor = monitor;
+        this.motherboard = motherboard;
+    }
+
+    // Private getters:
+    public Case getOneCase() {
+        return oneCase;
+    }
+    public Monitor getMonitor() {
+        return monitor;
+    }
+    public Motherboard getMotherboard() {
+        return motherboard;
+    }
+
+    // Private methods:
+    private void drawLogo() {
+        System.out.println(motherboard.getManufacturer() + ". Loading...");
+    }
+
+    // Public method:
+    public void powerUp() {
+        oneCase.pressPowerButton();
+        drawLogo();
+    }
+}
+```
+By making **drawLogo()** private, it can only be called in within the class. Afterwards, we made the public **powerUp()** method that calls it and, since this one is public, we can call it in the main function:
+```
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        // Case composition:
+        Case aCase = new Case("220B", "Dell", "240",
+                                new Dimensions(20, 20, 5)); // We don't have to assign a class to a variable.
+
+        // Monitor composition:
+        Monitor monitor = new Monitor("27 inch Beast", "Acer", 27,
+                                    new Resolution(240, 1440));
+
+        // Motherboard:
+        Motherboard motherboard = new Motherboard("BJ-200", "Asus",
+                                                4, 6, "v2.44");
+
+        // Creating a PC:
+        Computer computer = new Computer(aCase, monitor, motherboard);
+
+        // Accessing the private methods of the compositions indirectly:
+        computer.powerUp();
+    }
+}
+```
+Prints out:
+```
+Power button pressed.
+Asus. Loading...
+```
+
+### Using composition or inheritance
+
+It does depend on the solution that we need to implement, by it's recommended to always look at composition firstly, since it has this advantage of calling multiple classes.
+
+### Encapsulation
+
+**Encapsulation** is the mechanism that allows us to restrict the access to certain components in the objects that we create.
+
+We can guard snippets of code against unauthorized access.
+
+This allows us to change things without fundamentally break code anywhere.
+
+For example, instead of accessing a field from a class directly, we restrict its access through a public method that does some validation first. If we're able to access it anywhere else, it may not go through this validation and the code can break.
+
+Another example is when we make internal changes to the fields of a class, we would have to change them everywhere else if we're creating objects and accessing the fields directly. This can certainly be a problem for big applications, with huge amounts of lines of code.
+
+We've been using this concept all the time up to this point in the course.

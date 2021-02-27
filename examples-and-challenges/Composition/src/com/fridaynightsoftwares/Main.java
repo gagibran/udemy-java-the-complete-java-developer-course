@@ -19,9 +19,7 @@ public class Main {
         // Creating a PC:
         Computer computer = new Computer(aCase, monitor, motherboard);
 
-        // Accessing the methods of the compositions:
-        computer.getMonitor().drawPixelAt(1500, 200, "Red");
-        computer.getMotherboard().loadProgram("Ubuntu 20.04");
-        computer.getOneCase().pressPowerButton();
+        // Accessing the private methods of the compositions indirectly:
+        computer.powerUp();
     }
 }

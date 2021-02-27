@@ -14,7 +14,7 @@ public class Computer {
         this.motherboard = motherboard;
     }
 
-    // Getters:
+    // Private getters:
     public Case getOneCase() {
         return oneCase;
     }
@@ -23,5 +23,16 @@ public class Computer {
     }
     public Motherboard getMotherboard() {
         return motherboard;
+    }
+
+    // Private methods:
+    private void drawLogo() {
+        System.out.println(motherboard.getManufacturer() + ". Loading...");
+    }
+
+    // Public method:
+    public void powerUp() {
+        oneCase.pressPowerButton();
+        drawLogo();
     }
 }
