@@ -77,7 +77,7 @@ The "main" is an special method that Java looks for when running a program. It's
 It defines wether other code can access ours.
 
 An example:
-```
+```java
 public class Hello {
     public static void main(String[] args) {
         System.out.println("Hello, world.");
@@ -86,7 +86,7 @@ public class Hello {
 ```
 
 When we run this class, an IDE, in my case IntelliJ, runs this Java command on the background to compile the code:
-```
+```java
 /usr/lib/jvm/java-11-amazon-corretto/bin/java -javaagent:/snap/intellij-idea-community/273/lib/idea_rt.jar=33897:/snap/intellij-idea-community/273/bin -Dfile.encoding=UTF-8 -classpath /home/gagibran/Repositories/Courses
 ```
 Which outputs:
@@ -112,7 +112,7 @@ They store a value and allocate it in the RAM.
 There are a lot of data types that can be stored in a variable, like integers, booleans, strings and so on.
 
 To define a variable, we need to declare its data type:
-```
+```java
 public class Hello {
     public static void main(String[] args) {
         int myFirstNumber = 5;
@@ -124,7 +124,7 @@ public class Hello {
 **NOTE**: We use the camelCase notation in Java.
 
 We can assign expressions to number data types:
-```
+```java
 public class Hello {
     public static void main(String[] args) {
         int myFirstNumber = (5 + 10) * 3 + 3;
@@ -135,7 +135,7 @@ public class Hello {
 This prints: 48.
 
 We can also create variables with expressions using other variables:
-```
+```java
 public class Hello {
     public static void main(String[] args) {
         int myFirstNumber = (5 + 10) * 3 + 3;
@@ -150,7 +150,7 @@ public class Hello {
 This prints out: 943.
 
 We can also concatenate string with variables by using the plus sign:
-```
+```java
 public class Hello {
     public static void main(String[] args) {
         int myFirstNumber = (5 + 10) * 3 + 3;
@@ -165,16 +165,16 @@ public class Hello {
 Which prints out: The value is 943
 
 We can create variables without assigning any value to them, in a declaration statement:
-```
+```java
 int newVar;
 ```
 We can assign a value to it later on, in a expression statement:
-```
+```java
 newVar = 50;
 ```
 
 We can also assign a value to more than one variable in a declaration statement:
-```
+```java
 int myVar;
 int mySecondVar = myVar = 60;
 ```
@@ -190,7 +190,7 @@ They're usually in uppercase.
 To declare one, we need to use the **final** keyword.
 
 Example:
-```
+```java
 public class SecondsAndMinutesChallenge {
 
     // Constants:
@@ -236,7 +236,7 @@ A package is a way to organize our Java projects.
 They have the convention of being the inverse domain of a company.
 
 In my case:
-```
+```java
 package com.fridaynightsoftwares;
 ```
 
@@ -253,7 +253,7 @@ But adding whitespace is the best practice here, since it doesn't affect the spe
 Whitespace actually only increases your file size, but it can be easily neglected as an actual concern.
 
 This works, but it's bad practice:
-```
+```java
 public class Main {
 public static void main(String[] args) {
 int
@@ -265,7 +265,7 @@ int
 ```
 
 We can take advantage of whitespace to make the code more readable when a statement is too big:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         System.out.println("looooooooooooooooooooooooooooooooooooooooooooong string string string string string " +
@@ -280,7 +280,7 @@ In conclusion, Java doesn't care about indentation, but it's good practice to do
 ### Scope
 
 When a variable is created inside a code block, it can only be accessed inside that block. Example:
-```
+```java
 public class Main {
 
     public static void main(String[] args) {
@@ -299,7 +299,7 @@ This code wouldn't run, because Java cannot resolve the variable "anotherVar".
 This happens because when a code block finishes, any variables inside of it are marked for garbage collection ands, therefore, cannot be used anymore
 
 Variables created outside of a code block, which is still executing, can be used by any code blocks that are inside this parent one:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int myVar = 12;
@@ -312,7 +312,7 @@ public class Main {
 ```
 
 Since variables are marked for garbage disposal, we can recreate them inside the next block:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int myVar = 12;
@@ -349,7 +349,7 @@ All eight primitive data types in Java have wrapper classes.
 These are classes have variables and methods that do certain operations regarding the data type.
 
 The MIN_VALUE and MAX_VALUE for the "Integer" wrapper class is:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         System.out.println(Integer.MIN_VALUE);
@@ -363,7 +363,7 @@ The values are:
 - Maximum: 2147483647.
 
 What happens when we add 1 to 2147483647 or subtract 1 from -2147483648?
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int minValue = Integer.MIN_VALUE;
@@ -385,18 +385,18 @@ Adding 1 to 2147483647 overflows the value to its minimum permitted: -2147483648
 The same thing happens when we subtract 1 from -2147483648. It underflows to the maximum value permitted of 2147483647.
 
 If we try to declare:
-```
+```java
 int bustedMax = 2147483648;
 ```
 or
-```
+```java
 int bustedMax = -2147483649;
 
 ```
 The compiler will return an error, stating that the value is too big or too low.
 
 We can also separate the decimals with an underscore, like so:
-```
+```java
 int largeInt = 2_233_111_111;
 ```
 To discern it the digits better.
@@ -414,7 +414,7 @@ It occupies 8 bits in the memory. Thus, it has a width of 8.
 Can be used for documentation as well: if someone else is reading our could, they would know that the number passed into our byte variable is within that range.
 
 It also has the "MAX_VALUE" and "MIN_VALUE" variables in the "Byte" wrapper class:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         byte minValue = Byte.MIN_VALUE;
@@ -440,7 +440,7 @@ It occupies 16 bits. Thus, its width is 16.
 
 Short also has the "MAX_VALUE" and "MIN_VALUE" variables in the "Short" wrapper class:
 
-```
+```java
 public class Main {
     public static void main(String[] args) {
         short minValue = Short.MIN_VALUE;
@@ -463,7 +463,7 @@ It also overflows and underflows.
 It has a bigger range than integers.
 
 We can declare a long value for, say, a small number, by appending the letter "L" in the end of the number:
-```
+```java
 long myLongValue = 100L;
 ```
 
@@ -474,13 +474,13 @@ It occupies 64 bits. Thus, it's width is 64.
 By default, Java considers a number to be an integer unless we put the L in front of it to treat it as a long.
 
 We won't get errors if we declare a long variable without an "L" like so:
-```
+```java
 long myLongValue = 100;
 ```
 Because an integer fits inside a long, since an integers' width is 32 bits. But Java will still treat the variable as an integer.
 
 So, if we store an integer's maximum value plus one inside a long variable without the L in front, we get an error. This is forbidden:
-```
+```java
 long myLongNumber = 2_147_483_648; // We'll get an error.
 long myLongNumber = 2_147_483_648L; // This runs fine.
 ```
@@ -488,7 +488,7 @@ long myLongNumber = 2_147_483_648L; // This runs fine.
 The same thing is valid for underflow and of the other data types.
 
 As always, the minimum and maximum numbers can be derived from its wrapper class:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         long minValue = Long.MIN_VALUE;
@@ -513,7 +513,7 @@ We express a floating point number with a decimal point.
 Float is a **single** precision number.
 
 Example:
-```
+```java
 float 4.23F;
 float 4.23f; // This works too.
 // float 4.2; // This doesn't work.
@@ -531,7 +531,7 @@ They range from 1.4E-45 to 3.4028235E38.
 ### Double
 
 These are **double** precision numbers, like:
-```
+```java
 double doubleNum = 2_323.3;
 double doubleNumTwo = 23.3_231;
 ```
@@ -543,7 +543,7 @@ They occupy 64 bits.
 They range from 4.9E-324 to 1.7976931348623157E308.
 
 We can specify that a number is a double but putting a "D" in front of the number, just like long data types:
-```
+```java
 double doubleNum = 5D;
 double doubleNum = 5d; // This also works.
 double doubleNum = 5.0; // This also works.
@@ -552,7 +552,7 @@ double doubleNum = 5.0; // This also works.
 When we do an operation with a primitive type for a whole number (integers, bytes, shorts and longs), we only get the whole number part of the division.
 
 Floats and doubles allows us to get the fraction part of the number:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int intVarDiv = 5 / 2;
@@ -572,7 +572,7 @@ Double division: 5d/2d = 2.5
 ```
 
 Since doubles are more precise than integers, we get more decimals in an division:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         float floatVarDiv = 5f / 3f;
@@ -599,7 +599,7 @@ For these kinds of operations, we use a class called "BigDecimals", which will b
 Chars are different than strings, because they only accept one character instead of a whole string of characters.
 
 Example:
-```
+```java
 char newChar = 'D'; // This works;
 char newCharTwo = 'De' // This returns an error.
 ```
@@ -623,7 +623,7 @@ We can get a character's unicode by looking at the table on the website, where t
 An example, the unicode for character "D" is U+0044.
 
 We can put this unicode in a Java's char type:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         char charD = '\u0044';
@@ -644,7 +644,7 @@ True or false, yes or no, 1 or 0.
 Pretty useful in any programming language.
 
 Example:
-```
+```java
 boolean isCustomerOverTwentyOne = false;
 boolean isCustomerEighteen = true;
 ```
@@ -654,7 +654,7 @@ It's best practice to start the name of a boolean variable with "is".
 ### Casting in Java
 
 Data types can be casted into other types if were mixing them with operations. The following
-```
+```java
 byte minDivided = byteMinValue / 2;
 ```
 Gives us an error that it was requiring a byte to be assigned to "minDivided", but it got an integer instead.
@@ -662,7 +662,7 @@ Gives us an error that it was requiring a byte to be assigned to "minDivided", b
 Even though we know that -128 divided by 2 is equal to -64 and it would fit into a byte type, our computer treats the result of this division as an integer, because the number 2 is being defaulted to an integer.
 
 We can solve this issue by casting the whole expression to a byte. The syntax is:
-```
+```java
 byte minDivided = (byte) (byteMinValue / 2);
 ```
 
@@ -671,7 +671,7 @@ The same can be applied to short and long.
 Integers are the whole numbers that we use the most. That's why they're the default data type in Java.
 
 We can also cast a double to be a float:
-```
+```java
 float floatVar = (float) 5.25;
 ```
 Although casting to a float like that is not recommended. People tend to just put the "F" in front of the number.
@@ -683,7 +683,7 @@ It's not a primitive type. It's a class that Java programmers treat differently.
 A string can contain a sequence of characters, only limited by the memory, or by its maximum value of an int, that is **2.14 Billion**.
 
 Example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         String stringVar = "This is a string.";
@@ -693,13 +693,13 @@ public class Main {
 ```
 
 Like we were doing on Sys.tem.out.println(), we can concatenate strings by using the plus operator:
-```
+```java
 String stringVar = "This is a string.";
 String stringVarTwo = stringVar + "copyright: \u00a9";
 ```
 
 We can cast a data type into a string:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         String lastString = "50";
@@ -721,7 +721,7 @@ The same works for the other data types.
 Instead, when we want to modify a string, a new one is created.
 
 This means that the variable "testString" here:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         String testString = "Test.";
@@ -741,7 +741,7 @@ One of the cases is when we read input from an user using the scanner class.
 We can use a **parsing method** to convert it into a primitive data type.
 
 Example of parsing it into an integer using its parsing method:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         String numberAsString = "2018"; // Interpreted as text.
@@ -754,7 +754,7 @@ Here we have the **Integer** wrapper class and its **static** parsing method, **
 This method will try to convert the string into an integer. The parsing will be successful if the string is, indeed, a number.
 
 Thus, in this example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         String numberAsString = "2018a"; // Interpreted as text.
@@ -767,7 +767,7 @@ We would get an error, because **2018a** is not a number.
 This parsing naturally works with other data types, as long as the parsing is valid.
 
 An example for double:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         String numberAsString = "2018.123"; // Interpreted as text.
@@ -789,7 +789,7 @@ The **new** keyword is further detailed in [classes](#classes), but we use it to
 The **Scanner** class takes the argument **System.in**, which allows us to read input from users of our application.
 
 An example:
-```
+```java
 import java.util.Scanner;
 
 public class Main {
@@ -820,7 +820,7 @@ Gabriel
 ```
 
 We can automatically get an input as an integer by using the method **nextInt()** from the **Scanner** class:
-```
+```java
 import java.util.Scanner;
 
 public class Main {
@@ -850,7 +850,7 @@ This happens because internally, the scanner is checking for a line separator, s
 The solution is to place another **nextLine()** method, but without assigning it to any variable, just to be fed this enter key that we press when we input a number.
 
 Example:
-```
+```java
 import java.util.Scanner;
 
 public class Main {
@@ -877,7 +877,7 @@ Enter your name:
 Note how it skips the **enter your name** input.
 
 The fix:
-```
+```java
 import java.util.Scanner;
 
 public class Main {
@@ -909,7 +909,7 @@ Gabriel
 We can handle this by using the **hasNextInt()** method from the **Scanner** class. This method returns wether the next input entered is of type **int**.
 
 We can use this inside an if-else or switch statement:
-```
+```java
 import java.util.Scanner;
 
 public class Main {
@@ -950,7 +950,7 @@ As an example, we have plus, minus, multiplication, and division operators.
 The equal operator (=) is used to assign variables to values.
 
 The remainder, or modulo, operation returns the remainder of a division:
-```
+```java
 int aNum = 3;
 int anotherNum = 77;
 int remaind = anotherNum % aNum; // Returns 2.
@@ -959,7 +959,7 @@ int remaind = anotherNum % aNum; // Returns 2.
 ### Abbreviating operators
 
 We can abbreviate updates different than by one:
-```
+```java
 number += 2; // Abbreviates int number = number + 2.
 number -=2; // Abbreviates int number = number + 2.
 number *= 2; // Abbreviates int number = number * 2.
@@ -976,7 +976,7 @@ They can be used as as:
 2. Postfix: When the value is updated **AFTER** the update is processed;
 
 An example with prefix:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int anInt = 4;
@@ -986,7 +986,7 @@ public class Main {
 ```
 
 An example with postfix:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int anInt = 4;
@@ -1006,7 +1006,7 @@ Its symbol is the double [ampersand](https://en.wikipedia.org/wiki/Ampersand#:~:
 A single ampersand (&), which is a [bitwise operation](https://en.wikipedia.org/wiki/Bitwise_operation), can also be used, but it's best practice to use two.
 
 Example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         boolean areBothTrue = 40 <= 100 & 32 > 10; // This is true.
@@ -1028,7 +1028,7 @@ Its symbol is the double pipe (||).
 Single pipe (|), which is a [bitwise operation](https://en.wikipedia.org/wiki/Bitwise_operation), can also be used, but it's best practice to use two.
 
 Example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         boolean areBothTrue = 40 == 100 | 32 < 10; // Both are false.
@@ -1049,7 +1049,7 @@ Allows us to execute code based on the outcome of a **conditional** expression t
 
 
 Example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         boolean isAlien = false;
@@ -1069,7 +1069,7 @@ We utilize the **equality operators** to check if a conditional is true or false
 We use (==) to check if two operands are equal and (!=) to check if the operands are different.
 
 We can abbreviate these operands with only the NOT operator (!) to check if an operand is equal to false (i.e. !isAlien) and just the name of the variable to check if it's equal to true (isAlien):
-```
+```java
 public class Main {
     public static void main(String[] args) {
         boolean isAlien = false;
@@ -1086,7 +1086,7 @@ public class Main {
 
 The logical operators [AND](#local-and-operator) and [OR](#logical-or-operator) can be used to form more complex expressions:
 
-```
+```java
 public class Main {
     public static void main(String[] args) {
         boolean isAlien = false;
@@ -1107,7 +1107,7 @@ public class Main {
 ```
 
 **Note** that we can write an if statement without the curly brackets and/or without any indentation, **but only the first line will be executed depending on the if check**, the other one will be executed no matter the outcome:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         if (isAlien)
@@ -1129,7 +1129,7 @@ This obviously is not a good practice and should be done never.
 ### If-else
 
 With the if-else statement, it's possible to execute multiple code to specific conditions to our code:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         // If-else:
@@ -1151,7 +1151,7 @@ In this example, the "else if" condition will be met.
 We can actually put as many "else if" blocks as we want.
 
 **NOTE**: We should always revise the logic behind these statements. In this next example, despite the conditions on both "if" and "else if" blocks are met, **it will execute the first occurrence of a true value!**
-```
+```java
 public class Main {
     public static void main(String[] args) {
         // If-else:
@@ -1169,7 +1169,7 @@ public class Main {
 }
 ```
 We could fix this by changing the "else if" to a separated "if" block:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         // If-else:
@@ -1198,7 +1198,7 @@ It takes in the condition that we're testing, the value to assign if it meets th
 It's a one-liner to assign a value to a variable if a condition is met, or assign another value to a variable if the condition isn't met.
 
 So, this:
-```
+```java
 boolean isCar = false;
 if (isCar) {
     boolean wasCar = true;
@@ -1207,14 +1207,14 @@ if (isCar) {
 }
 ```
 Can be simplified to this:
-```
+```java
 boolean isCar = false;
 boolean wasCar = isCar ? true : false; // wasCar will be false.
 ```
 Where "isCar", short for "wasCar == true", is the condition we're checking, "true" is the value that the variable "wasCar" will be assign if the condition is met, and "false" is the value that the variable will be assign in case the condition is not met.
 
 Another example:
-```
+```java
 boolean isCar = false;
 boolean !wasCar = isCar ? false : true; // wasCar will be true.
 ```
@@ -1238,7 +1238,7 @@ The syntax is:
 Just like the "main" method, in which we have "public static" modifiers, a return type "void", "main" as the method name, and "String[] args" as the parameter.
 
 Example:
-```
+```java
 public class MyMethod {
     public static void calculateScore() {
         boolean isGameOver = true;
@@ -1259,7 +1259,7 @@ public class MyMethod {
 Like previously stated, a method can be called anywhere, even before it's defined, as long as the calling is withing the same [scope](#scope) as the method declaration.
 
 Example:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class MyMethod {
@@ -1303,7 +1303,7 @@ A single parameter have a **data type and a variable name**.
 Multiple parameters are separated by come.
 
 Example:
-```
+```java
 public class MyMethod {
     public static void main(String[] args) {
 
@@ -1339,7 +1339,7 @@ public class MyMethod {
 Since parameters are define inside the scope of a method, variables outside of their scope can have the same name as their parameters, like the variables "isGameOver", "score", "levelCompleted", and "bonus".
 
 We can also pass the values directly into the parameters, without the need of declaring variables with values:
-```
+```java
 public class MyMethod {
     public static void main(String[] args) {
 
@@ -1376,7 +1376,7 @@ It's not good practice to have **to many** return statements inside a method, be
 If we try to put any statement after a return, Java won't compile. It will give us an error of "Unreachable statement". This happens because, like previously explained, Java exists a method when it encounters a return statement.
 
 Example:
-```
+```java
 public class MyMethod {
     public static void main(String[] args) {
 
@@ -1404,7 +1404,7 @@ public class MyMethod {
 The -1 value here indicates that the game isn't over yet, it's still running. By convention, we tend to use -1 to indicate errors, but it could be any number, as long as it made sense.
 
 This code could be made more readable if we had **two** return types:
-```
+```java
 public class MyMethod {
     public static void main(String[] args) {
 
@@ -1442,7 +1442,7 @@ In practice, we declare the same method with different arguments.
 When declaring an overload method, the modifiers can differ **but the return type MUST be the same as the other methods!**
 
 Example:
-```
+```java
 public class Overloading {
 
     // This ones work:
@@ -1477,7 +1477,7 @@ public class Overloading {
 ```
 
 A more practical example: we have to make a method that has to calculate the sum of two integers, the sum of three doubles, and the multiplication of two doubles and two integers:
-```
+```java
 public class Overloading {
     public static double processingOfNumbers(int a, int b) {
         return a + b;
@@ -1513,7 +1513,7 @@ When we have multiple **single** conditions **that test for a constant** to be m
 We can use switch statements instead. It's more readable and easier to understand what's going on the code.
 
 Example, this if-statement:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int value = 1;
@@ -1530,7 +1530,7 @@ public class Main {
 }
 ```
 Can be translated to this switch statement:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int switchValue = 1;
@@ -1565,7 +1565,7 @@ Finally, we utilize the keyword **default** to act like an **else** statement: i
 **Note that there are no curly brackets wrapping the cases, nor the default.**
 
 We can also group up cases that need to execute the same code:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int switchValue = 1;
@@ -1587,7 +1587,7 @@ public class Main {
 }
 ```
 or
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int switchValue = 1;
@@ -1614,7 +1614,7 @@ public class Main {
 Technically, we don't need to include a **break** in the last case (or default), because it's the end of the statement, but it's good practice to include to maintain readability of our code through consistency.
 
 **With the exception of booleans**, we can use any of the primitive types in a switch statement. From JDK 7 we can also test for strings:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         String month = "January";
@@ -1636,7 +1636,7 @@ public class Main {
 **We just have to be careful with uppercase and lowercase for chars and strings, since Java is case sensitive.**
 
 For strings, we can deal with this problem by applying the **toLowerCase()** method from the **String** wrapper class to make all characters of a string lowercase:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         String month = "January";
@@ -1662,7 +1662,7 @@ It allows us to execute code a certain amount of times.
 Very commonly needed in programming.
 
 An example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
@@ -1689,7 +1689,7 @@ Which prints:
 ```
 
 The syntax is:
-```
+```java
 for (initialization; condition; increment) {
     // Do stuff.
 }
@@ -1703,7 +1703,7 @@ Finally, increment is how much we want to increment the initialization variable.
 The increment could also be a decrement, like **i--**.
 
 We can use the keyword **break** here to break out of a for loop whenever we want, without having to meet the condition. Example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         for (int i = 0; i < 100; i++) {
@@ -1727,7 +1727,7 @@ Despite requiring the condition of **i < 100** to break out of this for loop, wh
 When we don't know how many times we really want to iterate through a condition.
 
 Example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int count = 0;
@@ -1747,7 +1747,7 @@ Prints out:
 4
 ```
 This example is equivalent to:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         for (int i = 0; i != 5; i++) {
@@ -1758,7 +1758,7 @@ public class Main {
 ```
 
 We can also run a while loop **forever**, but we have to be careful to not get stuck in a **infinite loop**. For that, we need to break out the loop when it meets a certain condition:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int count = 0;
@@ -1788,7 +1788,7 @@ This also prints out:
 This kind of loop will **always execute the code inside of it at least once**.
 
 Example:
-```
+```java
 do {
 public class Main {
     public static void main(String[] args) {
@@ -1814,7 +1814,7 @@ What's happening here is that the code inside of **do** will be executed and **a
 It's pretty much doing what the statement says: ***do** a print out of the count variable and increment it afterwards **while** the variable is different than 5.*
 
 We still have to be careful of falling into a **infinite loop**. For example:
-```
+```java
 do {
 public class Main {
     public static void main(String[] args) {
@@ -1831,7 +1831,7 @@ The code inside **do** will be executed **before** the condition is tested in **
 So firstly, **count** will be incremented and then tested. It will check that **count** is now **6**, thus being different than **5**, and the loop will run **forever**.
 
 In this case, we could either change the condition to **count <= 5**, or put a **break** inside of the loop:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         int count = 5;
@@ -1880,7 +1880,7 @@ Although this doesn't make any sense, because we could've just used a plain old 
 This keyword can be used inside the loops to make it go to the next iteration **without executing the code below it**.
 
 An example:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         for (int i = 0; i < 20; i++) {
@@ -1928,9 +1928,8 @@ The **public** keyword is an **access modifier**. In this particular case, this 
 Generally, a large majority of classes are **public**.
 
 Example:
-```
+```java
 public class Car {
-
 }
 ```
 
@@ -1945,7 +1944,7 @@ As a general rule, the modifiers given to **fields** are **private**, meaning th
 In other words, the fields from a class won't be available to other classes.
 
 Example:
-```
+```java
 package com.fridaynightsoftwares; // The package that this class belongs to.
 
 public class Car {
@@ -1974,7 +1973,7 @@ We normally state them with the **public** access modifier so that they can be a
 A convention for naming methods that change the fields of a class is to start them with the word **set**. These methods are known as **setters**.
 
 For example:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Car {
@@ -1995,7 +1994,7 @@ public class Car {
 The [this keyword](#this-keyword) is explained in the next section
 
 For retrieving a private field from a class, we normally start the name of a method with **get**. These methods are known as **getters**:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Car {
@@ -2017,7 +2016,7 @@ public class Car {
 ```
 
 The advantages of using getters and setters is that we can do some validation as well. For example, we could validate if the string passed into the setter method is valid:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Car {
@@ -2050,7 +2049,7 @@ Here, we're using the method **equals()** from the string class because this met
 More on that can be found in this [GeeksForGeeks article](https://www.geeksforgeeks.org/difference-equals-method-java/#:~:text=We%20can%20use%20%3D%3D%20operators,of%20values%20in%20the%20objects.)
 
 In our example, if we defined the method as:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Car {
@@ -2096,7 +2095,7 @@ The same can be said to the getter function **getModel()**. We want to return th
 An object is an **instance** os a [class](#classes). We create an object of a class when we assign it to a variable in the **main** method.
 
 Example for the **Car** class:
-```
+```java
 package com.fridaynightsoftwares; // Package containing the class Car.
 
 public class Main {
@@ -2116,7 +2115,7 @@ To access the elements inside a class from an object, we use the **dot (.)** ope
 In our case, that won't be possible, because the fields we created are **private** and can only be accessed in within their parent class **Car**.
 
 If we were to make one the field **public** (which is bad practice) for the sake of arguments, we could access and modify it in our **main** method:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Car {
@@ -2129,7 +2128,7 @@ public class Car {
     private String color;
 }
 ```
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -2145,7 +2144,7 @@ But, since this violates the rules of **encapsulation**, it is bad practice.
 
 Instead, we use the setter and getter functions that we previously defined. Since they are **public** methods, they can be accessed outside of their parent class by this object:
 
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Car {
@@ -2171,7 +2170,7 @@ public class Car {
     }
 }
 ```
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -2199,7 +2198,7 @@ A constructor is invoked whenever the **new** keyword is used to create an objec
 It's the class' initialization method: we can create custom objects with custom starting fields, that can be used within the class' methods.
 
 For example, for the given class:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class BankAccount {
@@ -2261,7 +2260,7 @@ public class BankAccount {
 }
 ```
 We can set the initial values by calling the setter methods in the **main** method:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -2295,7 +2294,7 @@ John Doe
 ```
 
 Or, instead, we can create a **constructor** method in the **BankAccount** class:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class BankAccount {
@@ -2367,7 +2366,7 @@ public class BankAccount {
 }
 ```
 Then, we can create an [object](#object) in the **main** method by passing arguments to the class call:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -2398,7 +2397,7 @@ John Doe
 **Note** that when creating a constructor, we only specify the **access modifier** to it, but don't specify the **return type**. This happens because **a constructor never returns a data type**. It's purpose is to initialize fields.
 
 Just like any other method, constructors can also be overloaded:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class BankAccount {
@@ -2474,7 +2473,7 @@ public class BankAccount {
 }
 ```
 Invoking both constructors, with and without arguments, in the **main** method:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -2530,7 +2529,7 @@ John Doe
 Because our overloaded constructor without arguments prints out **Empty constructor**.
 
 We can also call a constructor inside a constructor. For example, imagine that we want to have some default values when we create an object with empty parameters. Instead of creating a new overloaded constructor that takes no arguments just to initialize variables, we could just use the one that takes in parameters and initializes them inside our constructor without arguments:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class BankAccount {
@@ -2606,7 +2605,7 @@ public class BankAccount {
 }
 ```
 The main method:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -2660,7 +2659,7 @@ As seen in the example above, we call a constructor inside another one by using 
 ### Passing a custom data type as an argument
 
 Just as we do when we create a [string](#strings), we can pass in an argument with a custom data type. For example:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Point {
@@ -2716,7 +2715,7 @@ Here, the last overloaded method **distance()** takes in a data of type **Point*
 This is fine to do and it works. Since we know that this class has the getters **getX()** and **getY()**, we can assume the data of type **Point** passed as argument for this method will also have these public methods available. They can be used to retrieve the data needed.
 
 The **main** to confirm the statements above is:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -2751,7 +2750,7 @@ When we inherit a class, we also have to call the parent class' constructor in o
 We use the keyword **super**. When we called an overloaded constructor inside another one in the same class, we used the keyword [this](#the-this-keyword). Now, we use the **super** to indicate that the constructor called belongs to the parent class.
 
 As an example, we create a base class called **Animal**:
-```
+```java
 package com.fridaynightsoftwares;
 
 // Base class for animals:
@@ -2798,12 +2797,11 @@ public class Animal {
         System.out.println("This animal is moving at " + speed + " km/h.");
     }
 }
-
 ```
 We see that this class has some fields and a function which are specific to the animal kingdom, but general to animals (eating, moving and physical traits).
 
 Then, we create a **Dog** class, that inherits from **Animal** by using the **extends** keyword:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Dog extends Animal {
@@ -2831,12 +2829,11 @@ public class Dog extends Animal {
         super.move(10);
     }
 }
-
 ```
 Dogs have special traits that are different to some animals and specific to them, like a tail, eyes, teeth and so on.
 
 We finally call the **main** method:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -2861,7 +2858,7 @@ We are able to call the method **eat()** from the **Animal** class, because it's
 **Important things to note**: We **HAVE** to include in the child class' constructor a call to one upper class constructor by using **super**.
 
 Think of **super** the same as calling:
-```
+```java
 Animal(name, 1, 1, size, weight);
 ```
 
@@ -2878,7 +2875,7 @@ We can create a method that exists in the parent class, but make it unique for t
 It is also called **runtime polymorphism** or **dynamic method dispatch** by Java developers, because the method that is going to be called is decided at runtime by JVM.
 
 We use the **@Override** annotation. Example for the **Dog** class from the [previous topic](#inheritance):
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Dog extends Animal {
@@ -2955,7 +2952,7 @@ Recapitulating:
 - References are created when we create an [object](#object) by "assigning" (referencing) it to a already instantiated [object](#object). They will point to the same memory location and, thus, any changes made to one [object](#object), will affect the reference.
 
 Example:
-```
+```java
 // A class:
 public class House {
     private String color;
@@ -2971,7 +2968,7 @@ public class House {
 }
 ```
 The main method:
-```
+```java
 public class Main {
     public void main(String[] args) {
         House blueHouse = new House("Blue"); // The House class being instantiated into the blueHouse object.
@@ -3024,7 +3021,7 @@ Whenever we see methods that **don't use instance variables**, they should be de
 As an example, the **main** method is a static method that's called by the JVM when it starts an application.
 
 Another example, for the class **Calculator**:
-```
+```java
 public class Calculator {
     static void printSum(int a, int b) {
         System.out.println("sum = " + (a + b));
@@ -3032,7 +3029,7 @@ public class Calculator {
 }
 ```
 And the **Main** class:
-```
+```java
 public class Main {
     public static void main(String[] args) {
         Calculator.printSum(5, 2);
@@ -3072,7 +3069,7 @@ If changes are made to a static variables, **all instances of the class will be 
 They aren't used very often, but can be useful sometimes.
 
 An example:
-```
+```java
 class Dog {
     private static name;
     public Dog(String name) {
@@ -3084,7 +3081,7 @@ class Dog {
 }
 ```
 The Main class:
-```
+```java
 public class Main {
     public static void main(Strings[] args) {
         Dog rex = new Dog("Rex");
@@ -3115,7 +3112,7 @@ For example, a **Vehicle** class and a **Car** class have a relationship of inhe
 For a class **Computer**, the motherboard, its case, and the monitor are not computers, but they all derive from computer. They are **compositions** of a computer. Or, in other words, the computer **has** this components.
 
 For the PC example, we have the **Resolution** class:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Resolution {
@@ -3140,7 +3137,7 @@ public class Resolution {
 }
 ```
 Which is a composition of the **Monitor** class:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Monitor {
@@ -3180,7 +3177,7 @@ public class Monitor {
 }
 ```
 We also have the **Dimensions** class:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Dimensions {
@@ -3210,7 +3207,7 @@ public class Dimensions {
 }
 ```
 Which is a composition of the (computer) **Case** class:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Case {
@@ -3250,7 +3247,7 @@ public class Case {
 }
 ```
 We have the **Motherboard** class as well:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Motherboard {
@@ -3295,7 +3292,7 @@ public class Motherboard {
 }
 ```
 The **Monitor**, **Case**, and **Motherboard** classes compose the **Computer** class:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Computer {
@@ -3327,7 +3324,7 @@ public class Computer {
 And the advantage here over [inheritance](#inheritance) is that we can actually with [inheritance](#inheritance), we can only extend one class. Here, we were able to call three different classes.
 
 The in the **main** method:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
@@ -3364,7 +3361,7 @@ We access the methods from the components by calling the getters from the main P
 - getOneCase() returns a Case data type, which has the pressPowerButton() method.
 
 We can further protect the methods of the composition by making private methods in the **Computer** class:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Computer {
@@ -3405,7 +3402,7 @@ public class Computer {
 }
 ```
 By making **drawLogo()** private, it can only be called in within the class. Afterwards, we made the public **powerUp()** method that calls it and, since this one is public, we can call it in the main function:
-```
+```java
 package com.fridaynightsoftwares;
 
 public class Main {
