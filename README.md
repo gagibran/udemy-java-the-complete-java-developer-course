@@ -10,6 +10,7 @@
     - [Indentation and whitespace](#indentation-and-whitespace)
     - [Scope](#scope)
     - [Class files](#class-files)
+    - [Creating multiple classes in one Java file](#creating-multiple-classes-in-one-java-file)
 - [Primitive types](#primitive-types)
     - [Integer](#integer)
     - [Byte](#byte)
@@ -60,6 +61,7 @@
     - [Composition](#composition)
     - [Using composition or inheritance](#using-composition-or-inheritance)
     - [Encapsulation](#encapsulation)
+    - [Polymorphism](#polymorphism)
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -95,13 +97,13 @@ Process finished with exit code 0
 ```
 If nothing goes wrong.
 
-Java's print out statement is **System.out.println()**, which prints data and jumps a line.
+Java's print out statement is `System.out.println()`, which prints data and jumps a line.
 
-We also have **System.out.print()**, which prints data without jumping a line.
+We also have `System.out.print()`, which prints data without jumping a line.
 
 All java lines **MUST** end with a semi-colon.
 
-**Static, void, and String[] args will be discussed in detail later on.**
+**`Static`, `void`, and `String[]` args will be discussed in detail later on.**
 
 Additionally, [here's a cool guide](https://google.github.io/styleguide/javaguide.html) from Google on how to style a Java code.
 
@@ -132,7 +134,7 @@ public class Hello {
     }
 }
 ```
-This prints: 48.
+This prints: `48`.
 
 We can also create variables with expressions using other variables:
 ```java
@@ -147,7 +149,7 @@ public class Hello {
     }
 }
 ```
-This prints out: 943.
+This prints out: `943`.
 
 We can also concatenate string with variables by using the plus sign:
 ```java
@@ -162,7 +164,7 @@ public class Hello {
     }
 }
 ```
-Which prints out: The value is 943
+Which prints out: `The value is 943`.
 
 We can create variables without assigning any value to them, in a declaration statement:
 ```java
@@ -335,6 +337,90 @@ They are a binary file, the compiled version of a Java script.
 They have the ".class" extension and normally, depending on the IDE, can be found under the project's directory, in "out/production/<className\>", where className is the name of the main class of our project.
 
 If we have a package as a company, it stores under the company's package directory structure: "out/production/<className\>/com/fridaynightsoftwares".
+
+### Creating multiple classes in one Java file
+
+We can create multiple classes on a single file, but that is not good practice and should be avoided.
+
+This is normally done when we need to create multiple small and compact classes that are no complicated and easy to maintain.
+
+But they can only be accessed by classes on the same package and cannot have any access modifiers.
+
+Example:
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+    }
+}
+
+class Movie {
+    private String name;
+
+    public Movie(String name) {
+        this.name = name;
+    }
+
+    public String plot() {
+        return "No plot here.";
+    }
+}
+
+class Jaws extends Movie {
+
+    public Jaws() {
+        super("Jaws");
+    }
+
+    @Override
+    public String plot() {
+        return "Shark eats a lot of people.";
+    }
+}
+
+class IndependenceDay extends Movie {
+
+    public IndependenceDay() {
+        super("Independence Day");
+    }
+
+    @Override
+    public String plot() {
+        return "Aliens attempt to take over planet Earth.";
+    }
+}
+
+class MazeRunner extends Movie {
+    public MazeRunner() {
+        super("Maze Runner");
+    }
+
+    @Override
+    public String plot() {
+        return "Kids try to escape a maze.";
+    }
+}
+
+class StartWars extends Movie {
+    public StartWars() {
+        super("Star Wars");
+    }
+
+    @Override
+    public String plot() {
+        return "Imperial forces try to take over the galaxy.";
+    }
+}
+
+class ForgettableMovie extends Movie {
+    public ForgettableMovie() {
+        super("Forgettable");
+    }
+}
+```
 
 ## Primitive types
 
@@ -736,7 +822,7 @@ Isn't overwritten by "Trying to change the string.". Instead, Java deletes this 
 
 In many cases we have to convert a string into some other data type, such as an int.
 
-One of the cases is when we read input from an user using the scanner class.
+One of the cases is when we read input from an user using the `Scanner` class.
 
 We can use a **parsing method** to convert it into a primitive data type.
 
@@ -749,7 +835,7 @@ public class Main {
     }
 }
 ```
-Here we have the **Integer** wrapper class and its **static** parsing method, **parseInt()**.
+Here we have the `Integer` wrapper class and its `static` parsing method, `parseInt()`.
 
 This method will try to convert the string into an integer. The parsing will be successful if the string is, indeed, a number.
 
@@ -778,15 +864,15 @@ public class Main {
 
 ### Reading user input
 
-We can get user input by creating a variable of type **Scanner**, which, like [strings](#strings), is a custom class, not a primitive type.
+We can get user input by creating a variable of type `Scanner`, which, like [strings](#strings), is a custom class, not a primitive type.
 
-The **Scanner** class is define inside a package called **java.util.Scanner**, thus it has to be imported by our code for this to work.
+The `Scanner` class is define inside a package called `java.util.Scanner`, thus it has to be imported by our code for this to work.
 
 We can use this module by stating its import in the beginning of our code.
 
-The **new** keyword is further detailed in [classes](#classes), but we use it to create an **instance** of the class.
+The `new` keyword is further detailed in [classes](#classes), but we use it to create an **instance** of the class.
 
-The **Scanner** class takes the argument **System.in**, which allows us to read input from users of our application.
+The `Scanner` class takes the argument `System.in`, which allows us to read input from users of our application.
 
 An example:
 ```java
@@ -802,11 +888,11 @@ public class Main {
     }
 }
 ```
-Here we also have the string **name** equal to the method **nextLine()** from the **Scanner** class (lowercase **scanner** is just an instance of the **Scanner** class).
+Here we also have the string `name` equal to the method `nextLine()` from the `Scanner` class (lowercase `Scanner` is just an instance of the `Scanner` class).
 
-This means that the input will be stored in the **name** variable.
+This means that the input will be stored in the `name` variable.
 
-Afterwards, we close the class for memory cleaning by using the **close()** method from the **Scanner** class.
+Afterwards, we close the class for memory cleaning by using the `close()` method from the `Scanner` class.
 
 When we run this code snippet, we'll be prompted to input our name in the console:
 
@@ -819,7 +905,7 @@ Gabriel
 Gabriel
 ```
 
-We can automatically get an input as an integer by using the method **nextInt()** from the **Scanner** class:
+We can automatically get an input as an integer by using the method `nextInt()` from the `Scanner` class:
 ```java
 import java.util.Scanner;
 
@@ -833,21 +919,21 @@ public class Main {
     }
 }
 ```
-For an input of **1994**, this prints out:
+For an input of `1994`, this prints out:
 ```
 Enter your year of birth:
 1994
 27
 ```
 
-The **Scanner** class has methods to read all primitive data types, like
-**nextByte()**, **nextShort()** etc.
+The `Scanner` class has methods to read all primitive data types, like
+`nextByte()`, `nextShort()` etc.
 
-**A very important note**: since these data type methods don't actually jump a line, like **nextLine()** do, if we stack one of them with a **nextLine()**, it will skip this input.
+**A very important note**: since these data type methods don't actually jump a line, like `nextLine()` do, if we stack one of them with a `nextLine()`, it will skip this input.
 
-This happens because internally, the scanner is checking for a line separator, so when we hit the **enter** key, it serves as input to feed **nextLine()**.
+This happens because internally, the scanner is checking for a line separator, so when we hit the `enter` key, it serves as input to feed `nextLine()`.
 
-The solution is to place another **nextLine()** method, but without assigning it to any variable, just to be fed this enter key that we press when we input a number.
+The solution is to place another `nextLine()` method, but without assigning it to any variable, just to be fed this enter key that we press when we input a number.
 
 Example:
 ```java
@@ -866,7 +952,7 @@ public class Main {
     }
 }
 ```
-For the input **1994**, this will output:
+For the input `1994`, this will output:
 ```
 Enter your year of birth: 
 1994
@@ -874,7 +960,7 @@ Enter your name:
 
 27
 ```
-Note how it skips the **enter your name** input.
+Note how it skips the `enter your name` input.
 
 The fix:
 ```java
@@ -906,7 +992,7 @@ Gabriel
 
 **A second problem that we have to take care** is when an user inputs a different data type that is being requested by the program.
 
-We can handle this by using the **hasNextInt()** method from the **Scanner** class. This method returns wether the next input entered is of type **int**.
+We can handle this by using the `hasNextInt()` method from the `Scanner` class. This method returns wether the next input entered is of type `int`.
 
 We can use this inside an if-else or switch statement:
 ```java
@@ -931,9 +1017,9 @@ public class Main {
     }
 }
 ```
-If the variable **yearOfBirth** is not in the range of 0 (included) and 2021 (included) and if it's not an integer, it outputs **Invalid year.**
+If the variable `yearOfBirth` is not in the range of 0 (included) and 2021 (included) and if it's not an integer, it outputs `Invalid year.`
 
-This method is available for the other primitive types, like **hasNextByte()**, **hasNextShort()** etc.
+This method is available for the other primitive types, like `hasNextByte()`, `hasNextShort()` etc.
 
 ## Operators, operands, and expressions
 
@@ -1492,7 +1578,7 @@ public class Overloading {
 ```
 We do that instead of having to create three methods with different names that do almost the same thing.
 
-We can overload **static** and **instance** methods.
+We can overload `static` and **instance** methods.
 
 We can also overload methods that come from a [parent class](#inheritance) (derived methods) when we're dealing with [inheritance](#inheritances).
 
@@ -1554,7 +1640,7 @@ public class Main {
 
 We utilize the keyword **switch** followed by the variable to be tested inside the parenthesis.
 
-Inside the curly brackets, we utilize the keyword **case** followed by the condition to be tested. In the example, **case 1** is testing if the variable **switchValue** is equal to 1.
+Inside the curly brackets, we utilize the keyword `Case` followed by the condition to be tested. In the example, **case 1** is testing if the variable **switchValue** is equal to 1.
 
 Normally, the flow would continue to the next case, even if the condition isn't met (i.e. it wouldn't print "Value was 1"). Thus, we utilize the keyword **break** to break out from the statement and not go to the next case.
 
@@ -1635,7 +1721,7 @@ public class Main {
 
 **We just have to be careful with uppercase and lowercase for chars and strings, since Java is case sensitive.**
 
-For strings, we can deal with this problem by applying the **toLowerCase()** method from the **String** wrapper class to make all characters of a string lowercase:
+For strings, we can deal with this problem by applying the `toLowerCase()` method from the **String** wrapper class to make all characters of a string lowercase:
 ```java
 public class Main {
     public static void main(String[] args) {
@@ -1923,9 +2009,9 @@ A class is a blueprint for creating an object. A container that has all of the s
 
 What benefits do classes bring us? For one, we can define custom data types, giving us more possibilities than a regular primitive type would.
 
-The **public** keyword is an **access modifier**. In this particular case, this modifier grants that other classes will have full access to our created one. More on that later.
+The `public` keyword is an **access modifier**. In this particular case, this modifier grants that other classes will have full access to our created one. More on that later.
 
-Generally, a large majority of classes are **public**.
+Generally, a large majority of classes are `public`.
 
 Example:
 ```java
@@ -1939,7 +2025,7 @@ These are the variables that are created inside a class. They can be accessed an
 
 When we create a field, we also need to give it an access modifier.
 
-As a general rule, the modifiers given to **fields** are **private**, meaning that **encapsulated fields can only be accessed by elements inside of their parent class**.
+As a general rule, the modifiers given to **fields** are `private`, meaning that **encapsulated fields can only be accessed by elements inside of their parent class**.
 
 In other words, the fields from a class won't be available to other classes.
 
@@ -1968,7 +2054,7 @@ Strings will have a default value of **null**, which is actually the **internal 
 
 Just like we've been seeing so far, a method is a function defined in a class.
 
-We normally state them with the **public** access modifier so that they can be accessed outside of our class.
+We normally state them with the `public` access modifier so that they can be accessed outside of our class.
 
 A convention for naming methods that change the fields of a class is to start them with the word **set**. These methods are known as **setters**.
 
@@ -2042,9 +2128,9 @@ public class Car {
     }
 }
 ```
-In this case, the **model** argument is being set to lowercase, then, being compared with the value of **"carrera"** or **"civic"**. The value of the [field](#field) **model** is being set according to this validation.
+In this case, the `model` argument is being set to lowercase, then, being compared with the value of `"carrera"` or `"civic"`. The value of the [field](#field) `model` is being set according to this validation.
 
-Here, we're using the method **equals()** from the string class because this method **compares the value (or content) of the string variable validModel with the value "carrera" or "civic"**. The comparison operator (==) **checks if both variables are pointing to the same memory location**.
+Here, we're using the method `equals()` from the string class because this method **compares the value (or content) of the string variable validModel with the value "carrera" or "civic"**. The comparison operator (==) **checks if both variables are pointing to the same memory location**.
 
 More on that can be found in this [GeeksForGeeks article](https://www.geeksforgeeks.org/difference-equals-method-java/#:~:text=We%20can%20use%20%3D%3D%20operators,of%20values%20in%20the%20objects.)
 
@@ -2076,25 +2162,25 @@ public class Car {
 
 and passed in "Carrera" or "Civic" as arguments, we would still get "Unknown" as an output, because the string **validModel** would be in a different memory location as the newly created "carrera" string.
 
-**Note**: Local variables that are inside a public method do not need to have a modifier, they are **public**.
+**Note**: Local variables that are inside a public method do not need to have a modifier, they are `public`.
 
 ### The this keyword
 
-In the [last section](#methods-in-classes) we defined the setter and the getter for the model using a **this** keyword.
+In the [last section](#methods-in-classes) we defined the setter and the getter for the model using a `this` keyword.
 
 It is a keyword used to indicate that the variable that we're dealing with is the parent class' [field](#fields).
 
-In the case of **setModel()**, we have to **model** variables, but one is a [field](#fields) and the other one is an **argument** passed to the class.
+In the case of `setModel()`, we have to **model** variables, but one is a [field](#fields) and the other one is an **argument** passed to the class.
 
 Thus, we're stating that **the [field](#fields) model should be equal to the string model passed in as an argument to that method.**
 
-The same can be said to the getter function **getModel()**. We want to return the [field](#fields) **model**.
+The same can be said to the getter function `getModel()`. We want to return the [field](#fields) **model**.
 
 ### Objects
 
-An object is an **instance** os a [class](#classes). We create an object of a class when we assign it to a variable in the **main** method.
+An object is an **instance** os a [class](#classes). We create an object of a class when we assign it to a variable in the `main()` method.
 
-Example for the **Car** class:
+Example for the `Car` class:
 ```java
 package com.fridaynightsoftwares; // Package containing the class Car.
 
@@ -2106,15 +2192,15 @@ public class Main {
     }
 }
 ```
-Here we're creating a variable called **porsche**, of type **Car**, and we're assigning a **new** instance of **Car**.
+Here we're creating a variable called `porsche`, of type `Car`, and we're assigning a `new` instance of `Car`.
 
-The same can be said for the **honda** variable.
+The same can be said for the `honda` variable.
 
-To access the elements inside a class from an object, we use the **dot (.)** operator. For example, the [scanner](#reading-user-input) instances from the **Scanner** class that we created can access the methods **nextLine()**, **hasNextInt()** and so on. We can also access a class' fields using the **dot**.
+To access the elements inside a class from an object, we use the **dot (.)** operator. For example, the [scanner](#reading-user-input) instances from the `Scanner` class that we created can access the methods `nextLine()`, `hasNextInt()` and so on. We can also access a class' fields using the **dot**.
 
-In our case, that won't be possible, because the fields we created are **private** and can only be accessed in within their parent class **Car**.
+In our case, that won't be possible, because the fields we created are `private` and can only be accessed in within their parent class `Car`.
 
-If we were to make one the field **public** (which is bad practice) for the sake of arguments, we could access and modify it in our **main** method:
+If we were to make one the field `public` (which is bad practice) for the sake of arguments, we could access and modify it in our `main()` method:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2142,7 +2228,7 @@ public class Main {
 ```
 But, since this violates the rules of **encapsulation**, it is bad practice.
 
-Instead, we use the setter and getter functions that we previously defined. Since they are **public** methods, they can be accessed outside of their parent class by this object:
+Instead, we use the setter and getter functions that we previously defined. Since they are `public` methods, they can be accessed outside of their parent class by this object:
 
 ```java
 package com.fridaynightsoftwares;
@@ -2193,7 +2279,7 @@ Unknown
 
 ### Constructors
 
-A constructor is invoked whenever the **new** keyword is used to create an object.
+A constructor is invoked whenever the `new` keyword is used to create an object.
 
 It's the class' initialization method: we can create custom objects with custom starting fields, that can be used within the class' methods.
 
@@ -2259,7 +2345,7 @@ public class BankAccount {
     }
 }
 ```
-We can set the initial values by calling the setter methods in the **main** method:
+We can set the initial values by calling the setter methods in the `main()` method:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2293,7 +2379,7 @@ John Doe
 32443456
 ```
 
-Or, instead, we can create a **constructor** method in the **BankAccount** class:
+Or, instead, we can create a **constructor** method in the `BankAccount` class:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2365,7 +2451,7 @@ public class BankAccount {
     }
 }
 ```
-Then, we can create an [object](#object) in the **main** method by passing arguments to the class call:
+Then, we can create an [object](#object) in the `main()` method by passing arguments to the class call:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2472,7 +2558,7 @@ public class BankAccount {
     }
 }
 ```
-Invoking both constructors, with and without arguments, in the **main** method:
+Invoking both constructors, with and without arguments, in the `main()` method:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2650,11 +2736,11 @@ name@example.com
 Default Name
 555555555
 ```
-As seen in the example above, we call a constructor inside another one by using the **this** keyword with arguments from the overloaded constructor that takes in arguments.
+As seen in the example above, we call a constructor inside another one by using the `this` keyword with arguments from the overloaded constructor that takes in arguments.
 
 **In this use case of the "this" keyword, it MUST be the first statement inside a constructor. This means that we can only call one constructor inside another one**.
 
-**Important note**: It's not advisable to call methods inside constructors, because when the **new** keyword is used and a constructor is invoked, some aspects of initialization may not have been finished and the methods from the class may not have been processed by JVM already.
+**Important note**: It's not advisable to call methods inside constructors, because when the `new` keyword is used and a constructor is invoked, some aspects of initialization may not have been finished and the methods from the class may not have been processed by JVM already.
 
 ### Passing a custom data type as an argument
 
@@ -2710,11 +2796,11 @@ public class Point {
     }
 }
 ```
-Here, the last overloaded method **distance()** takes in a data of type **Point**, which happens to be an object created from the method's own parent class.
+Here, the last overloaded method `distance()` takes in a data of type **Point**, which happens to be an object created from the method's own parent class.
 
-This is fine to do and it works. Since we know that this class has the getters **getX()** and **getY()**, we can assume the data of type **Point** passed as argument for this method will also have these public methods available. They can be used to retrieve the data needed.
+This is fine to do and it works. Since we know that this class has the getters `getX()` and `getY()`, we can assume the data of type `Point` passed as argument for this method will also have these public methods available. They can be used to retrieve the data needed.
 
-The **main** to confirm the statements above is:
+The `main()` to confirm the statements above is:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2727,11 +2813,11 @@ public class Main {
     }
 }
 ```
-We created two objects of type **Point** named **first** and **second**. Them, we passed **second** into the overloaded method **distance()** (from the **Point** class) that takes data of type **Point** as an argument.
+We created two objects of type `Point` named `first` and `second`. Them, we passed `second` into the overloaded method `distance()` (from the `Point`class) that takes data of type `Point` as an argument.
 
 Inside this method, we retrieve the data:
-1. **getX()** returns **3**;
-2. **getY()** returns **1**.
+1. `getX()` returns `3`;
+2. `getY()` returns `1`.
 
 Then, we make the calculations with the data retrieved.
 
@@ -2739,17 +2825,17 @@ Then, we make the calculations with the data retrieved.
 
 We can inherit states and behaviors from other classes, like fields and methods.
 
-These are called **derived methods** and **derived fields** when we're in the child class.  
+These are called **derived methods** and **derived fields** when we're in the child class.
 
 Taking a real world example: animals. Mammals inherit characteristics from the animal class. Humans inherit characteristics from the mammal class.
 
-We use the **extends** keyword to inherit from a class.
+We use the `extends` keyword to inherit from a class.
 
 When we inherit a class, we also have to call the parent class' constructor in our child class' constructor.
 
-We use the keyword **super**. When we called an overloaded constructor inside another one in the same class, we used the keyword [this](#the-this-keyword). Now, we use the **super** to indicate that the constructor called belongs to the parent class.
+We use the keyword `super`. When we called an overloaded constructor inside another one in the same class, we used the keyword [this](#the-this-keyword). Now, we use the `super` to indicate that the constructor called belongs to the parent class.
 
-As an example, we create a base class called **Animal**:
+As an example, we create a base class called `Animal`:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2800,7 +2886,7 @@ public class Animal {
 ```
 We see that this class has some fields and a function which are specific to the animal kingdom, but general to animals (eating, moving and physical traits).
 
-Then, we create a **Dog** class, that inherits from **Animal** by using the **extends** keyword:
+Then, we create a `Dog` class, that inherits from `Animal` by using the `extends` keyword:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2832,7 +2918,7 @@ public class Dog extends Animal {
 ```
 Dogs have special traits that are different to some animals and specific to them, like a tail, eyes, teeth and so on.
 
-We finally call the **main** method:
+We finally call the `main()` method:
 ```java
 package com.fridaynightsoftwares;
 
@@ -2853,20 +2939,20 @@ Begin ingestion...
 Luna went for a walk!
 This animal is moving at 10 km/h.
 ```
-We are able to call the method **eat()** from the **Animal** class, because it's been inherited from this class by the **Dog** one.
+We are able to call the method `eat()` from the `Animal` class, because it's been inherited from this class by the `Dog` one.
 
-**Important things to note**: We **HAVE** to include in the child class' constructor a call to one upper class constructor by using **super**.
+**Important things to note**: We **HAVE** to include in the child class' constructor a call to one upper class constructor by using `super`.
 
-Think of **super** the same as calling:
+Think of `super` the same as calling:
 ```java
 Animal(name, 1, 1, size, weight);
 ```
 
-The same thing applies to **Dog**'s **walk()** method. The **Animal** class' **move()** method is being called inside of **walk()** by using the **super** keyword.
+The same thing applies to `Dog`'s `walk()` method. The `Animal` class' `move()` method is being called inside of `walk()` by using the `super` keyword.
 
 Then, we can initialize the child class' fields normally.
 
-As a final note, it's important to know that all Java classes inherit the support **java.lang.Object** class, even when we don't use the **extends** keyword.
+As a final note, it's important to know that all Java classes inherit the support **java.lang.Object** class, even when we don't use the `extends` keyword.
 
 ### Overriding methods
 
@@ -2874,7 +2960,7 @@ We can create a method that exists in the parent class, but make it unique for t
 
 It is also called **runtime polymorphism** or **dynamic method dispatch** by Java developers, because the method that is going to be called is decided at runtime by JVM.
 
-We use the **@Override** annotation. Example for the **Dog** class from the [previous topic](#inheritance):
+We use the `@Overriding` annotation. Example for the `Dog` class from the [previous topic](#inheritance):
 ```java
 package com.fridaynightsoftwares;
 
@@ -2911,22 +2997,22 @@ public class Dog extends Animal {
     }
 }
 ```
-When we call the same **main** method from the [previous section](#inheritance), it prints out:
+When we call the same `main()` method from the [previous section](#inheritance), it prints out:
 ```
 Begin ingestion...
 Chomp, chomp
 Luna went for a walk!
 This animal is moving at 10 km/h.
 ```
-Here, since the **Animal** class has the **eat()** method, which prints `begin ingestion...`, we can override it in the child class (**Dog**) and add unique functionalities to it.
+Here, since the `Animal` class has the `eat()` method, which prints `begin ingestion...`, we can override it in the child class (`Dog`) and add unique functionalities to it.
 
 In this example, we're adding another print statement with the text `Chomp, chomp!`.
 
-Notice that we have a **super.eat()** statement. This calls the original method from the super class with its functionalities. It is actually not required to have this line of code there. We can actually completely override the method if we want.
+Notice that we have a `super.eat()` statement. This calls the original method from the super class with its functionalities. It is actually not required to have this line of code there. We can actually completely override the method if we want.
 
-The **@Overriding** annotation is actually not necessary, because if a class has a method that has the same name as a method in the parent class, we can call it by using the **super** keyword. If we don't use that keyword, the compiler will default the method call to the one in the child (or current) class.
+The `@Override` annotation is actually not necessary, because if a class has a method that has the same name as a method in the parent class, we can call it by using the `super` keyword. If we don't use that keyword, the compiler will default the method call to the one in the child (or current) class.
 
-But, using the **@Override** annotation is a best practice for the language, because it improves the readability of the code by:
+But, using the `@Overriding` annotation is a best practice for the language, because it improves the readability of the code by:
 1. Informing that there is a method with the same name in the super class;
 2. If we really intend to override a method and misspell it, the compiler will warn us that there are no methods with that name in the super class.
 
@@ -2938,7 +3024,7 @@ Private methods **cannot be overridden**.
 
 Methods that are final **cannot be overridden**.
 
-A child class can use **super.methodName()** to call the super class version of the overridden method.
+A child class can use `super.methodName()` to call the super class version of the overridden method.
 
 **We cannot override static methods, only instance methods!**
 
@@ -2947,8 +3033,8 @@ A child class can use **super.methodName()** to call the super class version of 
 Recapitulating:
 
 - A [class](#classes) is a blueprint for a collection of components related to each other;
-- An [object](#objects) is created when we use the **new** keyword and "assign" a class to a variable;
-- Instantiating is actually the correct term to use, instead of assigning, when we create an object using the **new** keyword. We **instantiate** a class to a variable. We create an **instance** of a class. Thus, [objects](#objects) are also known as **instances**;
+- An [object](#objects) is created when we use the `new` keyword and "assign" a class to a variable;
+- Instantiating is actually the correct term to use, instead of assigning, when we create an object using the `new` keyword. We **instantiate** a class to a variable. We create an **instance** of a class. Thus, [objects](#objects) are also known as **instances**;
 - References are created when we create an [object](#object) by "assigning" (referencing) it to a already instantiated [object](#object). They will point to the same memory location and, thus, any changes made to one [object](#object), will affect the reference.
 
 Example:
@@ -2992,23 +3078,23 @@ public class Main {
 
 ### Notes about the this keyword and the super keyword
 
-As we already discussed, the **this** keyword can be used to call methods and fields of the current class, and the **super** keyword can be used to call methods and fields of a parent class. commonly used in [method overriding](#overriding-methods).
+As we already discussed, the `this` keyword can be used to call methods and fields of the current class, and the `super` keyword can be used to call methods and fields of a parent class. commonly used in [method overriding](#overriding-methods).
 
-But, it's important to note that **we cannot use this keyword in any static block or method in a class**. This will lead to compile-time errors. More on **static** classes later on.
+But, it's important to note that **we cannot use this keyword in any static block or method in a class**. This will lead to compile-time errors. More on `static` classes later on.
 
-Although we been using the **this** keyword in getters, it is actually optional to use there, because getters don't accept any parameters or arguments, so they don't by using a field name in their **return** statement, it can only signify that we're returning a field, even though another method has a variable with the same name as a field. That happens because [method variables are only accessible by members of that same method](#scope).
+Although we been using the `this` keyword in getters, it is actually optional to use there, because getters don't accept any parameters or arguments, so they don't by using a field name in their **return** statement, it can only signify that we're returning a field, even though another method has a variable with the same name as a field. That happens because [method variables are only accessible by members of that same method](#scope).
 
-But it's useful to put a **this** keyword in a getter, so that we don't get confused.
+But it's useful to put a `this` keyword in a getter, so that we don't get confused.
 
-We can use the **this()** method call to call a constructor in another overloaded constructor. It has to be the first statement in that constructor. It helps to reduce duplicated code.
+We can use the `this()` method call to call a constructor in another overloaded constructor. It has to be the first statement in that constructor. It helps to reduce duplicated code.
 
-We can use the **super()** method call to call a constructor from the super class into a child's constructor. It also must be first statement in a constructor.
+We can use the `super()` method call to call a constructor from the super class into a child's constructor. It also must be first statement in a constructor.
 
-**Note**: A constructor can call the **this()** method or the **super()** method, but **never both at the same time**.
+**Note**: A constructor can call the `this()` method or the `super()` method, but **never both at the same time**.
 
 ### Static and instance methods
 
-Static methods are declared using a **static** modifier.
+Static methods are declared using a `static` modifier.
 
 Static methods cannot access instance methods and instance variables directly.
 
@@ -3018,7 +3104,7 @@ Thus, we cannot use [the this keyword](#the-this-keyword) in a static method.
 
 Whenever we see methods that **don't use instance variables**, they should be declared as static.
 
-As an example, the **main** method is a static method that's called by the JVM when it starts an application.
+As an example, the `main()` method is a static method that's called by the JVM when it starts an application.
 
 Another example, for the class **Calculator**:
 ```java
@@ -3028,7 +3114,7 @@ public class Calculator {
     }
 }
 ```
-And the **Main** class:
+And the `main()` class:
 ```java
 public class Main {
     public static void main(String[] args) {
@@ -3045,9 +3131,9 @@ Which prints out:
 sum = 7
 Hi, Gabriel.
 ```
-We can see that both methods, **printSum()** and **sayHello** are static, thus, cannot be instantiated into objects. For this reason, when we call them, we call them from their parent classes directly.
+We can see that both methods, `printSum()` and `sayHello` are static, thus, cannot be instantiated into objects. For this reason, when we call them, we call them from their parent classes directly.
 
-On the other hand, **instance methods** are methods that can only be accessed when we create an [object](#objects) using the **new** keyword.
+On the other hand, **instance methods** are methods that can only be accessed when we create an [object](#objects) using the `new` keyword.
 
 
 Instance methods can access other instance methods, instance variables, static methods and static variables directly.
@@ -3058,7 +3144,7 @@ Here's a diagram from Tim that helps us decide when to create an instance or a s
 
 ### Static and instance variables
 
-Similarly as methods, **static variables** are declared using the keyword **static**.
+Similarly as methods, **static variables** are declared using the keyword `static`.
 
 **Static variables** are also known as **static member variables**.
 
@@ -3095,7 +3181,7 @@ public class Main {
     }
 }
 ```
-Since **name** is a static variable and when we create an instance of **Dog** we change it, every instance created of **Dog** will also change. Thus, in this particular example, **it wouldn't be a good idea to use a static variable for name**.
+Since `name` is a static variable and when we create an instance of `Dog` we change it, every instance created of `Dog` will also change. Thus, in this particular example, **it wouldn't be a good idea to use a static variable for name**.
 
 On the other hand, instance variables is copied to every instance created.
 
@@ -3107,11 +3193,11 @@ They represent the state of an instance (or object).
 
 We've learned [inheritance](#inheritance) deals with relationship between classes. **Composition**, on the other hand, deals with a "has a relationship" with the parent class.
 
-For example, a **Vehicle** class and a **Car** class have a relationship of inheritance, because a car is a vehicle.
+For example, a `Vehicle` class and a `Car` class have a relationship of inheritance, because a car is a vehicle.
 
-For a class **Computer**, the motherboard, its case, and the monitor are not computers, but they all derive from computer. They are **compositions** of a computer. Or, in other words, the computer **has** this components.
+For a class `Computer`, the motherboard, its case, and the monitor are not computers, but they all derive from computer. They are **compositions** of a computer. Or, in other words, the computer **has** this components.
 
-For the PC example, we have the **Resolution** class:
+For the PC example, we have the `Resolution` class:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3136,7 +3222,7 @@ public class Resolution {
     }
 }
 ```
-Which is a composition of the **Monitor** class:
+Which is a composition of the `Monitor` class:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3176,7 +3262,7 @@ public class Monitor {
     }
 }
 ```
-We also have the **Dimensions** class:
+We also have the `Dimensions` class:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3206,7 +3292,7 @@ public class Dimensions {
     }
 }
 ```
-Which is a composition of the (computer) **Case** class:
+Which is a composition of the (computer) `Case` class:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3246,7 +3332,7 @@ public class Case {
     }
 }
 ```
-We have the **Motherboard** class as well:
+We have the `Motherboard` class as well:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3291,7 +3377,7 @@ public class Motherboard {
     }
 }
 ```
-The **Monitor**, **Case**, and **Motherboard** classes compose the **Computer** class:
+The `Monitor`, `Case`, and `Motherboard` classes compose the `Computer` class:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3323,7 +3409,7 @@ public class Computer {
 ```
 And the advantage here over [inheritance](#inheritance) is that we can actually with [inheritance](#inheritance), we can only extend one class. Here, we were able to call three different classes.
 
-The in the **main** method:
+The in the `main()` method:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3360,7 +3446,7 @@ We access the methods from the components by calling the getters from the main P
 - getMotherboard() returns a Motherboard data type, which has the loadProgram() method;
 - getOneCase() returns a Case data type, which has the pressPowerButton() method.
 
-We can further protect the methods of the composition by making private methods in the **Computer** class:
+We can further protect the methods of the composition by making private methods in the `Computer` class:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3401,7 +3487,7 @@ public class Computer {
     }
 }
 ```
-By making **drawLogo()** private, it can only be called in within the class. Afterwards, we made the public **powerUp()** method that calls it and, since this one is public, we can call it in the main function:
+By making `drawLogo()` private, it can only be called in within the class. Afterwards, we made the public `powerUp()` method that calls it and, since this one is public, we can call it in the main function:
 ```java
 package com.fridaynightsoftwares;
 
@@ -3452,3 +3538,121 @@ For example, instead of accessing a field from a class directly, we restrict its
 Another example is when we make internal changes to the fields of a class, we would have to change them everywhere else if we're creating objects and accessing the fields directly. This can certainly be a problem for big applications, with huge amounts of lines of code.
 
 We've been using this concept all the time up to this point in the course.
+
+### Polymorphism
+
+We can access unique functionalities from children class, that inherits from a base class, from a unique object.
+
+Example:
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        for (int i = 1; i < 11; i++) {
+            Movie movie = randomMovie();
+            System.out.println("Movie #" + i + ": " + movie.getName() +
+                                "\n" + "Plot: " + movie.plot() + "\n"); // Polymorphism in movie.plot().
+        }
+    }
+
+    public static Movie randomMovie() {
+
+        // Random variable that ranges from 1 one to 5, since casting to int rounds down the number:
+        int randomNumber = (int) (Math.random() * 5 + 1); // Returns a double from 0.0 to 0.999... by default.
+        System.out.println("Random number generated: " + randomNumber);
+        switch (randomNumber) {
+            case 1:
+                return new Jaws();
+            case 2:
+                return new IndependenceDay();
+            case 3:
+                return new MazeRunner();
+            case 4:
+                return new StartWars();
+            case 5:
+                return new ForgettableMovie();
+            default:
+                return null; // In case an invalid number is passed.
+        }
+    }
+}
+
+class Movie {
+    private String name;
+
+    public Movie(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String plot() {
+        return "No plot here.";
+    }
+}
+
+class Jaws extends Movie {
+
+    public Jaws() {
+        super("Jaws");
+    }
+
+    @Override
+    public String plot() {
+        return "Shark eats a lot of people.";
+    }
+}
+
+class IndependenceDay extends Movie {
+
+    public IndependenceDay() {
+        super("Independence Day");
+    }
+
+    @Override
+    public String plot() {
+        return "Aliens attempt to take over planet Earth.";
+    }
+}
+
+class MazeRunner extends Movie {
+    public MazeRunner() {
+        super("Maze Runner");
+    }
+
+    @Override
+    public String plot() {
+        return "Kids try to escape a maze.";
+    }
+}
+
+class StartWars extends Movie {
+    public StartWars() {
+        super("Star Wars");
+    }
+
+    @Override
+    public String plot() {
+        return "Imperial forces try to take over the galaxy.";
+    }
+}
+
+class ForgettableMovie extends Movie {
+    public ForgettableMovie() {
+        super("Forgettable");
+    }
+}
+```
+Breakdown of what's happening here:
+
+All of these children classes inherits from the base `Movie`, and all of them have overridden the method `plot()` **except the `ForgettableMovie` class**.
+
+When we created the method `randomMovie()` that has a return type of `Movie` in the `Main` class, we made it return one of the children types of `Movie` (which is possible).
+
+Now, when we created the object `movie` of type `Movie` in the `main()` method, we are calling the method `plot()` on it. The key part here is that, since `movie` will be of type of one of `Movie`'s children, it's using polymorphism to determine which of the overridden `plot()` methods from the children it will call.
+
+When `movie` is instantiated as `ForgettableMovie`, which doesn't actually have an overridden `plot()`, JVM uses `plot()` from the base `Movie` class, since `ForgettableMovie` **extends** `Movie`.
