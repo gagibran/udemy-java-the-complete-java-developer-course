@@ -1,6 +1,6 @@
 # Tim Buchalka's Java Programming Masterclass for Software Developers
 
-## A repository aimed to store code generated from [the course](https://www.udemy.com/course/java-the-complete-java-developer-course/).
+A repository aimed to store code generated from [the course](https://www.udemy.com/course/java-the-complete-java-developer-course/).
 
 ## Table of contents
 - [Some concepts](#some-concepts)
@@ -62,6 +62,9 @@
     - [Using composition or inheritance](#using-composition-or-inheritance)
     - [Encapsulation](#encapsulation)
     - [Polymorphism](#polymorphism)
+- [Arrays and lists](#arrays-and-lists)
+    - [Arrays](#arrays)
+
 ## Some concepts
 
 Only a brief explanation on the elements used to create a "hello, world" in Java. They'll be better covered later on.
@@ -3656,3 +3659,188 @@ When we created the method `randomMovie()` that has a return type of `Movie` in 
 Now, when we created the object `movie` of type `Movie` in the `main()` method, we are calling the method `plot()` on it. The key part here is that, since `movie` will be of type of one of `Movie`'s children, it's using polymorphism to determine which of the overridden `plot()` methods from the children it will call.
 
 When `movie` is instantiated as `ForgettableMovie`, which doesn't actually have an overridden `plot()`, JVM uses `plot()` from the base `Movie` class, since `ForgettableMovie` **extends** `Movie`.
+
+## Arrays and lists
+
+We can store multiple elements within a single data structure.
+
+### Arrays
+
+They are collections in that we can store multiple values **of the same type**. It works for all primitive and custom types.
+
+We declare an array as:
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        int[] integerArray = new int[10];
+    }
+}
+```
+To specify that we're creating an array, we need to open and close square brackets right after the data type.
+
+We use the `new` keyword here to allocate memory for the array on the heap.
+
+Finally, we include the size of our array in the square brackets after the data type, after using the `new` keyword.
+
+Since arrays are zero-indexed, this one actually has a size of **11**. It ranges from **0** to **10**.
+
+We can assign a value to an element in the array and access it as well:
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        int[] integerArray = new int[10];
+        integerArray[5] = 10; // Assigns to element number 6.
+        System.out.println(integerArray[10]);
+    }
+}
+```
+This prints out `10`.
+
+If we try to access an element that's not been allocated to the array, like `System.out.println(integerArray[11])`, it won't compile.
+
+Since an `int` type defaults to 0, all other elements in this array will be 0.
+
+There's another way to initialize an array, by using the initialization syntax:
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        char[] charArray = { 'a', 'b', 'c', 'd', 'e', 'f' };
+    }
+}
+```
+Here we don't specify how much space we want to allocate in the heap, because we're already defining the values on its creation.
+
+This array will be of size 6 and range from 0 to 5.
+
+The third way to initialize an array:
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        byte[] bytes = new byte[4];
+        for (byte i = 0; i < bytes.length; i++) {
+            bytes[i] = i;
+        }
+    }
+}
+```
+
+If we want to create an array with a default value, we can use the `Arrays.fill()` method, from the `java.util` package.
+```java
+import java.util.Arrays;
+
+public class Main {
+
+    public static void main(String[] args) {
+        String[] strings = new String[6];
+        Arrays.fill(strings, "None");
+    }
+}
+```
+
+We can put array as methods arguments, just like the `main()` method has an array of strings as an argument:
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        printArray(new int[] { 1, 2, 3, 4, 5, 6 });
+    }
+
+    public static void printArray(int[] array) {
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(array[i]);
+        }
+    }
+}
+```
+Which prints out:
+```
+1
+2
+3
+4
+5
+6
+```
+
+We can also return an array in a method:
+```java
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] ints = getIntegers(5);
+        for (int i = 0; i < ints.length; i++) {
+            System.out.println(ints[i]);
+        }
+    }
+    public static int[] getIntegers(int numberOfElements) {
+        Scanner scanner = new Scanner(System.in);
+        int[] values = new int[numberOfElements];
+        System.out.println("Enter " + numberOfElements + " integer values:");
+        for (int i = 0; i < values.length; i++) {
+            values[i] = scanner.nextInt();
+        }
+        return values;
+    }
+}
+```
+Which prints:
+```
+Enter 5 integer values:
+234
+354
+45
+2
+54
+
+The values are:
+234
+354
+45
+2
+54
+```
+
+**Caution**: arrays cannot be copied like we copy other elements. Just like `Strings`, when we assign an array into an existing one, like:
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        int[] firstArray = new int[] { 1, 2, 3, 4 };
+        int[] secondArray = firstArray;
+    }
+}
+```
+This means that we're just **pointing** `firstArray` to `secondArray` to the same memory address in the heap. Thus, any changes made to `firstArray` will impact `secondArray` directly.
+
+In order to truly copy an array to a new memory location, we need to do it explicitly, like:
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        int[] firstArray = new int[] { 1, 2, 3, 4 };
+        int[] secondArray = new int[firstArray.length];
+        for (int i = 0; i < firstArray.length; i++) {
+            secondArray[i] = firstArray[i];
+        }
+    }
+}
+```
+Or, a better way to copy an array is to use the `copyOf()` method from `java.util.Arrays`:
+```java
+import java.util.Arrays;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] firstArray = new int[] { 1, 2, 3, 4 };
+        int[] secondArray = Arrays.copyOf(firstArray, array.length);
+    }
+}
+```
+Where the first argument is the array to be copied and the second one, is the length of the newly create array.
