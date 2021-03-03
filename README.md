@@ -11,6 +11,7 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
     - [Scope](#scope)
     - [Class files](#class-files)
     - [Creating multiple classes in one Java file](#creating-multiple-classes-in-one-java-file)
+    - [Reference types and reference values](#reference-types-and-reference-values)
 - [Primitive types](#primitive-types)
     - [Integer](#integer)
     - [Byte](#byte)
@@ -64,6 +65,7 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
     - [Polymorphism](#polymorphism)
 - [Arrays and lists](#arrays-and-lists)
     - [Arrays](#arrays)
+    - [Lists and ArrayLists](#lists-and-arraylists)
 
 ## Some concepts
 
@@ -425,19 +427,50 @@ class ForgettableMovie extends Movie {
 }
 ```
 
+### Reference types and reference values
+
+All primitive types are **value types**, they hold a value. They allocate space on the stack memory and in the following example:
+```java
+int a = 10;
+int b = a;
+```
+`a` and `b` are stored in different locations in the stack. So, changes made to `a` don't affect `b`, because `b` is **a copy** of `a`. The same works for the other primitive types.
+
+![Value Type](readme-images/value-type.png)
+
+Arrays, strings, and custom classes are **reference types**. They are allocated in the heap memory. In the following example:
+```java
+String myString = "A string";
+String mySecondString = myString;
+```
+`myString` and `mySecondString` **are the same string**. We don't make a copy of `myString` when we assign it to `mySecondString`. We just point it to the same memory address in the heap. Thus, if we change `myString` to `String changed`, `mySecondString` will change to the same value. The same works for classes and arrays.
+
+That's why we need to use the `equals()` method to compare the contents of two strings, for example, because using the equals operator (`==`) will compare if both strings are pointing to the same memory address.
+
+Each element in array is stored in a different memory locations in the heap.
+
+![Reference Type](readme-images/reference-type.png)
+
+We can **dereference** a reference type by assigning a variable to a new value:
+```java
+String myString = "A string";
+String mySecondString = myString; // Referenced.
+mySecondString = "Another string"; // Dereferencing.
+```
+
 ## Primitive types
 
 ### Integer
 
 As the name says, used to store integer values.
 
-It has a maximum and a minimum value. They can be found by calling the variables "MIN_VALUE" and "MAX_VALUE" inside the "Integer" wrapper class.
+It has a maximum and a minimum value. They can be found by calling the constants `MIN_VALUE` and `MAX_VALUE` inside the `Integer` wrapper class.
 
 All eight primitive data types in Java have wrapper classes.
 
 These are classes have variables and methods that do certain operations regarding the data type.
 
-The MIN_VALUE and MAX_VALUE for the "Integer" wrapper class is:
+The `MIN_VALUE` and `MAX_VALUE` for the `Integer` wrapper class is:
 ```java
 public class Main {
     public static void main(String[] args) {
@@ -502,7 +535,7 @@ It occupies 8 bits in the memory. Thus, it has a width of 8.
 
 Can be used for documentation as well: if someone else is reading our could, they would know that the number passed into our byte variable is within that range.
 
-It also has the "MAX_VALUE" and "MIN_VALUE" variables in the "Byte" wrapper class:
+It also has the `MAX_VALUE` and `MIN_VALUE` variables in the `Byte` wrapper class:
 ```java
 public class Main {
     public static void main(String[] args) {
@@ -527,7 +560,7 @@ Numbers in a range that are a little bigger than bytes.
 
 It occupies 16 bits. Thus, its width is 16.
 
-Short also has the "MAX_VALUE" and "MIN_VALUE" variables in the "Short" wrapper class:
+Short also has the `MAX_VALUE` and `MIN_VALUE` variables in the `Short` wrapper class:
 
 ```java
 public class Main {
@@ -2929,7 +2962,7 @@ public class Main {
 
     public static void main(String[] args) {
         Animal animal = new Animal("Animal", 1, 1, 5, 5);
-        Dog luna = new Dog("Luna", 8, 20, "Short", 2, 4, 1, 32);
+        Dog luna = new Dog("Luna", 8, 20, `Short`, 2, 4, 1, 32);
         luna.eat(); // Calling a method from the Animals class.
         luna.walk();
     }
@@ -3666,7 +3699,7 @@ We can store multiple elements within a single data structure.
 
 ### Arrays
 
-They are collections in that we can store multiple values **of the same type**. It works for all primitive and custom types.
+They are **immutable** collections in that we can store multiple values **of the same type**. It works for all primitive and custom types.
 
 We declare an array as:
 ```java
@@ -3698,7 +3731,7 @@ public class Main {
 ```
 This prints out `10`.
 
-If we try to access an element that's not been allocated to the array, like `System.out.println(integerArray[11])`, it won't compile.
+If we try to access an element that's not been allocated to the array, like `System.out.println(integerArray[11])`, it won't compile. We'll get an `ArrayIndexOutOfBoundsException`.
 
 Since an `int` type defaults to 0, all other elements in this array will be 0.
 
@@ -3806,7 +3839,7 @@ The values are:
 54
 ```
 
-**Caution**: arrays cannot be copied like we copy other elements. Just like `Strings`, when we assign an array into an existing one, like:
+**Caution**: arrays cannot be copied like we copy other elements. Just like `Strings` and classes, they are [reference types](#reference-types-and-reference-values):
 ```java
 public class Main {
 
@@ -3844,3 +3877,72 @@ public class Main {
 }
 ```
 Where the first argument is the array to be copied and the second one, is the length of the newly create array.
+
+### Lists and ArrayLists
+
+A list can hold a collection of a specific type. An `ArrayList` inherits from `List`. It's a **mutable** or **resizable** array.
+
+These collections can also hold objects.
+
+To use the `ArrayList` class, we need to import it from `java.util`, thus, using `java.util.ArrayList`.
+
+the syntax of an `ArrayList` is by instantiating it to an object, using the angle brackets (`<>`) notation: `ArrayList<dataType> varName = new ArrayList<dataType>();`.
+
+Example:
+```java
+import java.util.ArrayList;
+
+public class GroceryList {
+    private ArrayList<String> groceryList = new ArrayList<String>();
+}
+```
+
+Since they're mutable, we can add elements to them. We can use the `add()` method:
+```java
+import java.util.ArrayList;
+
+public class GroceryList {
+    private ArrayList<String> groceryList = new ArrayList<String>();
+    public void addGroceryItem(String item) {
+        groceryList.add(item);
+    }
+}
+```
+
+To retrieve data from a list, we can use some other methods like `size()`.
+
+We can use the enhanced for-loop to easily iterate through arrays and lists:
+```java
+import java.util.ArrayList;
+
+public class GroceryList {
+    private ArrayList<String> groceryList = new ArrayList<String>();
+    public void addGroceryItem(String item) {
+        groceryList.add(item);
+    }
+    public void printGroceryList() {
+        for (String s : groceryList) {
+            System.out.println(s);
+        }
+    }
+}
+```
+
+There's also the `get()` method to retrieve items from the list. It's also zero-indexed:
+```java
+import java.util.ArrayList;
+
+public class Main {
+
+    public static void main(String[] args) {
+        ArrayList<String> groceryList = new ArrayList<String>();
+        groceryList.add("aaaa");
+        System.out.println(groceryList.get(0));
+    }
+}
+```
+But, **be careful**: since lists are mutable and can be resized, they start without any elements. Thus, try to access the index 1, or trying to access element 0 in a list without elements gives us a `IndexOutOfBoundsException`.
+
+We can change individual elements **that already are in the list** using its setter `set()`. Using set on an empty element won't work. It takes as arguments the new value and the index in the list.
+
+We can also remove items with `remove()`. It takes as an argument the index in the list.
