@@ -3946,3 +3946,26 @@ But, **be careful**: since lists are mutable and can be resized, they start with
 We can change individual elements **that already are in the list** using its setter `set()`. Using set on an empty element won't work. It takes as arguments the new value and the index in the list.
 
 We can also remove items with `remove()`. It takes as an argument the index in the list.
+
+We can query the array as well, by using the `contains()` method. It returns a boolean informing weather the data passed to it as a parameter exists in the array or not.
+
+It's also possible to get the index of the element in the list by using `indexOf()`. It returns the index of the element as an integer. It returns `-1` in case the element is not there. We can combine it with `get()` to get the contents of the searched item.
+
+A quick way to copy a `listArray` into another one is by using the `addAll()` method, with the `listArray` to be copied as the argument. This method actually **appends the contents of a `ListArray` to the end of the one that the method is being called**. Example:
+```java
+ArrayList<String> groceryList = new ArrayList<String>();
+ArrayList<String> newArray = new ArrayList<String>();
+newArray.addAll(groceryList);
+```
+
+Another way of copying an `ArrayList` into a new `ArrayList`, at its creation, is by passing the exiting one as a parameter to the new one:
+```java
+ArrayList<String> groceryList = new ArrayList<String>();
+ArrayList<String> nextArray = new ArrayList<String>(groceryList);
+```
+
+We can actually convert an `ArrayList` into a regular array by using the `toArray()` method. As a parameter to this method, we need to pass the array that we want to store the data into. We normally create the array with the same size as the the `ArrayList`:
+```java
+String[] myArray = new String[groceryList.size()];
+groceryList.toArray(myArray);
+```
