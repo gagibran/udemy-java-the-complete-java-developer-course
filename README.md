@@ -66,6 +66,7 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
 - [Arrays and lists](#arrays-and-lists)
     - [Arrays](#arrays)
     - [Lists and ArrayLists](#lists-and-arraylists)
+    - [Autoboxing and unboxing](#autoboxing-and-unboxing)
 
 ## Some concepts
 
@@ -3882,18 +3883,19 @@ Where the first argument is the array to be copied and the second one, is the le
 
 A list can hold a collection of a specific type. An `ArrayList` inherits from `List`. It's a **mutable** or **resizable** array.
 
-These collections can also hold objects.
+These collections can **only** hold class objects. Thus, to create an `ArrayList``of a primitive type, we need to use their respective **wrapper classes**.
 
 To use the `ArrayList` class, we need to import it from `java.util`, thus, using `java.util.ArrayList`.
 
-the syntax of an `ArrayList` is by instantiating it to an object, using the angle brackets (`<>`) notation: `ArrayList<dataType> varName = new ArrayList<dataType>();`.
+the syntax of an `ArrayList` is by instantiating it to an object, using the angle brackets (`<>`) notation: `ArrayList<object> varName = new ArrayList<>();`.
 
 Example:
 ```java
 import java.util.ArrayList;
 
 public class GroceryList {
-    private ArrayList<String> groceryList = new ArrayList<String>();
+    private ArrayList<String> groceryList = new ArrayList<>();
+    private ArrayList<Integer> numbers = new ArrayList<>();
 }
 ```
 
@@ -3902,7 +3904,7 @@ Since they're mutable, we can add elements to them. We can use the `add()` metho
 import java.util.ArrayList;
 
 public class GroceryList {
-    private ArrayList<String> groceryList = new ArrayList<String>();
+    private ArrayList<String> groceryList = new ArrayList<>();
     public void addGroceryItem(String item) {
         groceryList.add(item);
     }
@@ -3935,7 +3937,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<String> groceryList = new ArrayList<String>();
+        ArrayList<String> groceryList = new ArrayList<>();
         groceryList.add("aaaa");
         System.out.println(groceryList.get(0));
     }
@@ -3953,15 +3955,15 @@ It's also possible to get the index of the element in the list by using `indexOf
 
 A quick way to copy a `listArray` into another one is by using the `addAll()` method, with the `listArray` to be copied as the argument. This method actually **appends the contents of a `ListArray` to the end of the one that the method is being called**. Example:
 ```java
-ArrayList<String> groceryList = new ArrayList<String>();
-ArrayList<String> newArray = new ArrayList<String>();
+ArrayList<String> groceryList = new ArrayList<>();
+ArrayList<String> newArray = new ArrayList<>();
 newArray.addAll(groceryList);
 ```
 
 Another way of copying an `ArrayList` into a new `ArrayList`, at its creation, is by passing the exiting one as a parameter to the new one:
 ```java
-ArrayList<String> groceryList = new ArrayList<String>();
-ArrayList<String> nextArray = new ArrayList<String>(groceryList);
+ArrayList<String> groceryList = new ArrayList<>();
+ArrayList<String> nextArray = new ArrayList<>(groceryList);
 ```
 
 We can actually convert an `ArrayList` into a regular array by using the `toArray()` method. As a parameter to this method, we need to pass the array that we want to store the data into. We normally create the array with the same size as the the `ArrayList`:
@@ -3969,3 +3971,53 @@ We can actually convert an `ArrayList` into a regular array by using the `toArra
 String[] myArray = new String[groceryList.size()];
 groceryList.toArray(myArray);
 ```
+
+### Autoboxing and unboxing
+
+When we declare a `ListArray` using a wrapper class, for example `Integer`, we're essentially stating that, inside this list, only objects of type `Integer` will be stored.
+
+Keep in mind that `Integer` is a class, differently than the `int` primitive type. But, even though there's this difference, we're able to store actual `int` primitive types inside the `ListArray`, and also assign this values back to `int`, without getting errors:
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+
+public class Main {
+
+    public static void main(String[] args) {
+        ArrayList<Integer> intArrayList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            intArrayList.add(i * 10);
+        }
+        for (int number : intArrayList) {
+            System.out.println(number);
+        }
+    }
+}
+```
+This is possible because JVM is doing **autoboxing** and **unboxing**.
+
+**Autoboxing** is done when we use the statement `intArrayList.add(i * 10);`. What's actually being used at runtime is:
+```java
+...
+intArrayList.add(Integer.valueOf(i * 10));
+...
+```
+This method converts the primitive type `int` to an `Integer` type. The same is done when we execute:
+```java
+Integer myInt = 54; // Same as: Integer myInt = Integer.valueOf(54);
+```
+
+**Unboxing** happens when we want to access an `Integer` type as a primitive `int`:
+```java
+...
+System.out.println(number.intValue());
+...
+```
+`number` is being converted into an `Integer` type. Like `valueOf()`, we don't have to state the method explicitly. Behind the scenes, the `intValue()` method is being called at runtime. This is the same as:
+```java
+Integer myInt = 54;
+int anotherInt = myInt; // Same as: int anotherInt = myInt.intValue();
+```
+
+The same apply to the other primitive types, with the **unboxing** method named accordingly (`doubleValue()`, `byteValue()` and so on).
