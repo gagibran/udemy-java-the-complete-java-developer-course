@@ -4065,6 +4065,8 @@ The same apply to the other primitive types, with the **unboxing** method named 
 
 ### LinkedList
 
+[CS Dojo](https://www.youtube.com/channel/UCxX9wt5FWQUAAz4UrysqK9A) has a [nice video](https://www.youtube.com/watch?v=WwfhLC16bis) explaining linked lists.
+
 When creating an `ArrayList` to a reference type, which has variable memory allocation, it requires too much computational work when we want to insert an element at an index, or remove an element (using `add()` and `remove()`, for example).
 
 Of course, for small sized `ArrayList`s, this is no problem at all, but for big sized ones, this can take up too much time to process.
