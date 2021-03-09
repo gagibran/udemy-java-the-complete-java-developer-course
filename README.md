@@ -25,6 +25,7 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
 - [Strings](#strings)
     - [Parsing values from a string](#parsing-values-from-a-string)
     - [Reading user input](#reading-user-input)
+    - [Comparing strings](#comparing-strings)
 - [Operators, operands, and expressions](#operators,-operands,-and-expressions)
     - [Abbreviating operators](#abbreviating-operators)
     - [Logical AND operator](#logical-and-operator)
@@ -67,6 +68,7 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
     - [Arrays](#arrays)
     - [Lists and ArrayLists](#lists-and-arraylists)
     - [Autoboxing and unboxing](#autoboxing-and-unboxing)
+    - [LinkedList](#linkedlist)
 
 ## Some concepts
 
@@ -1057,6 +1059,19 @@ public class Main {
 If the variable `yearOfBirth` is not in the range of 0 (included) and 2021 (included) and if it's not an integer, it outputs `Invalid year.`
 
 This method is available for the other primitive types, like `hasNextByte()`, `hasNextShort()` etc.
+
+### Comparing strings
+
+There is a useful method from the `String` class that allows us to compare strings lexicographically, based on the unicode of each individual character on it, the `compareTo()` method. We pass the string to be compared as a parameter to the method:
+
+```java
+String test = "Test string";
+int comparisonOne = test.compareTo("Test string"); // Returns 0. All unicode are equal.
+int comparisonTwo = test.compareTo("A string"); // Returns 19. Unicodes have bigger values.
+int comparisonThree = test.compareTo("W string"); // Return -3. Unicodes have smaller values.
+```
+
+This method can be used to order strings alphabetically.
 
 ## Operators, operands, and expressions
 
@@ -3900,6 +3915,7 @@ public class GroceryList {
 ```
 
 Since they're mutable, we can add elements to them. We can use the `add()` method:
+
 ```java
 import java.util.ArrayList;
 
@@ -3911,9 +3927,34 @@ public class GroceryList {
 }
 ```
 
+We can also insert an element in a position in an `ArrayList` by the index to be inserted as a second argument into `add()`. This means that the element will be inserted at the passed index, and the old element at that position will be pushed:
+
+```java
+ArrayList<String> myList = new ArrayList<>();
+myList.add(1);
+myList.add(3);
+myList.add(5);
+myList.add(4);
+myList.add(12);
+
+myList.add(4,1);
+```
+
+This list will have the values:
+
+```
+1
+3
+5
+4
+1 -> Value of "1" inserted at index 4.
+12 -> Old value at index "4" was pushed.
+```
+
 To retrieve data from a list, we can use some other methods like `size()`.
 
 We can use the enhanced for-loop to easily iterate through arrays and lists:
+
 ```java
 import java.util.ArrayList;
 
@@ -4021,3 +4062,123 @@ int anotherInt = myInt; // Same as: int anotherInt = myInt.intValue();
 ```
 
 The same apply to the other primitive types, with the **unboxing** method named accordingly (`doubleValue()`, `byteValue()` and so on).
+
+### LinkedList
+
+When creating an `ArrayList` to a reference type, which has variable memory allocation, it requires too much computational work when we want to insert an element at an index, or remove an element (using `add()` and `remove()`, for example).
+
+Of course, for small sized `ArrayList`s, this is no problem at all, but for big sized ones, this can take up too much time to process.
+
+We can solve this problem by using a `LinkedList`, which is a list that **holds a memory address of an instantiated object**.
+
+For example, for an `int`, which is 4 bytes, we can calculate the memory address of its elements in an `ArrayList` if have the address of element 0:
+
+| Index | Element | Memory Address |
+|-------|---------|----------------|
+| 0     | 2       | 1000           |
+| 1     | 3       | 1004           |
+| 2     | 4       | 1008           |
+| 3     | 6       | 1012           |
+| 4     | 2       | 1016           |
+| 5     | 1       | 1020           |
+
+But, as said, for objects, that's not possible.
+
+So, internally, we can use a `LinkedList<>` to **link** objects that don't have addresses in order. For example, for a `String`:
+
+| Index | Element       | Memory Address |
+|-------|---------------|----------------|
+| 0     | "Hi"          | 200CF          |
+| 1     | "Hello, world | CD554E         |
+| 2     | "Gabriel"     | 32200          |
+| 3     | "New York"    | FFCDE          |
+| 4     | "Male"        | 34FD           |
+| 5     | "Mammal"      | 1003           |
+
+These elements are not in order in the memory, but their indices are.
+
+![ArrayLists LinkedLists](readme-images/arraylis-linkedlist.png)
+
+We can, of course, create a linked list using primitive types
+
+The adding and removal of elements using this methods don't actually shift the addresses to the right (inserting) or to the left (removing). Instead, they'll be linked to the element in another memory location, and the link to the old element will be deleted:
+
+![ArrayLists LinkedLists Add](readme-images/arraylis-linkedlist-add.png)
+
+![ArrayLists LinkedLists Remove](readme-images/arraylis-linkedlist-remove.png)
+
+Optimizing any computational process.
+
+This linking is done by pointing a position to a memory location. We can implement a linked list like so:
+
+```java
+public class Node {
+    public int data; // A list of integers.
+    public Node next; // A Node field, pointing to the next node.
+    public Node(int data) {
+        this.data = data;
+    }
+}
+```
+
+An element in a `LinkedList` is called a **node**. In the `main()` method:
+
+```java
+public class Main {
+    public static main (String[] args) {
+        Node head = new Node(4); // The first node is called head.
+        Node nodeA = new Node(3);
+        Node nodeB = new Node(1);
+        Node nodeC = new Node(6);
+        Node nodeD = new Node(2);
+
+        // Linking the nodes:
+        head.next = nodeA;
+        nodeA.next = nodeB;
+        nodeB.next = nodeC;
+        nodeC.next = nodeD;
+        nodeD.next = null;
+    }
+}
+```
+
+The last node commonly points to a null position in memory.
+
+The disadvantage of using a linked list like so, is that we can only go forward. We cannot go back on a node.
+
+In Java, we can declare a `LinkedList` by using the already implemented `LinkedList<E>` class, from `java.util`. 
+
+We can also iterate through this list using an enhanced for-loop, or, using a `ListIterator<E>`, from `java.util`. This class allows us to go back and forth in a `LinkedList` and, since linked lists commonly have one direction, these ones in Java are called **double linked lists**.
+
+We can use its static methods like `hasNext()`, to find out whether the next element exists or not, `hasPrevious()`, the same as `hasNext()`, but for the previous element, `next()`, which returns the next iteration **and** advances the cursor to the next iteration, throwing `NoSuchElementException` if it hasn't, `pervious()`, the same as `next()`, but for the previous element and so on.
+
+An important thing to notice is that, from `ListIterator`'s [official documentation](https://docs.oracle.com/javase/7/docs/api/java/util/ListIterator.html), the iterator actually points **to the beginning or to the end of a node**:
+
+![ListIterator Cursor](readme-images/listiterator-cursor.png)
+
+So, when going back and fourth in a `LinkedList`, we'll actually go through a node twice.
+
+We can solve this issue by tracking the position. Refer the [source code](https://github.com/gagibran/udemy-java-the-complete-java-developer-course/blob/dev/examples-and-challenges/LinkedList/src/com/fridaynightsoftwares/Main.java) on `LinkedList`s to see how (see the `visit()` method).
+
+An `ListIterator` object can be created from a `LinkedList`, by accessing `LinkedList`'s `listIterator()` method. It returns an iterator with the objects from the `LinkedList`. Any modifications with this iterator, like using the methods mentioned above, will change the parent `LinkedList`. Example:
+
+```java
+private static boolean addInAlphabeticalOrder(LinkedList<String> linkedList, String newCity) {
+    ListIterator<String> stringListIterator = linkedList.listIterator(); // Doesn't actually points to the header.
+    while(stringListIterator.hasNext()) { // While there is a next node.
+        int comparison = stringListIterator.next().compareTo(newCity); // If it's running for the first time, properly points to the header.
+        if (comparison == 0) {  
+            System.out.println("City already in the list.");
+            return false;
+        } else if (comparison > 0) { // The new city is alphabetically greater than its predecessor.
+            stringListIterator.previous(); // Moves the cursor to the previous node. Example: the cursor was on "Brisbane" and newCity is "Adelaide".
+            stringListIterator.add(newCity); // Adds the city.
+            return true;
+        }
+    }
+    stringListIterator.add(newCity); // Inserts the new city to the end of the iterator, if newCity isn't bigger than any other of its predecessors.
+    return true;
+}
+```
+
+`LinkedList`s have a method called `getFirst()`, which returns the first node, or the header, on a list
