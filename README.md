@@ -4183,4 +4183,4 @@ private static boolean addInAlphabeticalOrder(LinkedList<String> linkedList, Str
 }
 ```
 
-`LinkedList`s have a method called `getFirst()`, which returns the first node, or the header, on a list
+`LinkedList`s have a method called `getFirst()`, which returns the first node, or the header, on a list.
