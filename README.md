@@ -69,6 +69,8 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
     - [Lists and ArrayLists](#lists-and-arraylists)
     - [Autoboxing and unboxing](#autoboxing-and-unboxing)
     - [LinkedList](#linkedlist)
+- [Inner and abstract classes, and interfaces](#inner-and-abstract-classes-and-interfaces)
+    - [Interfaces](#interfaces)
 
 ## Some concepts
 
@@ -4184,3 +4186,213 @@ private static boolean addInAlphabeticalOrder(LinkedList<String> linkedList, Str
 ```
 
 `LinkedList`s have a method called `getFirst()`, which returns the first node, or the header, on a list.
+
+## Inner and abstract classes, and interfaces
+
+### Interfaces
+
+An interface specifies methods that a particular class, that implements the interface, must also implement.
+
+An interface is `abstract`, meaning that we don't actually write any code to it, only the method names and parameters.
+
+The actual code goes to the class the implements the interface.
+
+An interface is created when we need a common behavior that can be used in several classes.
+
+By convention, an interface starts with a capital `I`. For example: `IGearbox`, `ÌCar`, `IAnimal`, and so on.
+
+We use the keyword `interface` instead of `class`:
+
+```java
+package com.fridaynightsoftwares;
+
+public interface ITelephone {
+    void powerOn();
+    void dial(int phoneNumber);
+    void answer();
+    boolean callPhone(int phoneNumber);
+    boolean isRinging();
+}
+```
+
+Note that we didn't specify any modifiers in the class, because they're redundant here, since these methods will only be implemented in an actual class. The modifiers will be set inside the class(es).
+
+An interface only exists to define which methods will be implemented for a class.
+
+To make a class use an interface, we utilize the keyword `implements` instead of `extends`.
+
+This class **must** have the methods from the interface implemented. Even if won't use them. In that case, we can just make them empty (`void` methods), or return a default value:
+
+```java
+package com.fridaynightsoftwares;
+
+public class DeskPhone implements ITelephone {
+    private int myNumber;
+    private boolean isRinging;
+    @Override
+    public void powerOn() {
+
+    }
+    @Override
+    public void dial(int phoneNumber) {
+
+    }
+    @Override
+    public void answer() {
+    }
+    @Override
+    public boolean callPhone(int phoneNumber) {
+        return false;
+    }
+    @Override
+    public boolean isRinging() {
+        return false;
+    }
+}
+```
+
+We're overriding the methods from the interface (even though they are not implemented in the interface).
+
+Now, in the main method, we can instantiate either the interface, or the class that's implementing it, as long as the `new` keyword **allocates memory for the class that's implementing the interface**.
+
+For example:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        ITelephone myPhone = new DeskPhone(12345);
+        // DeskPhone myPhone = new DeskPhone(1235); // this also works.
+        // ITelephone myPhone = new ITelephone(1235); // this doesn't work.
+        myPhone.powerOn();
+        myPhone.callPhone(2342342);
+        myPhone.answer();
+    }
+}
+```
+
+If we have multiple classes that implement the interface, like:
+
+```java
+package com.fridaynightsoftwares;
+
+public class MobilePhone implements ITelephone {
+    private int myNumber;
+    private boolean isRinging;
+    private boolean isOn;
+
+    public MobilePhone(int myNumber) {
+        this.myNumber = myNumber;
+        isOn = false;
+    }
+
+    @Override
+    public void powerOn() {
+        System.out.println("Mobile phone powered up.");
+        isOn = true;
+    }
+    @Override
+    public void dial(int phoneNumber) {
+        if (isOn) {
+            System.out.println("Now ringing: " + myNumber + " on mobile phone.");
+        } else {
+            System.out.println("Phone is switched off.");
+        }
+    }
+    @Override
+    public void answer() {
+        if (isRinging) {
+            System.out.println("Answering the mobile phone.");
+            isRinging = false;
+        }
+    }
+    @Override
+    public boolean callPhone(int phoneNumber) {
+        if (myNumber == phoneNumber && isOn) {
+            System.out.println("Ring ring!");
+            isRinging = true;
+        } else if (!isOn) {
+            System.out.println("The phone is switched off.");
+            isRinging = false;
+        } else {
+            System.out.println("The number called is different than mine.");
+            isRinging = false;
+        }
+        return isRinging;
+    }
+    @Override
+    public boolean isRinging() {
+        return isRinging;
+    }
+}
+```
+
+and:
+
+```java
+package com.fridaynightsoftwares;
+
+public class DeskPhone implements ITelephone {
+    private int myNumber;
+    private boolean isRinging;
+    public DeskPhone(int myNumber) {
+        this.myNumber = myNumber;
+    }
+    @Override
+    public void powerOn() {
+        System.out.println("This phone doesn't have a power button.");
+    }
+    @Override
+    public void dial(int phoneNumber) {
+        System.out.println("Now ringing: " + myNumber + " on desk phone.");
+    }
+    @Override
+    public void answer() {
+        if (isRinging) {
+            System.out.println("Answering the desk phone.");
+            isRinging = false;
+        }
+    }
+    @Override
+    public boolean callPhone(int phoneNumber) {
+        if (myNumber == phoneNumber) {
+            System.out.println("Ring ring!");
+            isRinging = true;
+        } else {
+            isRinging = false;
+        }
+        return isRinging;
+    }
+    @Override
+    public boolean isRinging() {
+        return isRinging;
+    }
+}
+```
+
+We can just change the memory allocation of the instantiated object in `main()`:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        // Using the first implementation class:
+        ITelephone myPhone;
+        myPhone = new DeskPhone(12345);
+        myPhone.powerOn();
+        myPhone.callPhone(2342342);
+        myPhone.answer();
+
+        // Using the second implementation class:
+        myPhone = new MobilePhone(12345);
+        myPhone.powerOn();
+        myPhone.callPhone(12345);
+        myPhone.answer();
+    }
+}
+```
