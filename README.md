@@ -71,6 +71,7 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
     - [LinkedList](#linkedlist)
 - [Inner and abstract classes, and interfaces](#inner-and-abstract-classes-and-interfaces)
     - [Interfaces](#interfaces)
+    - [Inner classes](#inner-classes)
 
 ## Some concepts
 
@@ -4753,3 +4754,175 @@ CHR: 31.0
 Signifying that the casting worked.
 
 Declaring a variable using the parent interface is usually better because it makes the code more generic.
+
+### Inner classes
+
+In Java, it is possible to nest a class within a class.
+
+We have four types of nested classes:
+
+1. Static nested class;
+2. Non-static nested class;
+3. Local class;
+4. Anonymous class (a nested class without a class name).
+
+We create an inner class when it doesn't make sense to have the contents of a specific class be accessed by any other classes. For example, for the class `Gearbox`:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+
+public class Gearbox {
+    private ArrayList<Gear> gears;
+    private int maxGears;
+    private int gearNumber;
+
+    public Gearbox(int maxGears, int gearNumber) {
+        gears = new ArrayList<Gear>();
+        this.maxGears = maxGears;
+        this.gearNumber = gearNumber;
+        Gear neutral = new Gear(0, 0.0);
+        gears.add(neutral);
+    }
+    public class Gear {
+        private int gearNumber;
+        private double ratio;
+
+        public Gear(int gearNumber, double ratio) {
+            this.gearNumber = gearNumber;
+            this.ratio = ratio;
+        }
+        public double driveSpeed(int revs) {
+            return revs * ratio;
+        }
+    }
+}
+```
+
+There's an inner class called `Gear`, which only makes sense that `Gearbox` has access. Thus, we created it inside `Gearbox`.
+
+Instances of `Gear` have access to **all** methods and fields of its outer class, **even those marked as `private`**.
+
+The `this` keyword comes in handy here, because if we have fields or methods in the inner class that have the same as the outer class, using `this` points to the fields and methods of the inner one. This is known as **shadowing** the field or method.
+
+If we want to refer to the methods and fields from the outer class, we need to specify by calling it with the outer class name instead of `this`:
+
+```java
+Gearbox.gearNumber
+```
+
+This is not a good practice. So, it's best that we rename the methods and fields to avoid confusion:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+
+public class Gearbox {
+    private ArrayList<Gear> gears;
+    private int maxGears;
+    private int currentGear; // Renamed.
+
+    public Gearbox(int maxGears, int currentGear) {
+        gears = new ArrayList<Gear>();
+        this.maxGears = maxGears;
+        this.currentGear = currentGear;
+        Gear neutral = new Gear(0, 0.0);
+        gears.add(neutral);
+    }
+    public class Gear {
+        private int gearNumber;
+        private double ratio;
+
+        public Gear(int gearNumber, double ratio) {
+            this.gearNumber = gearNumber;
+            this.ratio = ratio;
+        }
+        public double driveSpeed(int revs) {
+            return revs * ratio;
+        }
+    }
+}
+```
+
+To access `Gear`, we have to instantiate `Gearbox` and calling it by using the dot notation. In `main()`:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Gearbox mcLaren = new Gearbox(6);
+        Gearbox.Gear first = mcLaren.new Gear(1, 12.3);
+        System.out.println(first.driveSpeed(1000));
+    }
+}
+```
+
+Notice how we first allocated memory to create `Gearbox` and then, we called `new` from `mcLaren` to allocate memory again.
+
+We get errors if we try to create a `Gear` object without first creating a `Gearbox` object.
+
+Since we don't actually want any other classes accessing an inner class, in this case, we can just make it private and instantiate it inside `Gearbox`. By doing that, we `main()` won't be able to create instances of `Gear` anymore:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+
+public class Gearbox {
+    private ArrayList<Gear> gears;
+    private int maxGears;
+    private int currentGear;
+    private boolean isClutchIn;
+
+    public Gearbox(int maxGears) {
+        gears = new ArrayList<Gear>();
+        this.maxGears = maxGears;
+        Gear neutral = new Gear(0, 0.0);
+        gears.add(neutral);
+    }
+
+    public void operateClutch(boolean isClutchIn) {
+        this.isClutchIn = isClutchIn;
+    }
+    public void addGear(int number, double ratio) {
+        if (number > 0 && number <= maxGears) {
+            gears.add(new Gear(number, ratio));
+        }
+    }
+    public void changeGear(int newGear) {
+        if (newGear >= 0 && newGear < gears.size() && isClutchIn) {
+            currentGear = newGear;
+            System.out.println("Gear " + newGear + " selected.");
+        } else {
+            System.out.println("Grind!");
+            currentGear = 0;
+        }
+    }
+    public double wheelSpeed(int revs) {
+        if (isClutchIn) {
+            System.out.println("Scream!");
+            return 0;
+        }
+        return revs * gears.get(currentGear).getRatio();
+    }
+    private class Gear {
+        private int gearNumber;
+        private double ratio;
+
+        public Gear(int gearNumber, double ratio) {
+            this.gearNumber = gearNumber;
+            this.ratio = ratio;
+        }
+        public double driveSpeed(int revs) {
+            return revs * ratio;
+        }
+        public double getRatio() {
+            return ratio;
+        }
+    }
+}
+```
