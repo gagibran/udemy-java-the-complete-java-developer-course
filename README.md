@@ -4396,3 +4396,360 @@ public class Main {
     }
 }
 ```
+
+Java libraries use interfaces extensively. An example is when we use lists. `LinkedList` and `ArrayList` implement the interface `List` (this one doesn't start with an I).
+
+Thus, if we change a `LinkedList` or an `ArrayList` data variable to `List`, the code wouldn't break, because data types can be assigned to their parent interface, like previously said.
+
+This is particularly good, because we don't have to hard-code the data type when declaring a variable or a field, making changes to the code easier.
+
+For example, the method `addToPlayList()` in:
+
+```java
+package com.fridaynightsoftwares;
+import java.util.List;
+
+public class Album {
+    public boolean addToPlayList(int trackNumber, List<Song> playlist) {
+        if (trackNumber > songs.size() || trackNumber <= 0) {
+            return false;
+        }
+        Song songToBeAdded = songs.get(trackNumber - 1);
+        if (findSong(songToBeAdded.getTitle()) != null) {
+            playlist.add(songToBeAdded);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+Doesn't care if the parameter `playlist` is a `LinkedList`, an `ArrayList` or any other type of list for that matter (like `Vectors` and son on), as long as these classes implement `List`.
+
+When should we inherit from a class or use an interface? We have to ponder if the parent class will have functionalities that will be used by its children extensively, or if these functionalities will be always overridden by the children. In this latter case, it's best to create an interface.
+
+Another thing to consider is that we **can** implement many interfaces, but **cannot** extend from many classes in Java.
+
+Using the `Animal` class example, from [inheritance](#inheritance), we could have created a `IWalk` interface and make a `Dog` class that **implements** walk and **extends** from `Animal`. In ths scenario, we could've also created a `IFly` interface and make an `Eagle` class that **extends** from `Animals` and **implements** both `IWalk` AND `IFly`.
+
+**But, if we want to use methods that are NOT from the interface, but from the class that implements it, they will only be available if we instantiated the object to the class' data type.**
+
+A workaround to that is by casting the interface type to the class that's implementing it type. For example:
+
+The following interface:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public interface ICharacter {
+    ArrayList<String> save();
+    void load(List<String> values);
+    void loseHealth(double damage);
+    void loseMp(double damage);
+    void loseStr(double damage);
+    void loseIntel(double damage);
+    void loseAgi(double damage);
+    void loseDex(double damage);
+    void loseChr(double damage);
+    void castMagic();
+    void doPhysicalDamage();
+}
+```
+
+is being implemented by the following (not so optimized) class:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Player implements ICharacter {
+    private final String LOSE_MESSAGE = "Lost ";
+    private String name;
+    private String playerClass;
+    private int level;
+    private double xp;
+    private double hp;
+    private double mp;
+    private double dex;
+    private double agi;
+    private double str;
+    private double chr;
+    private double intel;
+
+    public Player(String name, String playerClass) {
+        this.name = name;
+        this.playerClass = playerClass;
+        level = 1;
+        xp = 0;
+        if (playerClass.equals("Warrior")) {
+            hp = 210;
+            mp = 50;
+            agi = 5;
+            dex = 5;
+            str = 10;
+            chr = 5;
+            intel = 3;
+        } else if (playerClass.equals("Mage")) {
+            hp = 100;
+            mp = 150;
+            agi = 2;
+            dex = 7;
+            str = 3;
+            chr = 7;
+            intel = 10;
+        } else if (playerClass.equals("Rouge")) {
+            hp = 130;
+            mp = 100;
+            agi = 9;
+            dex = 9;
+            str = 4;
+            chr = 9;
+            intel = 4;
+        }
+    }
+    @Override
+    public void loseHealth(double damage) {
+        System.out.println(LOSE_MESSAGE + damage + " HP!");
+        hp -= damage;
+        if (hp <= 0) {
+            hp = 0;
+            System.out.println("You died.");
+        }
+    }
+    @Override
+    public void loseMp(double damage) {
+        System.out.println(LOSE_MESSAGE + damage + " MP!");
+        mp -= damage;
+        if (mp <= 0) {
+            mp = 0;
+            System.out.println("You have no mana.");
+        }
+    }
+    @Override
+    public void loseStr(double damage) {
+        System.out.println(LOSE_MESSAGE + damage + " STR!");
+        str -= damage;
+        if (str <= 0) {
+            str = 0;
+            System.out.println("You are feeling weak.");
+        }
+    }
+    @Override
+    public void loseIntel(double damage) {
+        System.out.println(LOSE_MESSAGE + damage + " INT!");
+        intel -= damage;
+        if (intel <= 0) {
+            intel = 0;
+            System.out.println("You can't even pronounce your name anymore.");
+        }
+    }
+    @Override
+    public void loseAgi(double damage) {
+        System.out.println(LOSE_MESSAGE + damage + " AGI!");
+        agi -= damage;
+        if (agi <= 0) {
+            agi = 0;
+            System.out.println("Too slow.");
+        }
+    }
+    @Override
+    public void loseDex(double damage) {
+        System.out.println(LOSE_MESSAGE + damage + " DEX!");
+        dex -= damage;
+        if (dex <= 0) {
+            dex = 0;
+            System.out.println("You don't know how to hold a butter knife anymore.");
+        }
+    }
+    @Override
+    public void loseChr(double damage) {
+        System.out.println(LOSE_MESSAGE + damage + " CHR!");
+        chr -= damage;
+        if (chr <= 0) {
+            chr = 0;
+            System.out.println("Ew! So ugly.");
+        }
+    }
+    @Override
+    public void castMagic() {
+        if (playerClass.equals("Mage")) {
+            if (mp > 0) {
+                System.out.println("You conjure a ball of fire, causing " + (intel * 7 + dex * 0.5) + " points of damage.");
+                loseMp(10);
+            } else {
+                System.out.println("No mana left to cast magic.");
+            }
+        } else {
+            System.out.println("Only mages can cast magic.");
+        }
+    }
+    @Override
+    public void doPhysicalDamage() {
+        if (playerClass.equals("Warrior")) {
+            System.out.println("You furiously strike the enemy with your sword, causing " + (str * 10 + (dex + agi) * 0.2) + " points of damage.");
+        } else if (playerClass.equals("Mage")) {
+            System.out.println("You pathetically strike the enemy with your wand, causing " + (str * 3) + " points of damage.");
+        } else {
+            System.out.println("You fiercely strike the enemy sing your bow and arrows, causing " + (str * 3 + (dex + agi) * 0.7) + " points of damage." );
+        }
+    }
+
+    @Override
+    public String toString() {
+        return name + ": " + playerClass + ". Level: " + level + ". Experience: " + xp +
+                "\nHP: " + hp +
+                "\nMP: " + mp +
+                "\nSTR: " + str +
+                "\nINT: " + intel +
+                "\nAGI: " + agi +
+                "\nDEX: " + dex +
+                "\nCHR: " + chr;
+    }
+    public void gainExp(double xp) {
+        this.xp += xp;
+        levelUp();
+    }
+    public void levelUp() {
+        while (this.xp >= 100) {
+            level += 1;
+            System.out.println("You've leveled up to level " + level + ".");
+            this.xp -= 100;
+            if (playerClass.equals("Warrior")) {
+                System.out.println("Gained 50 HP, 10 MP, 4 STR, 3 DEX, 1 AGI, 1 INT, and 1 CHR.");
+                hp += 50;
+                mp += 10;
+                str += 4;
+                dex += 3;
+                agi += 1;
+                intel += 1;
+                chr += 1;
+            } else if (playerClass.equals("Mage")) {
+                System.out.println("Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.");
+                hp += 10;
+                mp += 50;
+                str += 2;
+                dex += 3;
+                agi += 1;
+                intel += 4;
+                chr += 2;
+            } else {
+                System.out.println("Gained 20 HP, 30 MP, 2 STR, 2 DEX, 2 AGI, 2 INT, and 1 CHR.");
+                hp += 20;
+                mp += 30;
+                str += 2;
+                dex += 2;
+                agi += 2;
+                intel += 2;
+                chr += 1;
+            }
+        } if (xp < 100) {
+            System.out.println("You need " + (100 - xp) + " more experience points to level up.");
+        }
+    }
+    @Override
+    public ArrayList<String> save() {
+        ArrayList<String> savedPlayer = new ArrayList<>();
+        savedPlayer.add(name);
+        savedPlayer.add(playerClass);
+        savedPlayer.add(Integer.toString(level));
+        savedPlayer.add(Double.toString(xp));
+        savedPlayer.add(Double.toString(hp));
+        savedPlayer.add(Double.toString(mp));
+        savedPlayer.add(Double.toString(str));
+        savedPlayer.add(Double.toString(agi));
+        savedPlayer.add(Double.toString(chr));
+        savedPlayer.add(Double.toString(dex));
+        savedPlayer.add(Double.toString(intel));
+        return savedPlayer;
+    }
+    @Override
+    public void load(List<String> values) {
+        name = values.get(0);
+        playerClass = values.get(1);
+        level = Integer.parseInt(values.get(2));
+        xp = Double.parseDouble(values.get(3));
+        mp = Double.parseDouble(values.get(4));
+        str = Double.parseDouble(values.get(5));
+        agi = Double.parseDouble(values.get(6));
+        chr = Double.parseDouble(values.get(7));
+        dex = Double.parseDouble(values.get(8));
+        intel = Double.parseDouble(values.get(9));
+    }
+}
+```
+
+The methods `gainExp()` and `levelUp()` are not defined in the interface `ICharacter`, because if we want to create an NPC character from it, it doesn't make sense for it to level up, or have experience in this context.
+
+Thus, in the main method, we can instantiate a character using `ICharacter` and use these two methods by casting the object to the `Player` class:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        ICharacter hero = new Player("Hero", "Mage");
+        ArrayList<String> savedGame = hero.save();
+        hero.doPhysicalDamage();
+        ((Player) hero).gainExp(24.2); // Casting.
+        System.out.println();
+        savedGame = hero.save(); // Casting.
+        System.out.println();
+        ((Player) hero).gainExp(1234);
+        System.out.println(hero);
+    }
+}
+```
+
+Here, as we can see, casting an object that's calling a method **needs to be encapsulated in an outer pair of parenthesis**. 
+
+This prints out:
+
+```
+You've leveled up to level 2.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 3.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 4.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 5.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 6.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 7.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 8.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 9.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 10.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 11.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 12.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You've leveled up to level 13.
+Gained 10 HP, 50 MP, 1 STR, 3 DEX, 1 AGI, 4 INT, and 2 CHR.
+You need 41.799999999999955 more experience points to level up.
+Hero: Mage. Level: 13. Experience: 58.200000000000045
+HP: 220.0
+MP: 750.0
+STR: 27.0
+INT: 58.0
+AGI: 14.0
+DEX: 43.0
+CHR: 31.0
+```
+
+Signifying that the casting worked.
+
+Declaring a variable using the parent interface is usually better because it makes the code more generic.

@@ -9,7 +9,6 @@ public class MobilePhone implements ITelephone {
         this.myNumber = myNumber;
         isOn = false;
     }
-
     @Override
     public void powerOn() {
         System.out.println("Mobile phone powered up.");
