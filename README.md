@@ -72,6 +72,8 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
 - [Inner and abstract classes, and interfaces](#inner-and-abstract-classes-and-interfaces)
     - [Interfaces](#interfaces)
     - [Inner classes](#inner-classes)
+    - [Local classes](#local-classes)
+    - [Local anonymous](#anonymous-classes)
 
 ## Some concepts
 
@@ -4194,13 +4196,13 @@ private static boolean addInAlphabeticalOrder(LinkedList<String> linkedList, Str
 
 An interface specifies methods that a particular class, that implements the interface, must also implement.
 
-An interface is `abstract`, meaning that we don't actually write any code to it, only the method names and parameters.
+An interface is abstract, meaning that we don't actually write any code to it, only the method names and parameters.
 
 The actual code goes to the class the implements the interface.
 
 An interface is created when we need a common behavior that can be used in several classes.
 
-By convention, an interface starts with a capital `I`. For example: `IGearbox`, `ÌCar`, `IAnimal`, and so on.
+By convention, an interface starts with a capital `I`. For example: `IGearbox`, `ICar`, `IAnimal`, and so on.
 
 We use the keyword `interface` instead of `class`:
 
@@ -4433,9 +4435,9 @@ Another thing to consider is that we **can** implement many interfaces, but **ca
 
 Using the `Animal` class example, from [inheritance](#inheritance), we could have created a `IWalk` interface and make a `Dog` class that **implements** walk and **extends** from `Animal`. In ths scenario, we could've also created a `IFly` interface and make an `Eagle` class that **extends** from `Animals` and **implements** both `IWalk` AND `IFly`.
 
-**But, if we want to use methods that are NOT from the interface, but from the class that implements it, they will only be available if we instantiated the object to the class' data type.**
+**But, if we want to use methods that are NOT from the interface, but from the class that implements it, they will only be available if we instantiate the object to the class' data type.**
 
-A workaround to that is by casting the interface type to the class that's implementing it type. For example:
+A workaround to that is by casting the interface type to the class that's implementing it. For example:
 
 The following interface:
 
@@ -4779,7 +4781,7 @@ public class Gearbox {
     private int gearNumber;
 
     public Gearbox(int maxGears, int gearNumber) {
-        gears = new ArrayList<Gear>();
+        gears = new ArrayList<>();
         this.maxGears = maxGears;
         this.gearNumber = gearNumber;
         Gear neutral = new Gear(0, 0.0);
@@ -4825,7 +4827,7 @@ public class Gearbox {
     private int currentGear; // Renamed.
 
     public Gearbox(int maxGears, int currentGear) {
-        gears = new ArrayList<Gear>();
+        gears = new ArrayList<>();
         this.maxGears = maxGears;
         this.currentGear = currentGear;
         Gear neutral = new Gear(0, 0.0);
@@ -4846,7 +4848,7 @@ public class Gearbox {
 }
 ```
 
-To access `Gear`, we have to instantiate `Gearbox` and calling it by using the dot notation. In `main()`:
+To access `Gear`, we have to instantiate `Gearbox` and call it by using the dot notation. In `main()`:
 
 ```java
 package com.fridaynightsoftwares;
@@ -4865,7 +4867,7 @@ Notice how we first allocated memory to create `Gearbox` and then, we called `ne
 
 We get errors if we try to create a `Gear` object without first creating a `Gearbox` object.
 
-Since we don't actually want any other classes accessing an inner class, in this case, we can just make it private and instantiate it inside `Gearbox`. By doing that, we `main()` won't be able to create instances of `Gear` anymore:
+Since we don't actually want any other classes accessing an inner class, in this case, we can just make it private and instantiate it inside `Gearbox`. By doing that, the `main()` won't be able to create instances of `Gear` anymore:
 
 ```java
 package com.fridaynightsoftwares;
@@ -4879,7 +4881,7 @@ public class Gearbox {
     private boolean isClutchIn;
 
     public Gearbox(int maxGears) {
-        gears = new ArrayList<Gear>();
+        gears = new ArrayList<>();
         this.maxGears = maxGears;
         Gear neutral = new Gear(0, 0.0);
         gears.add(neutral);
@@ -4926,3 +4928,286 @@ public class Gearbox {
     }
 }
 ```
+
+And `main()`:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Gearbox mcLaren = new Gearbox(6);
+        mcLaren.addGear(1, 5.3);
+        mcLaren.addGear(2, 10.6);
+        mcLaren.addGear(3, 15.9);
+        mcLaren.operateClutch(true);
+        mcLaren.changeGear(1);
+        mcLaren.operateClutch(false);
+        System.out.println(mcLaren.wheelSpeed(1000));
+        mcLaren.changeGear(2);
+        System.out.println(mcLaren.wheelSpeed(3000));
+        mcLaren.operateClutch(true);
+        mcLaren.changeGear(3);
+        mcLaren.operateClutch(false);
+        System.out.println(mcLaren.wheelSpeed(6000));
+    }
+}
+```
+
+Which prints:
+
+```
+Gear 1 selected.
+5300.0
+Grind!
+0.0
+Gear 3 selected.
+95400.0
+```
+
+Note that we're not referencing the `Gear` class anymore, because it's been created inside the `Gearbox` class, whenever we call `addGear()`.
+
+Not related to inner classes, just a refactoring: the `addGear()` method should be called inside the constructor, because when we create a `Gearbox`, it should have all of the gears needed, since we know the `maxGears` inside a particular `Gearbox`:
+
+```java
+...
+// Gearbox's constructor:
+public Gearbox(int maxGears) {
+    gears = new ArrayList<>();
+    this.maxGears = maxGears;
+    Gear neutral = new Gear(0, 0.0);
+    gears.add(neutral);
+    for (int i = 1; i <= this.maxGears; i++) {
+        addGear(i, i * 5.3);
+    }
+}
+```
+
+Here we're using a fixed multiplier of 5.3 for the ratios.
+
+Now we can remove the `addGear()` calls in `main()`:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Gearbox mcLaren = new Gearbox(6);
+        mcLaren.operateClutch(true);
+        mcLaren.changeGear(1);
+        mcLaren.operateClutch(false);
+        System.out.println(mcLaren.wheelSpeed(1000));
+        mcLaren.changeGear(2);
+        System.out.println(mcLaren.wheelSpeed(3000));
+        mcLaren.operateClutch(true);
+        mcLaren.changeGear(3);
+        mcLaren.operateClutch(false);
+        System.out.println(mcLaren.wheelSpeed(6000));
+    }
+}
+```
+
+This yields:
+
+```
+Gear 1 selected.
+5300.0
+Grind!
+0.0
+Gear 3 selected.
+95399.99999999999
+```
+
+### Local classes
+
+It's actually a special case of [inner classes](#inner-classes).
+
+Local classes are declared inside a block, such as a method or an if-statement, and the scope is restricted completely to that particular block.
+
+They are used less often than anonymous classes.
+
+Theoretically, they increase encapsulation, because there will be one more level of indentation to their elements.
+
+In practice, that's not often required.
+
+This section of the course is very poorly made, but here's Tim's confusing example on inner classes:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Button {
+    private String title;
+
+    // This can be any classes that implement IOnclickListener. In this case, it's the local class ClickListener in main():
+    private IOnclickListener onClickListener;
+    public Button(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    // The purpose of this setter is to actually initialize this field with a class that implements IOnClickListener.
+    // In our case, the local class ClickListener inside the main() method:
+    public void setOnClickListener(IOnclickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+    public void onClick() {
+        // Since onClickListener is an object of a class that implements IOnClickListener, which is the local class ClickListener, this works:
+        onClickListener.onClick(title);
+    }
+    public interface IOnclickListener {
+        void onClick(String title); // This is implemented in the local class ClickListener in the main method.
+    }
+}
+```
+
+The `main()` method:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.Scanner;
+
+public class Main {
+    private static Scanner scanner = new Scanner(System.in);
+    private static Button button = new Button("Print");
+
+    public static void main(String[] args) {
+
+        // Local class, implementing IOnClickListener.
+        // This can be done because IOnClickListener is a public interface:
+        class ClickListener implements Button.IOnclickListener {
+            public ClickListener() {
+                System.out.println("I've been attached.");
+            }
+
+            @Override
+            public void onClick(String strToPrint) {
+                System.out.println(strToPrint + " was clicked.");
+            }
+        }
+
+        // Initializing the field onClickListener, from the Button class:
+        button.setOnClickListener(new ClickListener());
+        listen();
+    }
+
+    // Local method that gets an user's input:
+    private static void listen() {
+        boolean quit = false;
+        while (!quit) {
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            if (choice == 1) {
+                button.onClick();
+            } else {
+                quit = true;
+            }
+        }
+    }
+}
+```
+
+Which prints:
+
+```
+I've been attached.
+1
+Print was clicked.
+1
+Print was clicked.
+1
+Print was clicked.
+```
+
+Every time we hit `1`.
+
+**What's happening here**: An inner interface (inner interfaces also exist) was created inside the `Button` class that serves as a listener to various buttons, if we wanted to create them. It specifies only one void method, which is `onClick()`. This method, in a real world application, states what will happen when we click on a button that implements this interface.
+
+The `Button` class also has two field, one `String title`, that will emulate the functionality of our button, and one `IOnclickListener onClickListener`, that will be an object of a class that implements this local interface.
+
+The `setOnClickListener()` method will initialize our `onClickListener` field with any class that implements `IOnClickListener`.
+
+The `onClick()` method will implement the emulated functionality of the button, which, in this case, is printing out the `title` field.
+
+Now, on the `main()` method, we instantiate `Button button`, with `title` being the string `Print`.
+
+We, then, create the **local class** `ClickListener`, that will finally implement the inner `IOnClickListener` interface, inside `Button`. This class is a local one, because it's being implemented inside a method (the `main()`).
+
+On this class, we implement the click functionality that we want this particular button to have. In this case, we just want it to print `strToPrint`, the argument.
+
+Then, we call `setOnClickListener(new ClickListener())` to initialize the object `button`'s field `onClickListener` with a new instance of the local class `ClickListener`.
+
+When we use this setter, we'll get the print out:
+
+```
+I've been attached.
+```
+
+Because it comes from `ClickListener`'s constructor.
+
+Since this class implements `onClick()`, we can call it by calling method of our `button` object with the same name, `onClick()`. pretty confusing and useless, but don't confuse them.
+
+This `onClick()` calls `onClick()` that was implemented by `ClickListener` and we get the print out:
+
+```
+Print was clicked.
+```
+
+This happens, of course, inside the `listen()` method, that only serves to get inputs from the user.
+
+### Anonymous classes
+
+An anonymous class is also a local class, but it has no name.
+
+It has to be declared and instantiated at the same time, because they haven't got a name, and they are used when a local class is required only once.
+
+They are very common for event handlers and buttons, for example.
+
+Taking as an example the [Button](#local-classes) class.
+
+Instead of creating a local class `ClickListener` in `main()`, we just declare it **inside** the argument passing of `button.setOnClickListener()`:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.Scanner;
+
+public class Main {
+    private static Scanner scanner = new Scanner(System.in);
+    private static Button button = new Button("Print");
+
+    public static void main(String[] args) {
+
+        // Instead of creating a local class and instantiate it, like we did with local classes,
+        // we create and instantiate the class (since it's got no name) as an argument to setOnClickListener():
+        button.setOnClickListener(new Button.IOnclickListener() {
+            @Override
+            public void onClick(String title) {
+                System.out.println(title + " was clicked.");
+            }
+        });
+        listen();
+    }
+
+    // Local method that gets an user's input:
+    private static void listen() {
+        boolean quit = false;
+        while (!quit) {
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            if (choice == 1) {
+                button.onClick();
+            } else {
+                quit = true;
+            }
+        }
+    }
+}
+```
+
+Here, `new` is being used at the same time the class is being created. This anonymous class implements `IOnClickListener`.

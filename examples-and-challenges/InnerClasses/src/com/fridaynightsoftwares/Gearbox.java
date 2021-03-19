@@ -9,10 +9,13 @@ public class Gearbox {
     private boolean isClutchIn;
 
     public Gearbox(int maxGears) {
-        gears = new ArrayList<Gear>();
+        gears = new ArrayList<>();
         this.maxGears = maxGears;
         Gear neutral = new Gear(0, 0.0);
         gears.add(neutral);
+        for (int i = 1; i <= this.maxGears; i++) {
+            addGear(i, i * 5.3);
+        }
     }
 
     public void operateClutch(boolean isClutchIn) {
