@@ -74,6 +74,8 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
     - [Inner classes](#inner-classes)
     - [Local classes](#local-classes)
     - [Local anonymous](#anonymous-classes)
+    - [Abstract classes](#abstract-classes)
+    - [Abstract classes vs. interfaces](#abstract-classes-vs-interfaces)
 
 ## Some concepts
 
@@ -4204,6 +4206,10 @@ An interface is created when we need a common behavior that can be used in sever
 
 By convention, an interface starts with a capital `I`. For example: `IGearbox`, `ICar`, `IAnimal`, and so on.
 
+But, keep in mind that, since modern IDEs, such as IntelliJ, show us which classes are interfaces, like in the picture below, some people tend to not use the prefix `I` anymore, to avoid confusion:
+
+![Interfaces](readme-images/interfaces.png)
+
 We use the keyword `interface` instead of `class`:
 
 ```java
@@ -5211,3 +5217,251 @@ public class Main {
 ```
 
 Here, `new` is being used at the same time the class is being created. This anonymous class implements `IOnClickListener`.
+
+### Abstract classes
+
+Abstraction is when we define the required functionality for something, but not implementing the details.
+
+[Interfaces](#interfaces) are purely abstract, but not completely. For example, the following interface:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.lang.util.List;
+
+public interface ISave {
+    List write();
+    void read(List savedValues);
+}
+```
+
+There's a specification that `List`s, of any type, must be used. This has a high level of abstraction and flexibility.
+
+The same can be achieved with classes, by using the keyword `abstract` in its declaration.
+
+In an abstract class, we can also define and implement methods that will be used by other classes, differently from interfaces. We can mix abstract methods with normal methods.
+
+We can also add fields and constructors to abstract classes:
+
+```java
+package com.fridaynightsoftwares;
+
+public abstract class Animal {
+    private String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+    public abstract void eat();
+    public abstract void breathe();
+
+    public String getName() {
+        return name;
+    }
+}
+```
+
+Notice that we also had to use the keyword `abstract` for the methods.
+
+Here, we have a constructor and the getter `getName()` defined. The methods `eat()` and `breathe()` should be implemented by classes that extend this abstract one.
+
+Thus, instead of the `implements` keyword, we use the `extends` one, just like in [inheritance](#inheritance).
+
+For example, this `Dog` class extends `Animal`, thus, it must implement the two methods mentioned above AND have a constructor calling the super class' constructor, just like with [inheritance](#inheritance):
+
+```java
+package com.fridaynightsoftwares;
+
+public class Dog extends Animal {
+    public Dog(String name) {
+        super(name);
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("The" + getName() + " bites.");
+    }
+
+    @Override
+    public void breathe() {
+        System.out.println("The" + getName() + " breathes.");
+    }
+}
+```
+
+Since the getter `getName()` was implemented in the abstract class `Animal` and `Dog` inherits from it, we have access to this method.
+
+In this net example, the class `Bird` extends from `Animal`, but it's also an abstract class, with the abstract method `fly()`, because not all bird can fly:
+
+```java
+package com.fridaynightsoftwares;
+
+public abstract class Bird extends Animal {
+    public Bird(String name) {
+        super(name);
+    }
+    public abstract void fly();
+
+    @Override
+    public void eat() {
+        System.out.println(getName() + " is pecking.");
+    }
+
+    @Override
+    public void breathe() {
+        System.out.println(getName() + " breathes with its tiny lungs.");
+    }
+}
+```
+
+Now, we can create a `Parrot` and a `Penguin` class, that extend from `Bird`, and in these classes, the only method that we need to implement is `fly()`, because `eat()` and `breathe()` have already been implemented in `Bird`. We still can, of course, override them if we will:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Parrot extends Bird {
+    public Parrot(String name) {
+        super(name);
+    }
+
+    @Override
+    public void fly() {
+        System.out.println("Flitting from branch to branch.");
+    }
+}
+```
+
+```java
+package com.fridaynightsoftwares;
+
+public class Penguin extends Bird {
+    public Penguin(String name) {
+        super(name);
+    }
+
+    @Override
+    public void fly() {
+        System.out.println("I can't fly. Maybe swim instead?");
+    }
+}
+```
+
+The `main()` method:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Dog dog = new Dog("Yorkie");
+        dog.eat();
+        dog.breathe();
+        Parrot parrot = new Parrot("Australian Ringneck");
+        parrot.breathe();
+        parrot.eat();
+        parrot.fly();
+        Penguin penguin =  new Penguin("Emperor");
+        penguin.fly();
+    }
+}
+```
+
+Which prints out:
+
+```
+TheYorkie bites.
+TheYorkie breathes.
+Australian Ringneck breathes with its tiny lungs.
+Australian Ringneck is pecking.
+Flitting from branch to branch.
+I can't fly. Maybe swim instead?
+```
+
+### Abstract classes vs. interfaces
+
+We need to consider the relationships ***is a***, ***has a***, and ***can***.
+
+For example, in the example from [abstract classes](#abstract-classes), a dog ***is a***n animal, and a bird ***is a***n animal, so it makes sense that both `Dog` and `Bird` inherit from an `Animal` class, instead of an `IAnimal` interface.
+
+A parrot and a penguin ***are*** both birds, so `Parrot` and `Penguin` inherit from `Bird`.
+
+Just a little refactoring from those examples, not all flying animals are birds, thus, we'll just create a `CanFly` interface that flying animals can implement. This is a ***can*** situation:
+
+```java
+package com.fridaynightsoftwares;
+
+public interface CanFly {
+    void fly();
+}
+```
+
+Now, **a very important thing** here to note is that **a class can both extend from another class and implement an interface**. Thus, in the `Bird` class, we add the `implements CanFly` statement. We also have to implement `fly()` now. It's not an abstract method anymore:
+
+```java
+package com.fridaynightsoftwares;
+
+public abstract class Bird extends Animal implements CanFly {
+    public Bird(String name) {
+        super(name);
+    }
+    @Override
+    public void fly() {
+        System.out.println(getName() + " flaps its wings.");
+    }
+
+    @Override
+    public void eat() {
+        System.out.println(getName() + " is pecking.");
+    }
+
+    @Override
+    public void breathe() {
+        System.out.println(getName() + " breathes with its tiny lungs.");
+    }
+}
+```
+
+Now, in the `Parrot` class, we can just delete the overridden `fly()` method, since it inherits it from `Bird`. Of course, we could still override the method if we wanted to:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Parrot extends Bird {
+    public Parrot(String name) {
+        super(name);
+    }
+}
+```
+
+In the `Penguin` class, we still have to have the overridden `fly()`, because penguins cannot fly.
+
+Now, with this refactoring done, we can have a `Dragonfly` class (which is an insect) and a `Bat` class (which is a mammal) that implement the interface `CanFly`.
+
+Looking back at the `Animal` class, one could argue that the methods `breath()` and `eat()` fall in the category of ***can***, thus, they should be interfaces. But, since all animals eat and breathe (it's intrinsic to them), all animal classes can inherit these methods from the base class, instead of implementing them with interfaces.
+
+So, summarizing the main differences between an interface and an abstract class:
+
+Abstract classes can have fields, constructors and implemented methods, whereas interfaces can have fields, but they are all public, static, and final fields, in other words, constants with a static scope.
+
+These interface fields have to be static, because non-static fields require an instance, and we cannot instantiate interfaces.
+
+All elements of an interface are automatically public, whereas in abstract classes, we can choose any visibility.
+
+All methods in an interface are automatically abstract.
+ 
+Abstract classes and interfaces **cannot be instantiated**.
+
+An abstract class **can implement multiple interfaces**.
+
+We use abstract classes when we want to share code among several closely related classes, or if we expect classes that extend from it to have many common methods, fields or required access modifiers other than public.
+
+**The purpose of an abstract class is to provide a common definition of a base class that multiple derived classes can share.**
+
+An interface **can** extend another interface.
+
+Since Java 8, interfaces can contain default methods, which are methods with implementation. The keyword `default` is used for backwards compatibility.
+
+Since Java 9, an interface can also contain private methods. Those are commonly used when two default methods in an interface share common code.
+
+We use an interface when unrelated classes need the same functionalities, or when we want to specify the behavior of a particular data type, but we're not concerned about who implements its behavior, or if we want to separate different behavior.
