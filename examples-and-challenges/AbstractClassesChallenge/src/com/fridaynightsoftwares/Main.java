@@ -62,13 +62,13 @@ package com.fridaynightsoftwares;
 public class Main {
 
     public static void main(String[] args) {
-        MyLinkedList list = new MyLinkedList(null);
-        list.traverse(list.getRoot());
-        String stringData = "Darwin Brisbane Perth Melbourne Canberra Adelaide Sydney Canberra";
+        SearchTree tree = new SearchTree(null);
+        tree.traverse(tree.getRoot());
+        String stringData = "5 7 8 9 0 8";
         String[] data = stringData.split(" ");
         for (String s: data) {
-            list.addItem(new Node(s));
+            tree.addItem(new Node(s));
         }
-        list.traverse(list.getRoot());
+        tree.traverse(tree.getRoot());
     }
 }

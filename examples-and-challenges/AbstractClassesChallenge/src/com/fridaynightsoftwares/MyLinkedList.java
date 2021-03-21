@@ -67,7 +67,51 @@ public class MyLinkedList implements INodeList {
     }
 
     @Override
-    public boolean removeItem() {
+    public boolean removeItem(ListItem item) {
+        if (item != null) {
+            System.out.println("Deleting item " + item.value);
+            ListItem currentItem = root;
+
+            // Go through the list:
+            while (currentItem != null) {
+                int comparison = currentItem.compareTo(item);
+
+                // If the item is there:
+                if (comparison == 0) {
+
+                    // If the current item is the head of the list:
+                    if (currentItem == root) {
+
+                        // The root will point to the next record;
+                        root = currentItem.next();
+
+                    // If the current item isn't the head of the list, there is a previous entry:
+                    } else {
+
+                        // Points the previous entry to the next element, so that the link to the current one is lost (deleted):
+                        currentItem.previous().setNext(currentItem.next());
+
+                        // If there is a next item:
+                        if (currentItem.next() != null) {
+
+                            // Sets its previous value to the previous of the current item, to loose the link to the current one:
+                            currentItem.next().setPrevious(currentItem.previous());
+                        }
+                    }
+                    return true;
+
+                // Means that we haven't found the item yet, so goes to the next element:
+                } else if (comparison < 0) {
+                    currentItem = currentItem.next();
+
+                // We looped the whole list and reached the end of it:
+                } else {
+
+                    // The item is not in the list, so there's nothing to delete.
+                    return false;
+                }
+            }
+        }
         return false;
     }
 
