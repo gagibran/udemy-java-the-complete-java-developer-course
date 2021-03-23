@@ -5470,7 +5470,7 @@ We use an interface when unrelated classes need the same functionalities, or whe
 
 ## Generics
 
-We can create classes and interfaces that accepts a type as a parameter. One good example is and `ArrayList`. It accepts a data type inside its angular brackets.
+We can create classes and interfaces that accepts a type as a parameter. One good example is and `ArrayList`. It accepts a data type inside its angle brackets.
 
 Since `ArrayList`s are generic, we don't have to necessarily specify the type as an argument to it, making it accept any `Object`. This is very powerful, because we can add any kind of data type to it, without any problems:
 
@@ -5538,9 +5538,11 @@ Because it cannot convert `"test"` into an integer.
 
 ### Generic class
 
-To create our own generic class, we need to use the angular brackets in its declaration with a variable name on it. We normally use `T` (short for "Type").
+To create our own generic class, we need to use the angle brackets in its declaration with a variable name on it. We normally use `T` (short for "Type").
 
-We can also do some pre-validation of the type. For example, we want our class to only accept a custom class called `Player` (in this example, it's an abstract class). We can use the `extends` keyword to make this validation.
+We can also do some pre-validation of the type. For example, we want our class to only accept a custom class called `Player` (in this example, it's an abstract class). We can use the `extends` keyword to make this validation. This is known as a **bounded type**, because we bound our data type to a specific one.
+
+With bounding and polymorphism, the type passed in to the generic class is limited to the bounded type and its children.
 
 For example, for the abstract class `Player`:
 
@@ -5672,3 +5674,127 @@ public class Main {
 ```
 
 **Note**: We can use multiple bounds, but only if they are interfaces. We can extend one class and multiple interfaces at the same time as well, starting with the class. The syntax is: `public class className<T extends classOne $ interfaceOne & interfaceTwo>`.
+
+Again, the example that Tim gave on this lecture was very confusing. Besides, he didn't even touched the subject of passing two types to the same angle brackets.
+
+[Here](https://www.youtube.com/watch?v=h7piyWnQbZA)'s a better explanation with some examples, from [Keep On Coding](https://www.youtube.com/channel/UCsLo154Krjwhoz8W00N8ItA).
+
+Basically, we can use this powerful tool to pass in multiple types to our generic class, so it can make multiple things:
+
+```java
+public class MultipleTypes<T, V> {
+    private T objOne;
+    private V objTwo;
+    public MultipleTypes(T objOne, V objTwo) {
+        this.objOne = objOne;
+        this.objTwo = objTwo;
+        System.out.println(objOne.getClass().getName());
+        System.out.println(objTwo.getClass().getName());
+    }
+}
+```
+
+In `main()`:
+
+```java
+public class Main() {
+    public static void main(String[] args) {
+        MultipleTypes<String, Integer> multipleTypes = new MultipleTypes<>("A string", 1);
+    }
+}
+```
+
+We get:
+
+```
+java.lang.String
+java.lang.Integer
+```
+
+We can also use wild cards, if we don't know which types will be specified into our class. For example:
+
+```java
+package com.fridaynightsoftwares;
+
+public class MultipleTypes<T extends Number> {
+    private T num;
+    public MultipleTypes(T num, V objTwo) {
+        this.num = num;
+        System.out.println(num.getClass().getName());
+    }
+
+    public T getNum() {
+        return num;
+    }
+
+    public void multiply(MultipleTypes<T> multipleTypes) {
+        System.out.println(multipleTypes.getNum().intValue() * this.num.intValue());
+    }
+}
+```
+
+Here, we're taking a data type that extends from `Number`, which is an abstract class from `java.lang` that serves as a specification for `Integer`, `Double`, `Float`, `Short` etc.
+
+We're stating here that `T` should be of type `Number`. In our method `multiply()`, we're basically taking `num` from a `MultipleTypes` and multiplying with `this.num`.
+
+If we create the objects in `main()`, call `multiplyTypes()` from `multipleTypesInt`, and pass `multipleTypesDouble` as a parameter, or vice-versa, it won't compile:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        MultipleTypes<Integer> multipleTypesInt = new MultipleTypes<>(1);
+        MultipleTypes<Double> multipleTypesDouble = new MultipleTypes<>(2.3);
+        // multipleTypes.multiply(multipleTypesTwo); // This doesn't work.
+    }
+}
+```
+
+This doesn't work because `multipleTypesInt` is an integer, and its `multiplyTypes()` is expecting a `MultipleTypes<Integer>`, but we're passing `multipleTypesDouble`, which is a `MultipleTypes<Double>`.
+
+To contour that, we can use a **wild card**: a question mark sign (`?`). This states that we don't actually know which class from `Number` will be passed as a data type. Thus, we can pass any types there:
+
+```java
+package com.fridaynightsoftwares;
+
+public class MultipleTypes<T extends Number> {
+    private T num;
+    public MultipleTypes(T num, V objTwo) {
+        this.num = num;
+        System.out.println(num.getClass().getName());
+    }
+
+    public T getNum() {
+        return num;
+    }
+
+    public void multiply(MultipleTypes<?> multipleTypes) {
+        System.out.println(multipleTypes.getNum().intValue() * this.num.intValue());
+    }
+}
+```
+
+Notice the `<?>` in `MultipleTypes`, in `multiply`. Now, the code commented from main works:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        MultipleTypes<Integer> multipleTypesInt = new MultipleTypes<>(1);
+        MultipleTypes<Double> multipleTypesDouble = new MultipleTypes<>(2.3);
+        multipleTypes.multiply(multipleTypesTwo); // This now works.
+    }
+}
+```
+
+Which prints:
+
+```
+2
+```
