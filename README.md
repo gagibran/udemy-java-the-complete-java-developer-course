@@ -76,6 +76,8 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
     - [Local anonymous](#anonymous-classes)
     - [Abstract classes](#abstract-classes)
     - [Abstract classes vs. interfaces](#abstract-classes-vs-interfaces)
+- [Generics](#generics)
+    - [Generic class](#generic-class)
 
 ## Some concepts
 
@@ -5465,3 +5467,208 @@ Since Java 8, interfaces can contain default methods, which are methods with imp
 Since Java 9, an interface can also contain private methods. Those are commonly used when two default methods in an interface share common code.
 
 We use an interface when unrelated classes need the same functionalities, or when we want to specify the behavior of a particular data type, but we're not concerned about who implements its behavior, or if we want to separate different behavior.
+
+## Generics
+
+We can create classes and interfaces that accepts a type as a parameter. One good example is and `ArrayList`. It accepts a data type inside its angular brackets.
+
+Since `ArrayList`s are generic, we don't have to necessarily specify the type as an argument to it, making it accept any `Object`. This is very powerful, because we can add any kind of data type to it, without any problems:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+
+public class Main {
+
+    public static void main(String[] args) {
+        ArrayList list = new ArrayList();
+        list.add(0);
+        list.add(1);
+        list.add("test");
+        list.add(3);
+        for (Object i : list) {
+            System.out.println(i);
+        }
+    }
+}
+```
+
+This is possible because of the `java.lang.Object` class, which is inherited by every class in Java. `String` and `int` belong to `Object`. Thus, we can add them both to this list, because it's taking any `Object`, as previously said. We can, then, print the integers and the string added to the list without errors:
+
+```
+0
+1
+test
+3
+```
+
+But, this is also dangerous, because if we try to do a math operation with each element, the error will only be caught at runtime:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+
+public class Main {
+
+    public static void main(String[] args) {
+        ArrayList list = new ArrayList();
+        list.add(0);
+        list.add(1);
+        list.add("test");
+        list.add(3);
+        for (Object i : list) {
+            System.out.println((Integer) i * 2);
+        }
+    }
+}
+```
+
+The IDE and the build processes won't complain about this error, but at runtime, it throws:
+
+```
+0
+2
+Exception in thread "main" java.lang.ClassCastException: class java.lang.String cannot be cast to class java.lang.Integer (java.lang.String and java.lang.Integer are in module java.base of loader 'bootstrap')
+	at com.fridaynightsoftwares.Main.main(Main.java:14)
+```
+
+Because it cannot convert `"test"` into an integer.
+
+### Generic class
+
+To create our own generic class, we need to use the angular brackets in its declaration with a variable name on it. We normally use `T` (short for "Type").
+
+We can also do some pre-validation of the type. For example, we want our class to only accept a custom class called `Player` (in this example, it's an abstract class). We can use the `extends` keyword to make this validation.
+
+For example, for the abstract class `Player`:
+
+```java
+package com.fridaynightsoftwares;
+
+public abstract class Player {
+    private String name;
+
+    public Player(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+```
+
+We can create a `Team` class that takes `Player` as a data type argument. Wherever we have `T`, it will be replaced by the data type argument (in this case, it only accepts `Player`) at runtime.
+
+This validation is called a **bound**:
+
+```java
+package com.fridaynightsoftwares;
+
+import java.util.ArrayList;
+
+public class Team<T extends Player> {
+    private String name;
+    private int playedGames = 0;
+    private int won = 0;
+    private int lost = 0;
+    private int tied = 0;
+    private ArrayList<T> members = new ArrayList<>();
+
+    public Team(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean addPlayer(T player) {
+        if (members.contains(player)) {
+            
+            // We don't have to do any casting here because we know for sure that T will be Player:
+            System.out.println(player.getName() + " is already on the team.");
+            return false;
+        }
+        members.add(player);
+        
+        // Same here:
+        System.out.println(player.getName() + " picked for the team " + name);
+        return false;
+    }
+
+    public int numPlayers() {
+        return members.size();
+    }
+
+    public void matchResult(Team<T> opponent, int ourScore, int theirScore) {
+        if (ourScore > theirScore) {
+            won++;
+        } else if (ourScore == theirScore) {
+            tied++;
+        } else {
+            lost++;
+        }
+        playedGames++;
+        if (opponent != null) {
+            opponent.matchResult(null, theirScore, ourScore); // Updates the opponent's score recursively:
+
+        }
+    }
+
+    public int ranking() {
+        return won * 2 + tied;
+    }
+}
+```
+
+If we create a `BaseballPlayer` and a `FootballPlayer` class, both extending `Player`:
+
+```java
+package com.fridaynightsoftwares;
+
+public class BaseballPlayer extends Player {
+    public BaseballPlayer(String name) {
+        super(name);
+    }
+}
+```
+
+And
+
+```java
+package com.fridaynightsoftwares;
+
+public class FootballPlayer extends Player {
+    public FootballPlayer(String name) {
+        super(name);
+    }
+}
+```
+
+We can now create teams in `main()`, that take in these custom data types:
+
+```java
+package com.fridaynightsoftwares;
+
+public class Main {
+
+    public static void main(String[] args) {
+        FootballPlayer joe = new FootballPlayer("Joe");
+        BaseballPlayer pat = new BaseballPlayer("Pat");
+        Team<FootballPlayer> adelaideCrows = new Team<>("Adelaide Crows"); // This works because FootballPlayer extends Player.
+        Team<BaseballPlayer> chicagoCubs = new Team<>("Chicago Cubs"); // This works because BaseballPlayer extends Player.
+        // Team<String> brokenTeam = new Team<>("Won't work"); // This DOESN'T work because String isn't or doesn't extend Player.
+        adelaideCrows.addPlayer(joe);
+        chicagoCubs.addPlayer(pat);
+        System.out.println(adelaideCrows.numPlayers());
+
+        // This doesn't work, because adelaideCrows.matchResult() takes in Team<FootballPlayer> only:
+        // adelaideCrows.matchResult(chicagoCubs, 1, 1);
+    }
+}
+```
+
+**Note**: We can use multiple bounds, but only if they are interfaces. We can extend one class and multiple interfaces at the same time as well, starting with the class. The syntax is: `public class className<T extends classOne $ interfaceOne & interfaceTwo>`.
