@@ -12,6 +12,7 @@ A repository aimed to store code generated from [the course](https://www.udemy.c
     - [Class files](#class-files)
     - [Creating multiple classes in one Java file](#creating-multiple-classes-in-one-java-file)
     - [Reference types and reference values](#reference-types-and-reference-values)
+    - [Naming conventions](#naming-conventions)
 - [Primitive types](#primitive-types)
     - [Integer](#integer)
     - [Byte](#byte)
@@ -469,6 +470,20 @@ String myString = "A string";
 String mySecondString = myString; // Referenced.
 mySecondString = "Another string"; // Dereferencing.
 ```
+
+### Naming conventions
+
+Just a summary of the naming:
+
+PascalCase to name classes and interfaces.
+
+camelCase to name fields, variables, and methods.
+
+ALL_CAPS separated by underscore to name constants.
+
+Single letters, like E for element, T for type, K for key, V for value, U for unit, D for data and so on, should be used to name generic types.
+
+The reverse of a company's website domain name is used to name packages. If these names have reserved Java keywords, like `switch`, `case` etc, one should use a underscore (`_`) in front of the word. This also applies to DNSs starting with a number. Dashes (`-`) in DNSs should be replaced with an underscore (`_`). For example: `com._switch`, `com._1world`, `com.experts_exchange` (for a DNS experts-exchange.com).
 
 ## Primitive types
 
