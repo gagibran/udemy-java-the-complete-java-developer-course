@@ -3017,7 +3017,7 @@ This animal is moving at 10 km/h.
 ```
 We are able to call the method `eat()` from the `Animal` class, because it's been inherited from this class by the `Dog` one.
 
-**Important things to note**: We **HAVE** to include in the child class' constructor a call to one upper class constructor by using `super`.
+**Important things to note**: We **HAVE** to include, in the child class' constructor, a call to the base class' constructor by using `super`.
 
 Think of `super` the same as calling:
 ```java
